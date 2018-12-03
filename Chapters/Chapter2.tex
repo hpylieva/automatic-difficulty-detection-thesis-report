@@ -1,0 +1,84 @@
+\chapter{Related work}
+\label{ch:related-work}
+Related work is globally related to the detection of technical contents in documents and to their adaptation. Here, we are interested by the first aspect: detection and diagnosis of technical medical contents. 
+
+In the NLP (Natural Language Processing) area, work related to the diagnosis of technical medical documents is quite frequent. Traditionally, researchers exploit the readability measures. Among these measures, it is possible to distinguish classical readability measures and computational readability measures \citep{Francois-TAL2013}. Classical measures usually rely on number of letters and/or of syllables a word contains and on linear regression models \citep{Flesch1948,Gunning1973}, while computational readability
+measures may involve vector models and a great variability of
+features, among which the following have been used for processing the
+biomedical documents: combination of classical readability formulas
+with medical terminologies \citep{Kokkinakis-2006}; n-grams of
+characters \citep{Poprat-MIE2006}, stylistic \citep{Grabar-AMIA2007} or
+discursive \citep{Goeuriot-LREC2008} features, lexicon
+\citep{Miller-HICSS2007}, morphological features
+\citep{Chmielik-TAL2011}, combinations of different features
+\citep{Zeng-MEDINFO2007}.
+
+At a more fine-grained level, the readability of words has been
+addressed much less frequently. In the general language, some research
+actions are often performed as part of the NLP challenges, such as the
+SemEval NLP
+challenge\footnote{\url{http://www.cs.york.ac.uk/semeval-2012}} held
+in 2012. This challenge proposed the following task: for a short text
+and a target word, several possible substitutions satisfying the
+context have also been proposed. The objective was to rate and to
+order the substitutions according to their degree of simplicity
+\citep{specia-SEMEVAL2012}. The participants applied rule-based and/or
+machine learning systems. Combinations of various features, designed
+to detect the simplicity of words, have been used, such as: lexicon
+from spoken corpus and from Wikipedia, Google n-grams, WordNet
+\citep{sinha-SEMEVAL2012}; word length, number of syllables, latent
+semantic analysis, mutual information and word
+frequency\citep{jauhar-SEMEVAL2012}; Wikipedia frequency, word length,
+n-grams of characters and of words, random indexing and syntactic
+complexity of documents \citep{johannsen-SEMEVAL2012}; n-grams and
+frequency from Wikipedia, Google n-grams \citep{ligozat-SEMEVAL2012};
+WordNet and word frequency \citep{amoia-SEMEVAL2012}. The best systems
+reached up to 0.60 Top-rank and 0.575 Recall.
+%%
+Another work has been done on scholar texts in French written for
+children with the purpose to differentiate between the texts from
+various scholar levels and to test various features suitable for that
+\citep{Gala-ELEX2013}. This system reached up to 0.62 classification
+accuracy.
+
+In the medical area, we can mention three experiments: manual rating
+of medical words \citep{Zheng-AMIA2002}, automatic rating of medical
+words on the basis of their presence in different vocabularies
+\citep{Borst-MIE2008}, and exploitation of machine learning approach
+with various features \citep{Grabar-PITR2014}. This last experiment
+achieved up to 0.85 F-measure on individual annotations.
+
+Another issue is to know what are the most suitable data for the
+analysis of text readability. These data have indeed crutial impact on
+models created and on their usability.  Several approaches have been
+proposed:
+\begin{itemize}
+\item exploitation of expert judgment, who have an idea on needs of
+  population aimed in the study \citep{DeClerc-NLE2014}. The main
+  limitation is that experts may have difficulties to figure out what
+  are the real needs of population;
+\item exploitation of text books created for population according to
+  their readability levels, such as school books
+  \citep{Gala-ELEX2013}. The main limitation is that such books are
+  usually created by experts using theoretical basis and observations;
+\item exploitation of crowdsourcing involving large population
+  \citep{DeClerc-NLE2014}.  The main limitation is that the
+  population involved is uncontrolled and unknown;
+\item exploitation of eye-tracking methods for a more fine-grained
+  analysis of reading difficulties
+  \citep{Yaneva-CCA2015,Grabar-ICHI2018}.  The main limitation is that
+  only short text spans can be used;
+\item manual annotation by human annotators
+  \citep{Grabar-LREC2016t}. In this case, the annotators represent the
+  population, they are part of the controlled population, they can
+  perform more complicated tasks than in case of crowdsourcing,
+  although they are usually less many than in crowdsourcing
+  experiments.
+\end{itemize}
+%%
+Related to this issue is the question on generalizability of data and
+of models generated from these data.  For instance, it has been
+observed that data from experts are difficult to generalize over the
+population \citep{DeClerc-NLE2014}.
+
+We propose novel machine learning approaches for a stronger distinction of readability of medical words and distinction of words which may present understanding difficulties to non-experts users. The medical data processed are in French. Seven human annotators participated in creation of the reference data.
