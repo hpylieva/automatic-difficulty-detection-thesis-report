@@ -1,0 +1,86 @@
+\chapter{Methodology}
+\label{ch:methodology}
+
+We propose to tackle the described problem through the supervised words categorization. The purpose is to categorize medical words, or terms, according to whether they can be understood or not by non-specialized people. The manual annotations of there words provide the reference data. The categorization pipeline is the following: categorization features are computed, they are used for
+training the classifiers, and the results are evaluated using the
+cross-validation.
+The proposed method has three phases: 
+\begin{enumerate}
+    \item calculation of NLP features associated with the annotated words;
+    \item building a machine learning model for words classification;
+    \item evaluation of classification quality using a cross-validation.
+\end{enumerate}
+
+The main research question is whether the NLP methods
+can distinguish between understandable and nonunderstandable medical words and whether they
+can diagnose these two categories.
+
+
+\section{Feature sets}
+\subsection{Standard NLP features}
+
+We will refer to previously used NLP features described in \citep{Grabar-PITR2014} as \textit{"standard features"} (opposed to \textit{"embeddings"} described in the next subsection). They include 24 linguistic and extra-linguistic features related to general and specialized languages. The features are computed automatically and can be grouped into ten classes: 
+
+\begin{itemize}
+\item {\it Syntactic categories.}  Syntactic categories and lemmas are
+  computed by TreeTagger \citep{Schmid-1994} and then checked by Flemm
+  \citep{Namer-TAL2000}.  The syntactic categories are assigned to
+  words within the context of their terms.  If a given word receives
+  more than one category, the most frequent one is kept as feature.
+  Among the main categories we find for instance nouns, adjectives,
+  proper names, verbs and abbreviations.
+\item {\it Presence of words in reference lexica.} We exploit two
+  reference lexica of the French language:
+  TLFi\footnote{\url{http://www.atilf.fr/}} and {\it lexique.org}\footnote{\url{http://www.lexique.org/}}. TLFi is
+  a dictionary of the French language covering XIX and XX
+  centuries. It contains almost 100,000 entries. {\it lexique.org} is
+  a lexicon created for psycholinguistic experiments. It contains over
+  135,000 entries, among which inflectional forms of verbs, adjectives
+  and nouns. It contains almost 35,000 lemmas.
+\item {\it Frequency of words through a non specialized search
+    engine.} For each word, we query the Google search engine in order
+  to know its frequency attested on the web.
+\item {\it Frequency of words in the medical terminology.} We also
+  compute the frequency of words in the medical terminology Snomed
+  International.
+\item {\it Number and types of semantic categories associated to
+    words.} We exploit the information on the semantic categories of
+  Snomed International.
+\item {\it Length of words in number of their characters and
+    syllables.} For each word, we compute the number of its characters
+  and syllables.
+\item {\it Number of bases and affixes.} Each lemma is analyzed by the
+  morphological analyzer D\'erif \citep{Namer-AMIA2004}, adapted to the
+  treatment of medical words. It performs the decomposition of lemmas
+  into bases and affixes known in its database and it provides also
+  semantic explanation of the analyzed lexemes. We exploit the
+  morphological decomposition information (number of affixes and
+  bases).
+\item {\it Initial and final substrings of the words.}  We compute the
+  initial and final substrings of different length, from three to five
+  characters.
+\item {\it Number and percentage of consonants, vowels and other
+    characters.} We compute the number and the percentage of
+  consonants, vowels and other characters (i.e., hyphen, apostrophe,
+  comas).
+\item {\it Classical readability scores.} We apply two classical
+  readability measures: Flesch \citep{Flesch1948} and its variant
+  Flesch-Kincaid \citep{Kincaid-1975}. Such measures are typically used
+  for evaluating the difficulty level of a text. They exploit surface
+  characteristics of words (number of characters and/or syllables) and
+  normalize these values with specifically designed coefficients.
+\end{itemize}
+%%
+
+\subsection{Argumentation of FastText word embeddings usage}
+Currently, \textit{word embedding vectors} \citep{Mikolov-NIPS2013} (or \textit{word vector representations}) are used in the most of state-of-the-art methods for various NLP tasks \citep{NLPPROGRESS}. Usually, word embeddings are pre-trained on the giant corpora of natural texts such as Google News, Wikipedia texts in an unsupervised manner to predict the context of the target words. They exploit the distributional hypothesis that semantically close words are next to each other in the sentence and that semantically close words share similar contexts. 
+
+FastText word embeddings \citep{Bojanowski-ARXIV2016} is a good candidate as features for words difficulty detection task because they are able to use words' morphological information and generalize over it. The fact that word embeddings capture context and morphological information leads to the hypothesis that incorporating this information as features will improve classification accuracy for our specific problem. FastText embedding vectors are the sum of character n-gram representations, so that they could be generated even for unknown words. Nevertheless, being trained on Wikipedia texts the portion of known words from our dataset for current FastText embeddings is quite big. According to our analysis, 44.26\% (13,118 out of 29,641) medical words in the dataset and 56.00\% (16,598 out of 29,641) lowercased medical words in the dataset were used for training of the currently published FastText\footnote{\url{https://fasttext.cc}} model for French.
+
+\subsection{Word embeddings from RNN}
+
+
+\section{Classification models}
+
+
+

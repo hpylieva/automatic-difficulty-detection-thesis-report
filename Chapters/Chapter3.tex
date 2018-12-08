@@ -1,43 +1,11 @@
-\chapter{Dataset description}
-\label{ch:dataset-description}
+\chapter{Background Knowledge}
+\label{ch:background-knowledge}
 
-\section{Linguistic data description}
-\label{sec:linguistic-data-description}
-
-For the text classification task the data was collected and annotated as described in \citep{Grabar-PITR2014}. The source terms are obtained from the medical terminology Snomed International \citep{Cote-93} in French, available from the ASIP SANTE website\footnote{\url{http://esante.gouv.fr/services/referentiels/referentiels-d-interoperabilite/snomed-35vf}}. The purpose of this terminology is to provide an extensive description of the medical field. Snomed contains 151,104 medical terms organized into eleven semantic axes such as disorders and abnormalities, procedures, chemical products, living organisms, anatomy, social status, etc. For the purpose of our task, we chose five axes related to the main medical notions: disorders, abnormalities, procedures, functions, and anatomy. Our assumption is that terms in these categories are familiar to a layman, in contrast to contents of such specific groups as chemical products (\textit{hydrogen sulfide}) and living organisms (\textit{Sapromyces, Acholeplasma laidlawii}).
-
-The 104,649 selected terms are lemmatized and tokenized into words (or tokens) resulting in 29,641 unique words such that `\textit{trisulfure d'hydrog\`{e}ne'} provides three words (\textit{trisulfure, de, hydrog\`{e}ne}).
-
-The dataset contains three morphological groups of words:
-\begin{itemize}
-    \item  compound words which contain several bases: abdominoplastie (abdominoplasty), dermabrasion (dermabrasion);
-    \item  constructed words which contain one base and at least one affix: cardiaque (cardiac), acineux (acinic), lipo$\mathrm{\imath}$?de (lipoid);
-    \item  simple words which contain one base, no affixes and possibly infections (when the lemmatization fails): acn\'{e} (acne), fragment (fragment).
-\end{itemize}
-
-\section{Annotation process}
-
-The set of 29,641 unique words was annotated by seven French speakers, 25-40-year-old, without medical training, without specific medical problems, but with the linguistic background. The annotators are expected to represent the average knowledge of medical words among the population as a whole. The annotators are presented with a list of terms and asked to assign each word to one of the three categories:
 
 \begin{itemize}
-    \item  I can understand the word;
-    \item  I am not sure about the meaning of the word;
-    \item  I cannot understand the word.
+    \item Classification problem, methods to solve: log regression, trees, deep learning
+    \item How to ealuate quality of classification problem (accuracy, precision, recall, F1)
+    \item Word embeddings
+    \item RNNs and how to get embeddings from them
 \end{itemize}
-%%
-The assumption is that the words, which are not understandable by the annotators, are also difficult to understand by patients. The annotators were asked not to use dictionaries during the annotation process. The annotation results are represented in Table \ref{table:annot-results} .
-
-\begin{table*}[h]
-\begin{tabular}{l|lllll}
-\hline
-\textit{Categories}             & \textit{A1 (\%)} & \textit{A2 (\%)} & \textit{A3 (\%)} & \textit{Unanimity (\%)} & \textit{Majority (\%)} \\ \hline
-\textit{1. I can understand}    & 8,099 (28\%)     & 8,625 (29\%)     & 7,529 (25\%)     & 5,960 (26\%)            & 7,655 (27\%)           \\
-\textit{2. I am not sure}       & 1,895 (6\%)      & 1,062 (4\%)      & 1,431 (5\%)      & 61 (0.3\%)              & 597 (2\%)              \\
-\textit{3. I cannot understand} & 19,647 (66\%)    & 19,954 (67\%)    & 20,681 (70\%)    & 16,904 (73.7\%)         & 20,511 (71\%)          \\ \hline
-\textit{Total annotations}      & 29,641           & 29,641           & 29,641           & 22,925                  & 28,763                 \\ \hline
-\end{tabular}
-\caption{Number (and percentage) of words assigned to reference categories by three annotators (A1, A2
-and A3), and in the derived datasets unanimity and majority.}
-\label{table:annot-results}
-\end{table*}
 
