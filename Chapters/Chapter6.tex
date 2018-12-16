@@ -5,9 +5,9 @@ We conducted a number of experiments to detect the words' understandability and 
 
 \section{Reproduction of previous results}
 
-In \citep{Grabar-PITR2014} the classification methods were obtained using WEKA \footnote{\url{https://www.cs.waikato.ac.nz/ml/weka/}} - a collection of machine learning algorithms for data mining tasks implemented on Java. In our research as a tool to conduct experiments we used Python, because it is easy to use and there are a lot of stable third-party Python libraries that make Python convenient for research. In order to ensure the consistency of experiments in this work and in \citep{Grabar-PITR2014}, firstly, we reproduced the WEKA results using pre-computed standard set of features from \citep{Grabar-PITR2014} and J48 classification algorithm based on Decision Tree (DT) - a WEKA implementation of C4.5 described in \citep{Quinlan1993}. Our results perfectly match with ones presented in paper. Secondly, we developed a solution based on DT classifier from well-known scikit-learn library\footnote{\url{http://scikit-learn.org}}. At this step we got 0.85-1.41 lower $F$ scores for scikit-learn compared to WEKA results .
+In \citep{Grabar-PITR2014} the classification methods were obtained using WEKA \footnote{\url{https://www.cs.waikato.ac.nz/ml/weka/}} - a collection of machine learning algorithms for data mining tasks implemented on Java. In our research as a tool to conduct experiments we used Python, because it is easy to use and there are a lot of stable third-party Python libraries that make Python convenient for research. In order to ensure the consistency of experiments in this work and in \citep{Grabar-PITR2014}, firstly, we reproduced the WEKA results using pre-computed standard set of features from \citep{Grabar-PITR2014} and J48 classification algorithm based on Decision Tree (DT) - a WEKA implementation of C4.5 described in section \citep{Quinlan1993}. Our results perfectly match with ones presented in paper. Secondly, we developed a solution based on DT classifier from well-known scikit-learn library\footnote{\url{http://scikit-learn.org}}. At this step we got 0.85-1.41 lower $F$ scores for scikit-learn compared to WEKA results (Table \ref{tab:results-reproduction}).
 
-\begin{table}[h]
+\begin{table*}[h]
 \begin{tabular}{L|LLL}
 \hline
 \textit{annotator \textbackslash method} & \textit{Results from paper \citep{Grabar-PITR2014}} & \textit{WEKA J48} & \textit{Python Decision trees (10-fold CV, with shuffle)} \\ \hline
@@ -15,8 +15,9 @@ $A1$ & 80.6 & 80.5 & 79.8 \\
 $A2$ & 81.4 & 80.9 & 80.0 \\
 $A3$ & 84.5 & 84.5 & 83.2 \\ \hline
 \end{tabular}
-\caption{Comparison of various implementations for decision tree classifier on three datasets (A1, A2, A3) in user-in vocabulary-out cross-validation}
-\end{table}
+    \caption{Comparison of various implementations for decision tree classifier on three datasets (A1, A2, A3) in user-in vocabulary-out cross-validation}
+    \label{tab:results-reproduction}
+\end{table*}
 
 Since the input features were identical for WEKA and scikit-learn frameworks, we decided that this small degradation of quality is caused by the difference in implementations of decision tree classifiers in these frameworks. And so, in all subsequent experiments we will use the scikit-learn results reproduction because of it's convenience for comparison of experiments' results. 
 
@@ -28,61 +29,64 @@ Here will be shortly introduced results on using different classifiers and that 
 
 These experiments also follows the scenario from \citep{Grabar-PITR2014}. The cross-validation is done on each dataset (i.e. each user's annotation) separately. The goal of these experiments is to measure the ability of the method to generalize class recognition on the \textit{known user}and his known manner to annotate words (that is, his understanding of the meaning of medical words) for \textit{unknown words}. 
 
-We carried out the experiments using (i) the standard features only, (ii) the FastText word embeddings only and (iii) their combination. Experiments with isolated FastText ~word embeddings as features and the data from three annotators resulted in poor F-scores \ref{tab:user-in-voc-out}, that can be treated that contextual information which is dominant in the word embeddings is not enough to define the word understandability. Adding the FastText word embeddings to the standard feature set resulted in up to 1\% higher F-score due to higher Precision (up to 1.8\%), meaning that contextual information slightly impacts on the understandability of a word by a given person.
+We carried out the experiments using (i) the standard features only, (ii) the FastText word embeddings only and (iii) their combination. Experiments with isolated FastText ~word embeddings as features and the data from three annotators resulted in poor F-scores (Table \ref{tab:user-in-voc-out}), that can be treated that contextual information which is dominant in the word embeddings is not enough to define the word understandability. Adding the FastText word embeddings to the standard feature set resulted in up to 1\% higher F-score due to higher Precision (up to 1.8\%), meaning that contextual information slightly impacts on the understandability of a word by a given person.
 
-\begin{table}[h]
-\label{tab:user-in-voc-out}
+\begin{table*}[h]
 \begin{tabular}{cc|cccc|cccc|cccc}
-\multirow{2}{1cm}{\textit{Train user}} & \multirow{2}{1cm}{\textit{Test user}} & \multicolumn{4}{c|}{\textit{Standard features only}} & \multicolumn{4}{c|}{\textit{Embeddings only}} & \multicolumn{4}{X}{\textit{Standard features + FastText word embeddings}} \\ \cline{3-14} 
+\multirow{2}{0.6cm}{\textit{Train user}} & \multirow{2}{0.6cm}{\textit{Test user}} & \multicolumn{4}{c|}{\textit{Standard features only}} & \multicolumn{4}{c|}{\textit{Embeddings only}} & \multicolumn{4}{X}{\textit{Standard features + FastText word embeddings}} \\ \cline{3-14} 
  &  & $A$ & $P$ & $R$ & $F$ & $A$ & $P$ & $R$ & $F$ & $A$ & $P$ & $R$ & $F$ \\ \hline
 $A1$ & $A1$ & \textbf{82.5} & 77.2 & \textbf{82.5} & 79.8 & 72.5 & 67 & 72.5 & 69.3 & 82.4 & \textbf{79} & 82.4 & \textbf{80.2} \\
 $A2$ & $A2$ & \textbf{82} & 78.9 & \textbf{82} & 80 & 73.5 & 69.9 & 73.5 & 71.3 & 81.9 & \textbf{79.5} & 81.9 & \textbf{80.3} \\ 
 $A3$ & $A3$ & 85.5 & 81.2 & 85.5 & 83.2 & 74.9 & 70.4 & 74.9 & 72.3 & \textbf{85.9} & \textbf{83} & \textbf{85.9} & \textbf{84.2} \\ \hline 
 \end{tabular}
-\caption{Experiments on user-in vocabulary-out cross-validation}
-\end{table}
+    \caption{Experiments on user-in vocabulary-out cross-validation}
+    \label{tab:user-in-voc-out}
+\end{table*}
 
 
 \subsection{User-out vocabulary-in cross-validation}
 
-In this experiment, we learn from all the annotations of one user and then test the model on annotations of another user. In this setting, we measure the ability of the classifier to generalize on all known words, but for unknown users (Table 4). This scenario is realistic to a real-world situation: the reference annotations can be obtained only from a couple of users, presumably representing the overall population, but not from all the possible users. Yet, it is necessary to predict the familiarity of medical words for all the potential users even if they
+In this experiment, we learn from all the annotations of one user and then test the model on annotations of another user. In this setting, we measure the ability of the classifier to generalize on all known words, but for unknown users (Table \ref{tab:user-out-voc-in}). This scenario is realistic to a real-world situation: the reference annotations can be obtained only from a couple of users, presumably representing the overall population, but not from all the possible users. Yet, it is necessary to predict the familiarity of medical words for all the potential users even if they
 did not participate in the annotations.
 
-
-\begin{tabular}{|p{0.3in}|p{0.2in}|p{0.2in}|p{0.2in}|p{0.2in}|p{0.2in}|p{0.2in}|p{0.2in}|p{0.2in}|p{0.2in}|p{0.2in}|p{0.2in}|p{0.2in}|p{0.2in}|} \hline 
-\textit{Train user} & \textit{Test user} & \multicolumn{4}{|p{0.8in}|}{\textit{Standard features only}} & \multicolumn{4}{|p{0.8in}|}{\textit{Embeddings only}} & \multicolumn{4}{|p{0.8in}|}{\textit{Standard features + embeddings}} \\ \hline 
-\textit{} & \textit{} & \textit{A} & \textit{P} & \textit{R} & \textit{F} & \textit{A} & \textit{P} & \textit{R} & \textit{F} & \textit{A} & \textit{P} & \textit{R} & \textit{F} \\ \hline 
-\textit{A1} & \textit{A2} & 81.7 & 78.6 & 81.7 & 80.1 & 74 & 70.3 & 74 & 71.2 & \textbf{84.2} & \textbf{82} & \textbf{84.2} & \textbf{82.8} \\ \hline 
+\begin{table*}[h]
+\begin{tabular}{cc|cccc|cccc|cccc}
+\multirow{2}{0.6cm}{\textit{Train user}} & \multirow{2}{0.6cm}{\textit{Test user}} & \multicolumn{4}{c|}{\textit{Standard features only}} & \multicolumn{4}{c|}{\textit{Embeddings only}} & \multicolumn{4}{X}{\textit{Standard features + FastText word embeddings}} \\ \cline{3-14} 
+ &  & $A$ & $P$ & $R$ & $F$ & $A$ & $P$ & $R$ & $F$ & $A$ & $P$ & $R$ & $F$ \\ \hline
+\textit{A1} & \textit{A2} & 81.7 & 78.6 & 81.7 & 80.1 & 74 & 70.3 & 74 & 71.2 & \textbf{84.2} & \textbf{82} & \textbf{84.2} & \textbf{82.8} \\  
 \textit{A1} & \textit{A3} & 85 & 81.2 & 85 & 83 & 75.4 & 70.7 & 75.4 & 72.6 & \textbf{87.6} & \textbf{84.9} & \textbf{87.6} & \textbf{85.9} \\ \hline 
-\textit{A2} & \textit{A1} & 82.2 & 77 & 82.2 & 79.1 & 72.8 & 67.3 & 72.8 & 69.6 & \textbf{83.9} & \textbf{80.2} & \textbf{83.9} & \textbf{81.1} \\ \hline 
+\textit{A2} & \textit{A1} & 82.2 & 77 & 82.2 & 79.1 & 72.8 & 67.3 & 72.8 & 69.6 & \textbf{83.9} & \textbf{80.2} & \textbf{83.9} & \textbf{81.1} \\  
 \textit{A2} & \textit{A3} & 85.4 & 81.1 & 85.4 & 83 & 75.3 & 71.1 & 75.3 & 73 & \textbf{86.8} & \textbf{83.5} & \textbf{86.8} & \textbf{84.7} \\ \hline 
-\textit{A3} & \textit{A1} & 82.8 & 77.4 & 82.8 & 79.7 & 72.7 & 67.1 & 72.7 & 69.4 & \textbf{84.9} & \textbf{81.3} & \textbf{84.9} & \textbf{82.4} \\ \hline 
+\textit{A3} & \textit{A1} & 82.8 & 77.4 & 82.8 & 79.7 & 72.7 & 67.1 & 72.7 & 69.4 & \textbf{84.9} & \textbf{81.3} & \textbf{84.9} & \textbf{82.4} \\  
 \textit{A3} & \textit{A2} & 82.2 & 79 & 82.2 & 80.2 & 74.1 & 70.4 & 74.1 & 71.6 & \textbf{84.2} & \textbf{82.1} & \textbf{84.2} & \textbf{82.8} \\ \hline 
 \end{tabular}
+    \caption{Experiments on user-out vocabulary-in cross-validation}
+    \label{tab:user-out-voc-in}
+\end{table*}
 
-\textbf{Table }4\textbf{.} Experiments on user-out vocabulary-in cross-validation
 
-
-In these experiments we got a significant improvement of combined features in comparison to the standard features. When knowledge of words understandability of one user is used to predict it for another user, adding the FastText word embeddings provides up to 2.9 better F-score. Notice that used separately, standard features and embeddings shows similar performance as in user-in vocabulary-out cross-validation (Table 3). Our hypothesis is that there exists a robust nonlinear dependency between some subsets of standard features and subword-level components of FastText word embeddings. Testing this hypothesis is the topic of our further research.
+In these experiments we got a significant improvement of combined features in comparison to the standard features. When knowledge of words understandability of one user is used to predict it for another user, adding the FastText word embeddings provides up to 2.9 better F-score. Notice that used separately, standard features and embeddings shows similar performance as in user-in vocabulary-out cross-validation (Table \ref{tab:user-out-voc-in}). Our hypothesis is that there exists a robust nonlinear dependency between some subsets of standard features and subword-level components of FastText word embeddings. Testing this hypothesis is the topic of our further research.
 
 \subsection{User-out vocabulary-out cross-validation}
 
-\noindent In this experiment, we take (k-1) folds of data from one user for training and use k-th fold for testing from the remaining user. In this case, we measure the ability of the method to generalize both on \textit{unknown users }and\textit{ unknown vocabulary}.
+In this experiment, we take (k-1) folds of data from one user for training and use k-th fold for testing from the remaining user. In this case, we measure the ability of the method to generalize both on \textit{unknown users} and \textit{ unknown vocabulary}.
 
-The cross-validation setting is now the most strict and knowledge of words understandability of one user is used to predict whether another user will understand other medical words. In these experiments, embeddings provide approximately 0.5\% higher F-score in case of learning on users A1 and A3 (Table 5). When learning on user A2, embeddings decrease F by 0.5, which means that annotations and health literacy of user A2 are different from users A1 and A3. It seems that adding embeddings makes overfitting of machine learning model to the dataset. As a result, tests on other ``kind of word understandability'' and on combined features are less successful compared to using standard features only for learning. This may be due to the lack of systematicity in annotations of A2.
+The cross-validation setting is now the most strict and knowledge of words understandability of one user is used to predict whether another user will understand other medical words. In these experiments, embeddings provide approximately 0.5\% higher F-score in case of learning on users A1 and A3 (Table \ref{tab:user-out-voc-out}). When learning on user A2, embeddings decrease F by 0.5, which means that annotations and health literacy of user A2 are different from users A1 and A3. It seems that adding embeddings makes overfitting of machine learning model to the dataset. As a result, tests on other ``kind of word understandability'' and on combined features are less successful compared to using standard features only for learning. This may be due to the lack of systematicity in annotations of A2.
 
-\noindent \textbf{Table }5\textbf{.} Experiments on user-out vocabulary-out cross-validation
-
-\begin{tabular}{|p{0.3in}|p{0.2in}|p{0.2in}|p{0.2in}|p{0.2in}|p{0.2in}|p{0.2in}|p{0.2in}|p{0.2in}|p{0.2in}|p{0.2in}|p{0.2in}|p{0.2in}|p{0.2in}|} \hline 
-\textit{Train user} & \textit{Test user} & \multicolumn{4}{|p{0.8in}|}{\textit{Standard features only}} & \multicolumn{4}{|p{0.8in}|}{\textit{Embeddings only}} & \multicolumn{4}{|p{0.8in}|}{\textit{Standard features + embeddings}} \\ \hline 
-\textit{} & \textit{} & \textit{A} & \textit{P} & \textit{R} & \textit{F} & \textit{A} & \textit{P} & \textit{R} & \textit{F} & \textit{A} & \textit{P} & \textit{R} & \textit{F} \\ \hline 
-\textit{A1} & \textit{A2} & 81.7 & 78.6 & 81.7 & 80.1 & 73.6 & 69.9 & 73.6 & 71.3 & \textbf{81.8} & \textbf{79.8} & \textbf{81.8} & \textbf{80.6} \\ \hline 
+\begin{table*}[h]
+\begin{tabular}{cc|cccc|cccc|cccc}
+\multirow{2}{0.6cm}{\textit{Train user}} & \multirow{2}{0.6cm}{\textit{Test user}} & \multicolumn{4}{c|}{\textit{Standard features only}} & \multicolumn{4}{c|}{\textit{Embeddings only}} & \multicolumn{4}{X}{\textit{Standard features + FastText word embeddings}} \\ \cline{3-14} 
+ &  & $A$ & $P$ & $R$ & $F$ & $A$ & $P$ & $R$ & $F$ & $A$ & $P$ & $R$ & $F$ \\ \hline
+\textit{A1} & \textit{A2} & 81.7 & 78.6 & 81.7 & 80.1 & 73.6 & 69.9 & 73.6 & 71.3 & \textbf{81.8} & \textbf{79.8} & \textbf{81.8} & \textbf{80.6} \\ 
 \textit{A1} & \textit{A3} & \textbf{85} & 81.2 & \textbf{85} & 83 & 74.8 & 70.4 & 74.8 & 72.4 & 84.9 & \textbf{82.2} & 84.9 & \textbf{83.4} \\ \hline 
-\textit{A2} & \textit{A1} & \textbf{82.2} & 76.9 & \textbf{82.2} & \textbf{79.1} & 72.5 & 66.9 & 72.5 & 69.3 & 81.7 & \textbf{77.5} & 81.7 & \textbf{79.1} \\ \hline 
+\textit{A2} & \textit{A1} & \textbf{82.2} & 76.9 & \textbf{82.2} & \textbf{79.1} & 72.5 & 66.9 & 72.5 & 69.3 & 81.7 & \textbf{77.5} & 81.7 & \textbf{79.1} \\
 \textit{A2} & \textit{A3} & \textbf{85.3} & 81 & \textbf{85.3} & \textbf{83} & 75.1 & 70.7 & 75.1 & 72.7 & 84.4 & \textbf{81.3} & 84.4 & 82.5 \\ \hline 
-\textit{A3} & \textit{A2} & \textbf{82.7} & 77.3 & \textbf{82.7} & 79.7 & 72.5 & 66.9 & 72.5 & 69.2 & 82.6 & \textbf{78.9} & 82.6 & \textbf{80.2} \\ \hline 
+\textit{A3} & \textit{A2} & \textbf{82.7} & 77.3 & \textbf{82.7} & 79.7 & 72.5 & 66.9 & 72.5 & 69.2 & 82.6 & \textbf{78.9} & 82.6 & \textbf{80.2} \\ 
 \textit{A3} & \textit{A3} & 82.1 & 79 & 82.1 & 80.1 & 73.8 & 70.2 & 73.8 & 71.4 & \textbf{82.2} & \textbf{80} & \textbf{82.2} & \textbf{80.7} \\ \hline 
 \end{tabular}
+    \caption{Experiments on user-out vocabulary-out cross-validation}
+    \label{tab:user-out-voc-out}
+\end{table*}
 
 \section{Generalizability study}
 
@@ -155,12 +159,12 @@ A8&A7&\he{72.6}&\he{77.2}&\he{73.7}&\he{62.2}&\he{66.6}&\he{62.5}&\he{75.7}&\he{
 A8&A8&\he{81.9}&\he{84.9}&\he{83.4}&\he{73.6}&\he{77.0}&\he{75.1}&\he{84.2}&\he{86.5}&\he{85.2}\\
 \end{tabular}
   \caption{Experiments on portability of models from one user to another}
-  \label{tab:user-out-voc-in}
+  \label{tab:user-out-voc-in-generalizability}
 \end{table*}
 
 
 The results obtained are presented in
-Table~\ref{tab:user-out-voc-in}. The first two columns indicate the
+Table~\ref{tab:user-out-voc-in-generalizability}. The first two columns indicate the
 annotators.
 %%
 Data provided by each annotator are used for training the classifier
