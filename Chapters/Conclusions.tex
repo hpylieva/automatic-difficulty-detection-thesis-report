@@ -1,0 +1,29 @@
+\section{Conclusions}
+\label{sec:conclusions}
+
+\subsection{Contribution}
+
+We proposed to address the detection of medical words which understanding may be difficult for non-specialized users of the medical area. We exploit for this machine learning algorithms,
+reference data from seven annotators, and several sets of NLP features: standard features (syntactic information, reference lexica, frequency, etc.), distributional features (word embeddings), and their
+combination.
+
+Our results provide several indications.
+% Firstly, we found out that adding FastText word embeddings provide a significant improvement of the performance for the generalization for unknown users (up to 2.9 F-score) but provides a slight increase (0.5 - 1 F-score) or even decrease (-0.5 F-score) of performance for unknown words. We consider this positive issue because it is important to be able to generalize annotations provided by a set of users on the whole population.
+%%
+Hence, the combination of all features is the most efficient.
+%%
+Concerning the generalization, we propose to learn model on a given
+annotator and then to apply it to data obtained from other annotators.
+This set of experiments indicate that models provide better results
+when tested on data from other annotators.
+%%
+We consider this to be a positive issue because it is important to be
+able to generalize annotations provided by a set of users on the whole
+population.
+%%
+Yet, these results may point out that the users should be apprehended
+through their health literacy, while currently there is no available
+tests for measuring it in French-language healthy people.
+
+\subsection{Future work}
+We have several directions for future work. We currently use existing pre-trained word embeddings. Yet, we assume that their training on medical data may improve their impact on the categorization results. We also plan to implement and test other deep learning/neural networks/NLP methods which use the morphological information of words, such as character-level recurrent neural networks and character embeddings together with 1D convolutions. Indeed, when language data present stable patterns, which is the case in the medical field, processing of subword strings may help for the generalization over new and unseen words. As we presented above, this is one of the current limitations of our work. 

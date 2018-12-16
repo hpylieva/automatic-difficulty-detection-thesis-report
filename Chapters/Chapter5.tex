@@ -72,7 +72,7 @@ We will refer to previously used NLP features described in \citep{Grabar-PITR201
 \end{itemize}
 %%
 
-\subsection{Argumentation of FastText word embeddings usage}
+\subsection{FastText word embeddings usage}
 Currently, \textit{word embedding vectors} \citep{Mikolov-NIPS2013} (or \textit{word vector representations}) are used in the most of state-of-the-art methods for various NLP tasks \citep{NLPPROGRESS}. Usually, word embeddings are pre-trained on the giant corpora of natural texts such as Google News, Wikipedia texts in an unsupervised manner to predict the context of the target words. They exploit the distributional hypothesis that semantically close words are next to each other in the sentence and that semantically close words share similar contexts. 
 
 FastText word embeddings \citep{Bojanowski-ARXIV2016} is a good candidate as features for words difficulty detection task because they are able to use words' morphological information and generalize over it. The fact that word embeddings capture context and morphological information leads to the hypothesis that incorporating this information as features will improve classification accuracy for our specific problem. FastText embedding vectors are the sum of character n-gram representations, so that they could be generated even for unknown words. Nevertheless, being trained on Wikipedia texts the portion of known words from our dataset for current FastText embeddings is quite big. According to our analysis, 44.26\% (13,118 out of 29,641) medical words in the dataset and 56.00\% (16,598 out of 29,641) lowercased medical words in the dataset were used for training of the currently published FastText\footnote{\url{https://fasttext.cc}} model for French.
@@ -80,7 +80,6 @@ FastText word embeddings \citep{Bojanowski-ARXIV2016} is a good candidate as fea
 \subsection{Word embeddings from RNN}
 
 
-\section{Classification models}
 
 
 

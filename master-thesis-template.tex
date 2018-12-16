@@ -49,7 +49,26 @@ headsepline, % Uncomment to get a line under the header
 
 \usepackage[autostyle=true]{csquotes} % Required to generate language-dependent quotes in the bibliography
 
+% for tables formatting
+\usepackage{array}
+\newcolumntype{X}{>{\centering\arraybackslash}m{4cm}}
+\newcolumntype{L}{>{\centering\arraybackslash}m{3cm}}
+\newcolumntype{M}{>{\centering\arraybackslash}m{2cm}}
+\newcolumntype{S}{>{\centering\arraybackslash}m{1cm}}
+\usepackage{multirow}
+\usepackage{fp,xcolor,colortbl}
 
+\newcommand{\he}[1]{%
+    \FPeval{\resa}{max(0, 
+    %min(1, 1-(#1-min_table_value)/(max_table_value-min_table_value)+adjustment))
+    min(1, 1-(#1-58.8)/(88.2-58.8)+0.3))}%
+    \edef\processme{\noexpand\cellcolor[gray]{\resa}}%
+    \processme
+    \FPiflt{\resa}{0.5}%
+      \color{white}%
+    \fi
+    #1%
+}
 
 %----------------------------------------------------------------------------------------
 %	MARGIN SETTINGS
@@ -211,6 +230,8 @@ The acknowledgments and the people to thank go here, don't forget to include you
 
 \textbf{NLP} & \textbf{N}atural \textbf{L}anguage \textbf{P}rocessing\\
 \textbf{RNN} & \textbf{R}ecursive \textbf{N}eural \textbf{N}etwork\\
+\textbf{DT} & \textbf{D}ecision \textbf{T}ree
+\textbf{CV} & \textbf{C}ross-\textbf{v}alidation
 
 \end{abbreviations}
 
@@ -265,6 +286,8 @@ $\omega$ & angular frequency & \si{\radian} \\
 \include{Chapters/Chapter3}
 \include{Chapters/Chapter4} 
 \include{Chapters/Chapter5} 
+\include{Chapters/Chapter6} 
+\include{Chapters/Conclusions} 
 
 %----------------------------------------------------------------------------------------
 %	THESIS CONTENT - APPENDICES
