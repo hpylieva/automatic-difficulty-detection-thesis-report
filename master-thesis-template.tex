@@ -47,6 +47,10 @@ headsepline, % Uncomment to get a line under the header
 
 \addbibresource{master-thesis-template.bib} % The filename of the bibliography
 
+% for inserting images
+\usepackage{graphicx}
+\graphicspath{ {Images/} }
+
 \usepackage[autostyle=true]{csquotes} % Required to generate language-dependent quotes in the bibliography
 
 % for tables formatting
@@ -57,6 +61,9 @@ headsepline, % Uncomment to get a line under the header
 \newcolumntype{S}{>{\centering\arraybackslash}m{1cm}}
 \usepackage{multirow}
 \usepackage{fp,xcolor,colortbl}
+
+% todo notes
+\usepackage[colorinlistoftodos,prependcaption]{todonotes}
 
 \newcommand{\he}[1]{%
     \FPeval{\resa}{max(0, 
@@ -92,7 +99,7 @@ headsepline, % Uncomment to get a line under the header
 \supervisor{Dr. James \textsc{Smith}} % Your supervisor's name, this is used in the title page, print it elsewhere with \supname
 \examiner{} % Your examiner's name, this is not currently used anywhere in the template, print it elsewhere with \examname
 \degree{Master of Science} % Your degree name, this is used in the title page and abstract, print it elsewhere with \degreename
-\author{John \textsc{Smith}} % Your name, this is used in the title page and abstract, print it elsewhere with \authorname
+\author{Hanna \textsc{Pylieva}} % Your name, this is used in the title page and abstract, print it elsewhere with \authorname
 \addresses{} % Your address, this is not currently used anywhere in the template, print it elsewhere with \addressname
 
 \subject{Data Science} % Your subject area, this is not currently used anywhere in the template, print it elsewhere with \subjectname
@@ -229,9 +236,10 @@ The acknowledgments and the people to thank go here, don't forget to include you
 \begin{abbreviations}{ll} % Include a list of abbreviations (a table of two columns)
 
 \textbf{NLP} & \textbf{N}atural \textbf{L}anguage \textbf{P}rocessing\\
+\textbf{DNN} & \textbf{D}eep \textbf{N}eural \textbf{N}etwork\\
 \textbf{RNN} & \textbf{R}ecursive \textbf{N}eural \textbf{N}etwork\\
-\textbf{DT} & \textbf{D}ecision \textbf{T}ree
-\textbf{CV} & \textbf{C}ross-\textbf{v}alidation
+\textbf{DT} & \textbf{D}ecision \textbf{T}ree\\
+\textbf{CV} & \textbf{C}ross-\textbf{v}alidation\\
 
 \end{abbreviations}
 
