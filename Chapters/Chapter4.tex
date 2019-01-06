@@ -1,14 +1,17 @@
 \chapter{Dataset description}
 \label{ch:dataset-description}
 
+For the experiments with words' categorization task in this work we used the publicly available set of words with annotations\footnote{\url{http://natalia.grabar.free.fr/resources.php#rated}} collected according to procedure described in \cite{Grabar-PITR2014}. Additionally, for the research of generalization abilities of our models described in \ref{sec:generalizability-study}, we were provided with four more sets of annotations.
+The initial process of words' collection and annotation is briefly described below.
+
 \section{Linguistic data description}
 \label{sec:linguistic-data-description}
 
-For the text classification task the data was collected and annotated as described in \citep{Grabar-PITR2014}. The source terms are obtained from the medical terminology Snomed International \citep{Cote-93} in French, available from the ASIP SANTE website\footnote{\url{http://esante.gouv.fr/services/referentiels/referentiels-d-interoperabilite/snomed-35vf}}. The purpose of this terminology is to provide an extensive description of the medical field. Snomed contains 151,104 medical terms organized into eleven semantic axes such as disorders and abnormalities, procedures, chemical products, living organisms, anatomy, social status, etc. For the purpose of our task, we chose five axes related to the main medical notions: disorders, abnormalities, procedures, functions, and anatomy. Our assumption is that terms in these categories are familiar to a layman, in contrast to contents of such specific groups as chemical products (\textit{hydrogen sulfide}) and living organisms (\textit{Sapromyces, Acholeplasma laidlawii}).
+The set required biomedical terms was obtained from Snomed International \citep{Cote-93} - the medical source of terminology in French, available from the ASIP SANTE website\footnote{\url{http://esante.gouv.fr/services/referentiels/referentiels-d-interoperabilite/snomed-35vf}}. The purpose of the terminology stored here is to provide an extensive up-to-date overview of the medical field. Snomed contains 151,104 medical terms organized into eleven semantic axes such as disorders and abnormalities, procedures, chemical products, living organisms, anatomy, social status, etc. For the purpose of words' undestandibility study five axes related to the main medical notions were chosen: disorders, abnormalities, procedures, functions, and anatomy. These categories are assumed to contain terms which are familiar to a layman, in contrast to contents of such specific groups as chemical products (\textit{hydrogen sulfide}) and living organisms (\textit{Sapromyces, Acholeplasma laidlawii}).
 
-The 104,649 selected terms are lemmatized and tokenized into words (or tokens) resulting in 29,641 unique words such that `\textit{trisulfure d'hydrog\`{e}ne'} provides three words (\textit{trisulfure, de, hydrog\`{e}ne}).
+The 104,649 selected terms were lemmatized and tokenized into words (or tokens) resulting in 29,641 unique words such that `\textit{trisulfure d'hydrog\`{e}ne'} provides three words (\textit{trisulfure, de, hydrog\`{e}ne}).
 
-The dataset contains three morphological groups of words:
+The final dataset contains three morphological groups of words:
 \begin{itemize}
     \item  compound words which contain several bases: abdominoplastie (abdominoplasty), dermabrasion (dermabrasion);
     \item  constructed words which contain one base and at least one affix: cardiaque (cardiac), acineux (acinic), lipo$\mathrm{\imath}$?de (lipoid);

@@ -1,18 +1,10 @@
 \chapter{Background Information}
 \label{ch:background-information}
 
-
-% \begin{itemize}
-%     \item Classification problem, methods to solve: log regression, trees, deep learning
-%     \item How to evaluate quality of classification problem (accuracy, precision, recall, F1)
-%     \item Word embeddings
-%     \item RNNs and how to get embeddings from them
-% \end{itemize}
-
 \section{Classification problem}
 Classification is a supervised machine learning problem. Given a set of $n$ attributes (features),a set of $k$ classes and a set of $m$ labeled training instances $$\{(x_i,y_i);i=1,...,m\},$$ where $x_i$ is a feature vector and $y_i$  is a label, the task is to find such a rule, which predicts the class of any instance from the values of its attributes.
 
-A lot of real world problems can be considered as a classification problem, for instance \citep{Ng-2012cs229}:
+A lot of real-world problems can be considered as a classification problem, for instance \citep{Ng-2012cs229}:
 \begin{itemize}
     \item understanding whether a tumor is malignant or benign by its size,
     \item distinguishing spam and non-spam emails by the words they contain,
@@ -22,44 +14,24 @@ To handle those tasks a large toolkit of classification algorithms currently exi
 \begin{itemize}
  \item linear classifiers,
  \item support vector machines,
- \item nearest neighbours,
+ \item nearest neighbors,
  \item decision trees,
  \item artificial neural networks.
 \end{itemize} 
 
-We will concentrate on the last two.
-
-\subsection{Decision trees}
-Decision threes are used for regression as well as for classification. In decision trees a tree-like model of decisions is used to provide the required output on tree's leaves. An example of decision tree is shown on fig. \ref{fig:decision-tree} This model is built as a sequence of conditional control statements based on values of different features characterizing input observation. A decision tree is mostly learned using recursive binary splitting technique. In this process on each step an algorithm is aimed to find the best feature and splitting condition to finally come up with the shortest path to the final decision. When a feature set is big, then stopping conditions are put on the decision tree to prevent the model from overfitting. 
-
-\begin{figure}[h]
-    \centering
-    \includegraphics[width=8cm]{Images/Decision-tree.png}
-    \caption{A decision tree for decision making about playing tennis on the day.}
-    \label{fig:decision-tree}
-\end{figure}
-% \includegraphics[height=5cm]{Decision tree} 
-
-The advantages of decision trees are:
-\begin{itemize}
-	\item simplicity of concept and interpretability,
-	\item possibility to apply to both categorical and numeric data without a need of regularizaion. 
-	\item easiness to combine with other decision techniques.
-\end{itemize}
-
-Disadvantages of decision threes are:
-\begin{itemize}
-	\item instability - a small change in data can lead to dramatic change in model,
-	\item propensity of overfitting if no constraints are put.
-\end{itemize}
-
-
-\subsection{Artificial neural networks}
-\todo{Do we need this section?}
+We will concentrate on the last two further in this chapter.
 
 \subsection{Classifier performance evaluation}
 
-To evaluate a classifier the classification results are compared with class labels provided in training dataset. The experimental performance of a classifier on the test data is a proxy for the performance on unseen data. It checks the classifier’s generalization ability.
+When training any machine learning model, the full set of available data is commonly split into several parts:
+\begin{enumerate}
+    \item Training set - the sample of data used for training (fitting) a model. This is the only set with target variable (labels in case of classification) "visible" for a model. In the case of all the rest of datasets, the target variable is only used for performance evaluation of the fitted model. 
+    \item Validation or development set - the sample of data used for unbiased evaluation of model fit on training set while tuning model's hyperparameters. In other words, this set is needed to choose a model which will be finally used in production.
+    \item Test set - the sample of data used for unbiased evaluation of the final model, which was fitted on training dataset \citep{Kuhn-2013}.
+\end{enumerate}
+
+To evaluate a classification model predicted labels results are compared with class labels provided in development or test set. This allows checking the generalization ability of the model.
+
 Binary classifiers are mostly evaluated using confusion matrix (fig. \ref{fig:confusion-matrix}).
 
 \begin{figure}[h]
@@ -69,7 +41,7 @@ Binary classifiers are mostly evaluated using confusion matrix (fig. \ref{fig:co
     \label{fig:confusion-matrix}
 \end{figure}
 
-Performance measures calculated from the confusion matrix entries are the following:
+Performance measures calculated from the confusion matrix entries are the following \citep{kohavi:glossary}:
 \begin{itemize}
     \item Accuracy $= (a + d)/(a + b + c + d) =
     (TN + TP)/total$ ;
@@ -84,8 +56,7 @@ Performance measures calculated from the confusion matrix entries are the follow
     \item False negative rate $= c/(c + d) = FN/actual\: positive$ .
 \end{itemize}
 
-One of the measures above is not enough to evaluate a binary classifier properly when data in class imbalanced. For instance, on the examples on fig. \ref{fig:classifiers-evaluation} the accuracy is high and equal for both situations, but precision and recall are highly different. 
-
+One of the measures above is not enough to evaluate a binary classifier properly when data is class imbalanced. For instance, on fig. \ref{fig:classifiers-evaluation} the accuracy is high and equal for both situations, but precision and recall differ significantly. 
 
 \begin{figure}[h]
     \centering
@@ -94,28 +65,100 @@ One of the measures above is not enough to evaluate a binary classifier properly
     \label{fig:classifiers-evaluation}
 \end{figure}
 
-Moreover, it is always a question what to prioritize, precision or recall, and how to find balance among these two measures. For this reason, $F_1$ score, a harmonic mean of precision and recall, is frequently used to evaluate a binary classifier:
+Moreover, it is always a question what to prioritize, precision or recall, and how to find balance among these two measures. For this reason, $F_1$ score, a harmonic mean of precision and recall \citep{Chinchor-1992}, is frequently used to evaluate a binary classifier:
 
 \begin{equation}
     F_{1}=2\cdot {\frac {\mathrm {precision} \cdot \mathrm {recall} }{\mathrm {precision} +\mathrm {recall} }}
 \end{equation} 
 
-\section{Vector words representations}
+\section{Decision trees}
+Decision trees can be used for both regression and classification tasks. Learning a decision tree is the construction of a tree-like model out of class-labeled training tuples. An example of a decision tree is shown on fig. \ref{fig:decision-tree}. Such model is, in fact, a sequence of conditional control statements based on values of feature vectors characterizing input observations. 
 
-When working with textual data it is a popular approach in machine learning to represent words as vectors, which capture some relationships between words in language.
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=8cm]{Images/Decision-tree.png}
+    \caption{A decision tree for decision making about playing tennis on the day.}
+    \label{fig:decision-tree}
+\end{figure}
+% \includegraphics[height=5cm]{Decision tree} 
 
-\subsection{Word2vec}
-\todo[inline]{Reformulate next 3 paragraphs ( from  https://www.tensorflow.org/tutorials/representation/word2vec )}
-Vector space models (VSMs) represent (embed) words in a continuous vector space where semantically similar words are mapped to nearby points ('are embedded nearby each other'). All methods in VSMs mostly rely on Distributional Hypothesis, which states that words that appear in the same contexts share semantic meaning. The approaches that leverage this principle can be divided into two categories:
+A decision tree is mostly learned using the recursive binary splitting technique. In this process on each step, an algorithm is aimed to find the best feature and splitting condition to finally come up with the shortest path to the final decision.
+Learning an optimal binary decision tree in such a way is an NP-complete problem \citep{Hyafil-1976}. For this reason on practice greedy heuristic algorithms are used, where locally optimal decisions are made at each node. In this work we use an implementation of popular ID3 (Iterative Dichotomiser 3) algorithm \citep{Quinlan-1986} in all our experiments \ref{ch:experiments}. Using decision trees in applications of evidence-based medicine is common as this model is conceptually simple, provides high accuracy and mimics the way a doctor thinks \citep{Sackett-1996, Podgorelec-2002}.
+
+To sum up, the advantages of decision trees are:
 \begin{itemize}
-    \item count-based methods (e.g. Latent Semantic Analysis), where  the frequency of concurrence with neighboring words in a large text corpus is computed for each word, and then mapped onto a small, dense vector.
-    \item predictive methods (e.g. neural probabilistic language models), where each word is predicted out of neighbours by means of learning small, dense embedding vectors, which are actually hidden layer values of a fully connected DNN. 
+    \item simplicity of concept and interpretability,
+    \item possibility to apply to both categorical and numeric data without a need of regularization,
+    \item easiness to combine with other decision techniques.
 \end{itemize}
 
-Word2vec is a computationally-efficient predictive model for learning word embeddings from raw text. It can be implemented using two approaches: Continuous Bag-of-Words model (CBOW) and  Skip-Gram model \cite{Mikolov-ICLR2013}. Both of this models are fully connected neural networks aimed to predict words, but CBOW predicts target words (e.g. 'mat') from source context words ('the cat sits on the'), while the skip-gram does the inverse and predicts source context-words from the target words. This inversion might seem like an arbitrary choice, but statistically it has the effect that CBOW smoothes over a lot of the distributional information (by treating an entire context as one observation). For the most part, this turns out to be a useful thing for smaller datasets. However, skip-gram treats each context-target pair as a new observation, and this tends to do better when we have larger datasets. 
+Disadvantages of decision threes are:
+\begin{itemize}
+    \item instability - a small change in data can lead to a dramatic change in the model,
+    \item propensity of overfitting if no constraints are put. To avoid this effect in our experiments, we restricted the depth of trees as specified in tables of chapter \ref{ch:experiments}.
+\end{itemize}
 
-A nice property of Word2vec words representation is that due to the way it is learned, final vectors capture context information of words. For this reason such vectors are frequently used as features for many canonical NLP prediction tasks, such as part-of-speech tagging, named entity recognition \citep{Collobert:DBLP}, or classification.
 
+\section{Artificial neural networks}
+An Artificial Neural Network (ANN) is a mathematical model which consists of interconnected layers of neurons (groups of nodes) as shown on fig. \ref{fig:neural-net}. Layers can be of different types, and it is common to stack several distinct layers together in a specific manner to get a neural network with good performance. The model on fig. \ref{fig:neural-net} contains two \textit{fully-connected} hidden layers where neurons are fully pairwise connected between two adjacent layers \citep{FeiFei-2016}. Artificial neural networks with contain multiple hidden layers are called Deep Neural Networks (DNN). 
 
-\subsection{Representations from RNN}
-\todo{Not sure about the content of this section for now}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=8cm]{Images/Neural-network.jpg}
+    \caption{A 3-layer neural network with three inputs, two hidden layers of 4 neurons each and one output layer. Source: \citep{FeiFei-2016}}
+    \label{fig:neural-net}
+\end{figure} 
+
+A neural network can be used for both supervised and unsupervised tasks. In the case of supervised training (such as classification), the network processes inputs and provides outputs (predictions). Predictions are then compared with the correct values of target variable values. Errors are then propagated back through the system. This process results in adjusted weights of a neural network. The aim is after many iterations of the described procedure to receive well-tweaked weights of the neural network which provide satisfactory performance of the model.
+
+\subsection{Recurrent neural networks}
+
+A Recurrent Neural Network (RNN) is a type of ANN which can handle sequences of data by processing them element-wise and storing in the internal memory (hidden state). A part of an RNN is presented on fig. \ref{fig:rnn-unrolled}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=10cm]{Images/RNN-unrolled.png}
+    \caption{A rolled (on the left) and unrolled (on the right) part of RNN. At each time step $t$ the model takes the $t^{th}$ member of sequence $x_t$ and outputs a hidden state value $h_t$. Source: \citep{Olah-2015}}
+    \label{fig:rnn-unrolled}
+\end{figure} 
+
+Due to the specifics of RNNs, these models are widely used not only for solving classical NLP ones like machine translation \citep{Chen-2018} and part-of-speech tagging \citep{Plank-2016}, but also for handling sequence-based tasks from other domains like program code generation \citep{Stehnii-2017} and filling missing values in multivariate time series \citep{Che-2016}.
+
+\section{Vector words representations}
+
+\textit{Word embedding} is a collective name for a set of language modeling and feature learning techniques in NLP where words or phrases from vocabulary are mapped to real-valued vectors in a predefined low-dimensional space. This concept is widely used nowadays in applications of NLP as working with word vectors of vocabulary size (thousands or millions of dimensions) is computationally hard. Whereas each high dimensional vector is sparse containing only a few \"valuable\" non-zero values, whi led to the idea that words can be represented much more densely. Mathematically this process involves a mathematical embedding from space with one dimension per word to a continuous vector space with a much lower dimension (mostly from 100 to 300 dimensions) \citep{Brownlee-2017}.
+
+\subsection{Word2vec} 
+Word2vec is a recent deep-learning-based approach for receiving word embeddings which has seen tremendous success being applied in numerous NLP tasks due to its computationally-efficiency and high quality of result \cite{Mikolov-NIPS2013}. Word2vec representations can be trained using either skip-gram model \citep{Mikolov-NIPS2013} shown on fig. \ref{fig:word2vec-skip-gram}  or Continuous Bag-of-Words model (CBOW) \citep{Mikolov-ICLR2013} when on fig. \ref{fig:word2vec-cbow}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[height=4.5cm]{Images/word2vec-skip-gram.png}
+    \caption{The skip-gram model. Both the input vector $x$ and the output $y$ are one-hot encoded word representations. The hidden layer is the word embedding of size $N$. Source: \citep{Weng-2017}}
+    \label{fig:word2vec-skip-gram}
+\end{figure} 
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[height=5cm]{Images/word2vec-cbow.png}
+    \caption{The CBOW model. Word vectors of multiple context words are averaged to get a fixed-length vector as in the hidden layer. Source: \citep{Weng-2017}}
+    \label{fig:word2vec-cbow}
+\end{figure} 
+
+A nice property of word2vec words representation is that due to the way word embeddings are learned, final vectors capture context information of words, which results in the existence of semantic word relationships, an example of which is shown on fig. \ref{fig:word2vec-property}. 
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[height=8cm]{Images/word2vec-property.png}
+    \caption{Country and Capital Vectors Projected by PCA (Principal Component Analysis). The figure illustrates the ability of the model to organize concepts and learn the relationships between them implicitly. No supervised information about country-capital correspondence was provided to model during learning. Source: \citep{Mikolov-NIPS2013}}
+    \label{fig:word2vec-property}
+\end{figure} 
+%
+For this reason, such vectors are frequently used as features for many canonical NLP prediction tasks, such as part-of-speech tagging, named entity recognition \citep{Collobert:DBLP}, or classification. In our work for the same purpose, we utilized fastText word embeddings - an advanced modification of word2vec model.
+
+\subsection{FastText word representations}
+In NLP applications it is common to use pre-trained word representations estimated from a large corpus of non-domain-specific texts: news collections, Wikipedia, Web Crawl. In vanilla word2vec setting word embeddings map each word to a distinct vector ignoring morphology. Moreover, words with low frequency in training corpora might be excluded from the final set of word-vector correspondences. This leads to a need of handling the problem of out-of-vocabulary (OOV) words when applying pre-trained word representations on a new corpus. When the domain of new texts contains much specific terminology, as in the case of our dataset of medical terms described in \ref{ch:dataset-description}, OOV problem becomes tough to resolve.
+
+FastText is a skip-gram model trained on \textit{n-grams} level introduced in \cite{Bojanowski-ACL2017}. In this approach, each word is represented as a sum of n-grams its components. This makes it easy to represent any OOV word. Pre-trained word vectors for 157 languages using fastText were received and made public \footnote{\url{https://fasttext.cc/docs/en/crawl-vectors.html}} by Facebook Research in 2017 \citep{Mikolov-2017}. The results of applying those vectors for the French language on our dataset are described in \ref{sec:cv-experiments}.
+
+% \subsection{Representations from RNN}
