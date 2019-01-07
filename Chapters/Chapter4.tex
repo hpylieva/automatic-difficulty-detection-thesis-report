@@ -1,15 +1,15 @@
 \chapter{Dataset description}
 \label{ch:dataset-description}
 
-For the experiments with words' categorization task in this work we used the publicly available set of words with annotations\footnote{\url{http://natalia.grabar.free.fr/resources.php#rated}} collected according to procedure described in \cite{Grabar-PITR2014}. Additionally, for the research of generalization abilities of our models described in \ref{sec:generalizability-study}, we were provided with four more sets of annotations.
+For the experiments with the words' categorization task in this work we used the publicly available set of words with annotations\footnote{\url{http://natalia.grabar.free.fr/resources.php#rated}} collected according to the procedure described in \cite{Grabar-PITR2014}. Additionally, for the research of generalization abilities of our models described in \ref{sec:generalizability-study}, we were provided with four more sets of annotations.
 The initial process of words' collection and annotation is briefly described below.
 
 \section{Linguistic data description}
 \label{sec:linguistic-data-description}
 
-The set required biomedical terms was obtained from Snomed International \citep{Cote-93} - the medical source of terminology in French, available from the ASIP SANTE website\footnote{\url{http://esante.gouv.fr/services/referentiels/referentiels-d-interoperabilite/snomed-35vf}}. The purpose of the terminology stored here is to provide an extensive up-to-date overview of the medical field. Snomed contains 151,104 medical terms organized into eleven semantic axes such as disorders and abnormalities, procedures, chemical products, living organisms, anatomy, social status, etc. For the purpose of words' undestandibility study five axes related to the main medical notions were chosen: disorders, abnormalities, procedures, functions, and anatomy. These categories are assumed to contain terms which are familiar to a layman, in contrast to contents of such specific groups as chemical products (\textit{hydrogen sulfide}) and living organisms (\textit{Sapromyces, Acholeplasma laidlawii}).
+The set of required biomedical terms was obtained from Snomed International \citep{Cote-93} - the medical source of terminology in French, available from the ASIP SANTE website\footnote{\url{http://esante.gouv.fr/services/referentiels/referentiels-d-interoperabilite/snomed-35vf}}. The purpose of the terminology stored here is to provide an extensive up-to-date overview of the medical field. Snomed contains 151,104 medical terms organized into eleven semantic axes such as disorders and abnormalities, procedures, chemical products, living organisms, anatomy, social status, etc. For words' understandability study five axes related to the main medical notions were chosen: disorders, abnormalities, procedures, functions, and anatomy. These categories are assumed to contain terms which are familiar to a layman, in contrast to contents of such specific groups as chemical products (\textit{hydrogen sulfide}) and living organisms (\textit{Sapromyces, Acholeplasma laidlawii}).
 
-The 104,649 selected terms were lemmatized and tokenized into words (or tokens) resulting in 29,641 unique words such that `\textit{trisulfure d'hydrog\`{e}ne'} provides three words (\textit{trisulfure, de, hydrog\`{e}ne}).
+The 104,649 selected terms were lemmatized and tokenized into words (or tokens) resulting in 29,641 unique words, for instance, the term `\textit{trisulfure d'hydrog\`{e}ne'} provided three words (\textit{trisulfure, de, hydrog\`{e}ne}).
 
 The final dataset contains three morphological groups of words:
 \begin{itemize}
@@ -20,7 +20,7 @@ The final dataset contains three morphological groups of words:
 
 \section{Annotation process}
 \label{sec:annotation-process}
-The set of 29,641 unique words was annotated by seven French speakers, 25-40-year-old, without medical training, without specific medical problems, but with the linguistic background. The annotators are expected to represent the average knowledge of medical words among the population as a whole. The annotators are presented with a list of terms and asked to assign each word to one of the three categories:
+The set of 29,641 unique words was annotated by seven French speakers, 25-40-year-old, without medical training, without specific medical problems, but with the linguistic background. The annotators were expected to represent the average knowledge of medical words among the population as a whole. The annotators were presented with a list of terms and asked to assign each word to one of the three categories:
 
 \begin{itemize}
     \item  I can understand the word;
@@ -30,17 +30,20 @@ The set of 29,641 unique words was annotated by seven French speakers, 25-40-yea
 %%
 The assumption is that the words, which are not understandable by the annotators, are also difficult to understand by patients. The annotators were asked not to use dictionaries during the annotation process. The annotation results are represented in Table \ref{tab:annot-results} .
 
-\begin{table*}[h]
-\begin{tabular}{l|lllll}
+\begin{table}[h]
+\begin{tabular}{c|MMM|c}
 \hline
-\textit{Categories}             & \textit{A1 (\%)} & \textit{A2 (\%)} & \textit{A3 (\%)} & \textit{Un. (\%)} & \textit{Maj. (\%)} \\ \hline
-\textit{1. I can understand}    & 8,099 (28)     & 8,625 (29)     & 7,529 (25)     & 5,960 (26)            & 7,655 (27)           \\
-\textit{2. I am not sure}       & 1,895 (6)      & 1,062 (4)      & 1,431 (5)      & 61 (0.3)              & 597 (2)              \\
-\textit{3. I cannot understand} & 19,647 (66)    & 19,954 (67)    & 20,681 (70)    & 16,904 (78)         & 20,511 (71)          \\ \hline
-\textit{Total annotations}      & 29,641           & 29,641           & 29,641           & 22,925                  & 28,763                 \\ \hline
+\multicolumn{1}{l|}{\textit{Annotators / Categories}} & \textit{1. I can understand} & \textit{2. I am not sure} & \textit{3. I cannot understand} & \multicolumn{1}{M}{\textit{Total annotations}} \\ \hline
+\textit{O1 (\%)} & 8,099 (28) & 1,895 (6) & 19,647 (66) & 29,641 \\
+\textit{O2 (\%)} & 8,625 (29) & 1,062 (4) & 19,954 (67) & 29,641 \\
+\textit{O3 (\%)} & 7,529 (25) & 1,431 (5) & 20,681 (70) & 29,641 \\
+\textit{A1 (\%)} & 11,680 (39) & 2,312 (8) & 15,649 (53) & 29,641 \\
+\textit{A2 (\%)} & 9,108 (31) & 2,994 (10) & 17,539 (59) & 29,641 \\
+\textit{A7 (\%)} & 10,606 (36) & 2,206 (7) & 16,829 (57) & 29,641 \\
+\textit{A8 (\%)} & 7,735 (26) & 1,032 (3) & 20,874 (70) & 29,641 \\ \hline
 \end{tabular}
-    \caption{Number (and percentage) of words assigned to reference categories by three annotators (A1, A2
-    and A3), and in the derived unanimity (Un.) and majority (Maj.) datasets.}
+  \caption{Number (and percentage) of words assigned to reference categories by seven annotators (O1, O2, O3, A1, A2, A7, A8).}
     \label{tab:annot-results}
-\end{table*}
+\end{table}
+
 
