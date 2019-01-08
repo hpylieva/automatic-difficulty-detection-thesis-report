@@ -1,25 +1,27 @@
 \chapter{Methodology}
 \label{ch:methodology}
 
-We propose to tackle the described problem through the supervised words categorization. The purpose is to categorize medical words, or terms, according to whether they can be understood or not by non-specialized people. The manual annotations of there words provide the reference data. The categorization pipeline is the following: categorization features are computed, they are used for
-training the classifiers, and the results are evaluated using the
+The purpose of this work is to categorize medical words, or terms, according to whether they can be understood or not by non-specialized people, using features obtained with deep learning methods. The manual annotations of there words provide the reference data. The categorization pipeline is the following: after features for each word are computed, they are used for training the classifiers, and the results are evaluated using the
 cross-validation.
-The proposed method has three phases: 
+Thereby, the proposed method includes three phases: 
 \begin{enumerate}
     \item calculation of NLP features associated with the annotated words;
     \item building a machine learning model for words classification;
-    \item evaluation of classification quality using a cross-validation.
+    \item evaluation of classification quality using cross-validation.
 \end{enumerate}
 
-The main research question is whether the NLP methods
-can distinguish between understandable and nonunderstandable medical words and whether they
-can diagnose these two categories.
+In this research we want to provide answers to the following questions:
+\begin{enumerate}
+    \item Which feature set distinguishes better between understandable and non-understandable medical words?
+    \item Why one feature set categorizes better than another?
+    \item Do classifiers built on the considered feature sets generalize well? 
+\end{enumerate}
 
 
 \section{Feature sets}
 \subsection{Standard NLP features}
 
-We will refer to previously used NLP features described in \citep{Grabar-PITR2014} as \textit{"standard features"} (opposed to \textit{"embeddings"} described in the next subsection). They include 24 linguistic and extra-linguistic features related to general and specialized languages. The features are computed automatically and can be grouped into ten classes: 
+We will refer to the previously used NLP features described in \citep{Grabar-PITR2014} as \textit{"standard features"} (opposed to two kinds of \textit{"embeddings"} described in the next subsection). They include 24 linguistic and extra-linguistic features related to general and specialized languages. The features are computed automatically and can be grouped into ten classes: 
 
 \begin{itemize}
 \item {\it Syntactic categories.}  Syntactic categories and lemmas are
@@ -73,12 +75,14 @@ We will refer to previously used NLP features described in \citep{Grabar-PITR201
 %%
 
 \subsection{FastText word embeddings usage}
-Currently, \textit{word embedding vectors} \citep{Mikolov-NIPS2013} (or \textit{word vector representations}) are used in the most of state-of-the-art methods for various NLP tasks \citep{NLPPROGRESS}. Usually, word embeddings are pre-trained on the giant corpora of natural texts such as Google News, Wikipedia texts in an unsupervised manner to predict the context of the target words. They exploit the distributional hypothesis that semantically close words are next to each other in the sentence and that semantically close words share similar contexts. 
 
-FastText word embeddings \citep{Bojanowski-ARXIV2016} is a good candidate as features for words difficulty detection task because they are able to use words' morphological information and generalize over it. The fact that word embeddings capture context and morphological information leads to the hypothesis that incorporating this information as features will improve classification accuracy for our specific problem. FastText embedding vectors are the sum of character n-gram representations, so that they could be generated even for unknown words. Nevertheless, being trained on Wikipedia texts the portion of known words from our dataset for current FastText embeddings is quite big. According to our analysis, 44.26\% (13,118 out of 29,641) medical words in the dataset and 56.00\% (16,598 out of 29,641) lowercased medical words in the dataset were used for training of the currently published FastText\footnote{\url{https://fasttext.cc}} model for French.
+FastText word embeddings \cite{Bojanowski-ACL2017} is a good candidate as features for words difficulty detection task because they are able to use words' morphological information and generalize over it. The fact that word embeddings capture context and morphological information leads to the hypothesis that incorporating this information as features will improve classification accuracy for our specific problem. FastText embedding vectors are the sum of character n-gram representations, so that they could be generated even for unknown words. As we found out, being trained on Wikipedia and Common Crawl\footnote{\url{http://commoncrawl.org/}} texts the portion of known words from our dataset for current FastText embeddings is quite big. According to our analysis, 44.26\% (13,118 out of 29,641) medical words in the dataset and 56.00\% (16,598 out of 29,641) lowercased medical words in the dataset were used for training of the currently published FastText\footnote{\url{https://fasttext.cc}} model for French.
 
-\subsection{Word embeddings from RNN}
+\subsection{French RNN Medical Undestandibility Text Embeddings}
+According to the general RNN idea depicted on \ref{fig:rnn}  
+\todo{Add formulas for RNN here or in Capter 3}
 
+FrnnMUTE(French RNN Medical Undestandibility Text Embeddings)
 
 
 
