@@ -1,0 +1,34 @@
+\chapter{Experiments with RNN as a direct classifier}
+\label{appx:rnn}
+\todo{Chech whether we really use the best model}
+Table \ref{tab:rnn-experiments} represents the experiments we ran to choose a classification model for further extraction of FrnnMUTE from it. The criterion for choice of the best model was $F1$ score. All experiments have the following in common:
+\begin{itemize}
+    \item Computation engine: GPU Tesla K80.
+    \item Class labels: annotator $O1$.
+    \item Input data preprocessing: words are converted to lower case, Unicode converted to ASCII.
+    \item Input size: 57 (the number of distinct ASCII characters in the train dataset).
+    \item Number of hidden dimensions: 50.
+    \item Output size: 3 (as we classify each word into tree classes as it is in annotations).
+    \item Loss: negative log-likelihood loss (NLLLoss).
+\end{itemize}
+
+\begin{table}[h]
+\begin{tabular}{l|ccccccc}
+\hline
+Experiment Number & \textit{1} & \textit{2} & \textit{3} & \textit{4} & \textit{5} & \textit{6} & \textit{7} \\ \hline
+Recurrent layer & LSTM & GRU & GRU & LSTM & LSTM & LSTM & LSTM \\
+Bidirectional & No & Yes & Yes & Yes & Yes & Yes & No \\
+Number of recurrent layers & 1 & 2 & 2 & 2 & 2 & 2 & 2 \\
+Dropout & 0.0 & 0.0 & 0.0 & 0.5 & 0.5 & 0.7 & 0.7 \\
+Test size & 0.3 & 0.3 & 0.3 & 0.3 & 0.3 & 0.1 & 0.1 \\
+Time, min & 20 & 41 & 41 & 62 & 122 & 33 & 42 \\
+Early stopping* & Yes & Yes & No & No & No & Yes & No \\
+Number of epochs & 4 & 11 & 20 & 10 & 16 & 7 & 10 \\
+Best score epoch & 4 & 11 & 8 & 9 & 15 & 5 & 9 \\
+Accuracy on test & 0.8078 & 0.8037 & 0.8059 & 0.8154 & 0.8100 & 0.8089 & 0.8121 \\
+F1 Score & 0.7806 & 0.7907 & 0.7872 & 0.7905 & 0.7856 & 0.7806 & 0.7894 \\ \hline
+\end{tabular}
+  \caption{Experimenting with different configurations of RNN for words' classification.}
+  \label{tab:rnn-experiments}
+\end{table}
+

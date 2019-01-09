@@ -112,8 +112,8 @@ An Artificial Neural Network (ANN) is a mathematical model which consists of int
 A neural network can be used for both supervised and unsupervised tasks. In the case of supervised training (such as classification), the network processes inputs and provides outputs (predictions). Predictions are then compared with the correct values of target variable values. Errors are then propagated back through the system. This process results in adjusted weights of a neural network. The aim is after many iterations of the described procedure to receive well-tweaked weights of the neural network which provide satisfactory performance of the model.
 
 \subsection{Recurrent neural networks}
-
-A Recurrent Neural Network (RNN) is a type of ANN which can handle sequences of data by processing them element-wise and storing in the internal memory (hidden state). A part of an RNN is presented on fig. \ref{fig:rnn}.
+\lebel{sec:rnn}
+A Recurrent Neural Network (RNN) is a type of ANN for handling sequential data by processing them element-wise and storing in the internal memory (hidden state). A part of an RNN is presented on fig. \ref{fig:rnn}.
 
 \begin{figure}[h]
     \centering
@@ -121,6 +121,19 @@ A Recurrent Neural Network (RNN) is a type of ANN which can handle sequences of 
     \caption{A rolled (on the left) and unrolled (on the right) part of RNN. At each time step $t$ the model takes the $t^{th}$ member of sequence $x_t$ and outputs a hidden state value $h_t$. Source: \citep{Olah-2015}}
     \label{fig:rnn}
 \end{figure} 
+
+Formally, forward propagation of an RNN begins with initialization of the initial hidden state $h^{(0)}$ and then for each time step from $t=1$ to $t=\tau$ the next update equations are applied \citep{Goodfellow-2016}:
+
+\begin{equation}\label{eq:rnn}
+\begin{gathered} 
+    a^{(t)} = b+Wh^{(t-1)}+Ux^{t}, \\
+    h^{(t)} = tanh(a^{(t)}), \\
+    o^{(t)} = c+Vh^{(t)}, \\
+    y^{(t)} = softmax(o^{(t)}),
+\end{gathered}
+\end{equation}
+%%
+where $x^{t}$ is an input vector, $y^{t}$ is an output vector and the parameters are weight matrices $U, V, W$ - for input-to-hidden, hidden-to-output and hidden-to-hidden connections respectively, and bias vectors $b$ and $c$.
 
 Due to the specifics of RNNs, these models are widely used not only for solving classical NLP ones like machine translation \citep{Chen-2018} and part-of-speech tagging \citep{Plank-2016}, but also for handling sequence-based tasks from other domains like program code generation \citep{Stehnii-2017} and filling missing values in multivariate time series \citep{Che-2016}.
 

@@ -1,28 +1,30 @@
 \chapter{Experiments}
 \label{ch:experiments}
 
-\todo{Add trees depth for all tables}
-We conducted a number of experiments to study the impact of adding vector words' representations as features to models on quality of classification. The quality of the applied classification algorithms was evaluated using four standard measures: accuracy $A$, precision $P$, recall $R$ and F1-measure $F$. These scores are weighted average for 1-vs-rest binary classifiers for each of three classes, described in \ref{sec:annotation-process}. Such evaluation of models allows to measure the ability of a chosen methodology (a feature set and a classification method) to distinguish understandable and non-understandable words in an unbalanced dataset. 
+\todo{Rename annotators! Add trees depth for all tables}
+We conducted a series of experiments to study the impact of adding vector words' representations as features for training a classification model on the quality of the words' categorization. The quality of the applied classification algorithms was evaluated using four standard measures: accuracy $A$, precision $P$, recall $R$ and F1-measure $F1$. To evaluate multiclass classification results for each of these measures we used a weighted average of three (as the number of classes described in \ref{sec:annotation-process}) one-vs-rest binary classifiers. Such an evaluation of models allows measuring the ability of a chosen methodology, which is a combination of a feature set and a classification method, to distinguish between three target classes of words in an unbalanced dataset. 
 
-As in this work we compare results with ones in \cite{Grabar-PITR2014}, we first, reproduce results from the paper on the same datasets. Then check how FastText word embeddings influence the quality of classification in different cross-validation scenarios. We notice that in one scenario FastText word embeddings significantly and confidently improve performance of classification model, so the next step is to study whether this model generalized well on bigger variety of users. Finally, we study how RNN suprevised representations used as features impact on classification quality in all the same cross validation scenarios as preciously and on all available users.
+As in this work we compare results with ones in \cite{Grabar-PITR2014}, we first, reproduce results from the paper on the same datasets. Then we check how FastText word embeddings influence the quality of classification in different cross-validation scenarios. We notice that in one scenario FastText word embeddings significantly and confidently improve the performance of the classification model, so the next step is to study whether this model generalizes well on a greater variety of users. Finally, we study how FrnnMUTE used as features impact on classification quality in all the same cross-validation scenarios as previously and on all available users.
 
 \section{Reproduction of previous results}
 
-In \citep{Grabar-PITR2014} the classification methods were obtained using WEKA \footnote{\url{https://www.cs.waikato.ac.nz/ml/weka/}} - a collection of machine learning algorithms for data mining tasks implemented on Java. In our research as a tool to conduct experiments we used Python, because it is easy to use and there are a lot of stable third-party Python libraries that make Python convenient for research. In order to ensure the consistency of experiments in this work and in \citep{Grabar-PITR2014}, firstly, we reproduced the WEKA results using pre-computed standard set of features from \citep{Grabar-PITR2014} and J48 classification algorithm based on Decision Tree (DT) - a WEKA implementation of C4.5 described in section \citep{Quinlan1993}. Our results perfectly match with ones presented in paper. Secondly, we developed a solution based on DT classifier from well-known scikit-learn library\footnote{\url{http://scikit-learn.org}}. At this step we got 0.85-1.41 lower $F$ scores for scikit-learn compared to WEKA results (Table \ref{tab:results-reproduction}).
+In \citep{Grabar-PITR2014} the classification methods were obtained using WEKA\footnote{\url{https://www.cs.waikato.ac.nz/ml/weka/}} - a collection of machine learning algorithms for data mining tasks implemented on Java. In our research as a tool to conduct experiments, we used Python as there are a lot of stable third-party Python libraries that make it convenient for research. In order to ensure the consistency of experiments in this work and in \citep{Grabar-PITR2014}, firstly, we reproduced the results in WEKA using the pre-computed set of standard features described in the previous section \ref{sec:standard-features} and \textit{J48} classification algorithm - a WEKA implementation of C4.5 decision tree based algorithm described in \cite{Quinlan1993}. Our results perfectly match with ones presented in the paper. 
+
+Secondly, we developed a solution in Python based on DT classifier from well-known scikit-learn library\footnote{\url{http://scikit-learn.org}}. At this step we got 0.85-1.41 lower $F$ scores for scikit-learn classifier compared to WEKA results (Table \ref{tab:results-reproduction}).
 
 \begin{table*}[h]
 \begin{tabular}{L|LLL}
 \hline
 \textit{annotator \textbackslash method} & \textit{Results from paper \citep{Grabar-PITR2014}} & \textit{WEKA J48} & \textit{Python Decision trees (10-fold CV, with shuffle)} \\ \hline
-$A1$ & 80.6 & 80.5 & 79.8 \\
-$A2$ & 81.4 & 80.9 & 80.0 \\
-$A3$ & 84.5 & 84.5 & 83.2 \\ \hline
+$O1$ & 80.6 & 80.5 & 79.8 \\
+$O2$ & 81.4 & 80.9 & 80.0 \\
+$O3$ & 84.5 & 84.5 & 83.2 \\ \hline
 \end{tabular}
-    \caption{Comparison of various implementations for decision tree classifier on three datasets (A1, A2, A3) in user-in vocabulary-out cross-validation. The best score for a combination of quality measure and experiment among three feature sets is in bold.}
+    \caption{Comparison of different implementations for decision tree classifier on three sets f annotations (O1, O2, O3) in user-in vocabulary-out cross-validation. The best score for a combination of quality measure and experiment among three feature sets is in bold.}
     \label{tab:results-reproduction}
 \end{table*}
 
-Since the input features were identical for WEKA and scikit-learn frameworks, we decided that this small degradation of quality is caused by the difference in implementations of decision tree classifiers in these frameworks. And so, in all subsequent experiments we will use the scikit-learn results reproduction because of it's convenience for comparison of experiments' results. 
+Since the input features were identical for both of WEKA and scikit-learn frameworks, we concluded that the little degradation of quality in case of using scikit-learn is caused by the difference in implementations of decision tree classifiers in these frameworks. In all subsequent experiments, we will use a scikit-learn classification DT model for convenient experiments' results comparison. We will introduce slight changes in depth of a DT for different dimensions of feature sets.
 
 % \section{Selection of classifier}
 % Here will be shortly introduced results on using different classifiers and that DT was the best.
@@ -228,22 +230,13 @@ morphological structure of terms and their understanding
 the current experiments.
 
 
-\section{RNN supervised representations impact study}
-To receive word representations from a RNN we first trained a classifier of words on one of user's annotations, then for each word we found values on the last hidden state of the model and used them as features in words understandability detection for different users.
-
-As a direct classifier we trained a character-level RNN using PyTorch framework \footnote{\url{https://pytorch.org/}} and one GPU Tesla K80. Among all RNN architectures and hyperparameters we tried the best performance we got for the following model:
-\begin{lstlisting}[language=Python]
-RNN(
-  (lstm): LSTM(57, 50, num_layers=2, dropout=0.7)
-  (fc): Linear(in_features=50, out_features=3, bias=True)
-)
-\end{lstlisting}
-
-This model reached the best performance on the $8^{th}$ epoch with $F1= 78.94$ and $accuracy= 81.21\%$. Using this model we got 50-dimensioinal words' representations and experimented on using them solely and combining with standard features and FastText word embeddings in feature sets for classifying medical words using a Decision Tree. The results of our experiments are represented in table \ref{tab:rnn-embs}.
-
+\section{FrnnMUTE impact study}
+With FrnnMUTE we experimented on using them both solely and in combination with standard features and FastText word embeddings as feature sets for classifying medical words using a Decision Tree. The results of our experiments are represented in table \ref{tab:rnn-embs}.
+\todo{Introduce frnnmute in table notations}
 \begin{table}[h]
 \centering
 \begin{tabular}{L|MMMN}
+\hline
 mu +/- sigma & user-in vocabulary-out & user-out vocabulary-in & user-out vocabulary-out \\ \hline
 Only Standard features & 78 +/- 4.8 & 77.7 +/- 4.9 & 77.6 +/- 4.9 &\\[10pt]
 Only FT emb & 68.1 +/- 5.2 & 67.6 +/- 5.3 & 67.3 +/- 5.2 &\\[10pt]

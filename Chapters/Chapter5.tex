@@ -20,7 +20,7 @@ In this research we want to provide answers to the following questions:
 
 \section{Feature sets}
 \subsection{Standard NLP features}
-
+\label{sec:standard-features}
 We will refer to the previously used NLP features described in \citep{Grabar-PITR2014} as \textit{"standard features"} (opposed to two kinds of \textit{"embeddings"} described in the next subsection). They include 24 linguistic and extra-linguistic features related to general and specialized languages. The features are computed automatically and can be grouped into ten classes: 
 
 \begin{itemize}
@@ -78,11 +78,31 @@ We will refer to the previously used NLP features described in \citep{Grabar-PIT
 
 FastText word embeddings \cite{Bojanowski-ACL2017} is a good candidate as features for words difficulty detection task because they are able to use words' morphological information and generalize over it. The fact that word embeddings capture context and morphological information leads to the hypothesis that incorporating this information as features will improve classification accuracy for our specific problem. FastText embedding vectors are the sum of character n-gram representations, so that they could be generated even for unknown words. As we found out, being trained on Wikipedia and Common Crawl\footnote{\url{http://commoncrawl.org/}} texts the portion of known words from our dataset for current FastText embeddings is quite big. According to our analysis, 44.26\% (13,118 out of 29,641) medical words in the dataset and 56.00\% (16,598 out of 29,641) lowercased medical words in the dataset were used for training of the currently published FastText\footnote{\url{https://fasttext.cc}} model for French.
 
-\subsection{French RNN Medical Undestandibility Text Embeddings}
-According to the general RNN idea depicted on \ref{fig:rnn}  
-\todo{Add formulas for RNN here or in Capter 3}
+\subsection{French RNN Medical Understandability Text Embeddings (FrnnMUTE)}
+According to the general functionality of RNN expressed in \ref{sec:rnn}, the final hidden state aggregates the information about all input sequence. This idea is frequently used to receive hidden representations of sequences. Sequence-to-sequence (seq2seq) models is a well-known example of how this idea works on practice. Such models consist of two parts: an \textit{encoder} is an RNN which encodes input sequence into a representation in hidden space (which is also called \textit{thought vector}), and a \textit{decoder} which generates a new sequence out of the hidden representations (fig. \ref{fig:seq2seq}). 
 
-FrnnMUTE(French RNN Medical Undestandibility Text Embeddings)
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=14cm]{Images/seq2seq.png}
+    \caption{A seq2seq model for question answering task. Source: \citep{Britz-2016}}
+    \label{fig:seq2seq}
+\end{figure} 
+
+We utilized this idea for representing words from our dataset. To receive word representations from an RNN, we first trained it to classify words based on labels by one annotator (we chose $O1$), then for each word we found values of the last hidden state of the RNN and used this vector as features in words understandability detection for different users.
+
+As a direct classifier, we trained a character-level RNN using PyTorch framework\footnote{\url{https://pytorch.org/}} and one GPU Tesla K80. For training we lowercased all words and converted to a singular form, all Unicode symbols were substituted with ASCII analogs,  We tried several RNN architectures and hyperparameter sets; the detailed information is available in Appendix \label{appx:rnn}. The best F1-weighted on three classes we got for the following setting:
+\todo{check best model}
+\begin{lstlisting}[language=Python]
+{
+'test_size': 0.1
+'model': RNN(
+  (lstm): LSTM(input_size=57, hidden_size=50, num_layers=2,
+               dropout=0.7, bidirectional=False)
+  (fc): Linear(in_features=50, out_features=3, bias=True))
+}
+\end{lstlisting}
+
+This model reached the best performance on the eighth epoch with $F1= 78.94$ and $accuracy= 81.21\%$. Using this model we received 50-dimensional words' representations which we called FrnnMUTE (French RNN Medical Understandability Text Embeddings). 
 
 
 
