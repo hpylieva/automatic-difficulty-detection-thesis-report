@@ -1,7 +1,7 @@
 \chapter{Experiments with RNN as a direct classifier}
 \label{appx:rnn}
-\todo{Chech whether we really use the best model}
-Table \ref{tab:rnn-experiments} represents the experiments we ran to choose a classification model for further extraction of FrnnMUTE from it. The criterion for choice of the best model was $F1$ score. All experiments have the following in common:
+
+Table \ref{tab:rnn-experiments} represents the experiments we ran to choose a classification model for further extraction of FrnnMUTE from it. All experiments have the following in common:
 \begin{itemize}
     \item Computation engine: GPU Tesla K80.
     \item Class labels: annotator $O1$.
@@ -9,26 +9,49 @@ Table \ref{tab:rnn-experiments} represents the experiments we ran to choose a cl
     \item Input size: 57 (the number of distinct ASCII characters in the train dataset).
     \item Number of hidden dimensions: 50.
     \item Output size: 3 (as we classify each word into tree classes as it is in annotations).
+    \item Train samples choice: randomly; the number of samples is due to specified in the experiment.
     \item Loss: negative log-likelihood loss (NLLLoss).
 \end{itemize}
 
 \begin{table}[h]
-\begin{tabular}{l|ccccccc}
+\begin{tabular}{l|cccccccc}
 \hline
-Experiment Number & \textit{1} & \textit{2} & \textit{3} & \textit{4} & \textit{5} & \textit{6} & \textit{7} \\ \hline
-Recurrent layer & LSTM & GRU & GRU & LSTM & LSTM & LSTM & LSTM \\
-Bidirectional & No & Yes & Yes & Yes & Yes & Yes & No \\
-Number of recurrent layers & 1 & 2 & 2 & 2 & 2 & 2 & 2 \\
-Dropout & 0.0 & 0.0 & 0.0 & 0.5 & 0.5 & 0.7 & 0.7 \\
-Test size & 0.3 & 0.3 & 0.3 & 0.3 & 0.3 & 0.1 & 0.1 \\
-Time, min & 20 & 41 & 41 & 62 & 122 & 33 & 42 \\
-Early stopping* & Yes & Yes & No & No & No & Yes & No \\
-Number of epochs & 4 & 11 & 20 & 10 & 16 & 7 & 10 \\
-Best score epoch & 4 & 11 & 8 & 9 & 15 & 5 & 9 \\
-Accuracy on test & 0.8078 & 0.8037 & 0.8059 & 0.8154 & 0.8100 & 0.8089 & 0.8121 \\
-F1 Score & 0.7806 & 0.7907 & 0.7872 & 0.7905 & 0.7856 & 0.7806 & 0.7894 \\ \hline
+Experiment Number & \textit{1} & \textit{2} & \textit{3} & \textit{4} & \textit{5} & \textit{6} & \textit{7} & \textit{8} \\ \hline
+Recurrent layer & LSTM & GRU & GRU & LSTM & LSTM & LSTM & LSTM & LSTM \\
+Bidirectional & No & Yes & Yes & Yes & Yes & Yes & No & Yes \\
+Number of recurrent layers & 1 & 2 & 2 & 2 & 2 & 2 & 2 & 2 \\
+Dropout & 0.0 & 0.0 & 0.0 & 0.5 & 0.5 & 0.7 & 0.7 & 0.7 \\
+Test size & 0.3 & 0.3 & 0.3 & 0.3 & 0.3 & 0.1 & 0.1 & 0.1 \\
+Time, min & 20 & 41 & 41 & 62 & 122 & 33 & 42 & 42 \\
+Early stopping* & Yes & Yes & No & No & No & Yes & No & No \\
+Number of epochs & 4 & 11 & 20 & 10 & 16 & 7 & 10 & 12 \\
+Best score epoch & 4 & 11 & 8 & 9 & 15 & 5 & 9 & 12 \\
+Accuracy on test & 0.8078 & 0.8037 & 0.8059 & 0.8154 & 0.8100 & 0.8089 & 0.8121 & 0.8205 \\
+F1 Score & 0.7806 & 0.7907 & 0.7872 & 0.7905 & 0.7856 & 0.7806 & 0.7894 & 0.7929 \\ \hline
 \end{tabular}
   \caption{Experimenting with different configurations of RNN for words' classification.}
   \label{tab:rnn-experiments}
 \end{table}
 
+To choose a model we tested the performance of a decision tree based classifier in user-in vocabulary-out cross-validation setting on FrnnMUTE the model provides. Following this way, we considered the best the model from experiment $7$ as it provided the highest average $F1$ score among seven words' annotations. 
+
+From Table \ref{tab:compare-rnns} we can see that nevertheless, the BiLSTM from experiment $8$ has higher accuracy and F1 score than the LSTM from experiment $7$, FrnnMUTE from the latter generalize better in classification task solved with a decision tree. This effect is presumably due to overfitting of BiLSTM to the data it was trained on. 
+
+
+\begin{table}[h]
+\begin{tabular}{c|llll|llll}
+\hline
+\textit{} & \multicolumn{4}{c|}{\textit{LSTM from experiment 7}} & \multicolumn{4}{c}{\textit{BiLSTM from experiment 8}} \\ \cline{2-9} 
+\textit{Annotator} & \multicolumn{1}{c}{\textit{A (\%)}} & \multicolumn{1}{c}{\textit{P  (\%)}} & \multicolumn{1}{c}{\textit{R  (\%)}} & \multicolumn{1}{c|}{\textit{F}} & \multicolumn{1}{c}{\textit{A (\%)}} & \multicolumn{1}{c}{\textit{P  (\%)}} & \multicolumn{1}{c}{\textit{R  (\%)}} & \multicolumn{1}{c}{\textit{F}} \\ \hline
+\textit{O1} & 80.98 & 76.10 & 80.98 & 78.44 & 80.04 & 74.94 & 80.04 & 77.41 \\
+\textit{O2} & 79.26 & 76.06 & 79.26 & 77.56 & 79.06 & 75.91 & 79.06 & 77.40 \\
+\textit{O3} & 80.56 & 76.96 & 80.56 & 78.70 & 80.47 & 78.92 & 80.47 & 78.44 \\
+\textit{A1} & 73.49 & 70.04 & 73.49 & 70.36 & 71.88 & 67.46 & 71.88 & 68.81 \\
+\textit{A2} & 75.66 & 72.15 & 75.66 & 71.57 & 74.62 & 68.97 & 74.62 & 70.43 \\
+\textit{A7} & 76.12 & 70.35 & 76.12 & 73.07 & 74.88 & 69.39 & 74.88 & 71.69 \\
+\textit{A8} & 81.17 & 77.96 & 81.17 & 79.48 & 81.19 & 78.05 & 81.19 & 79.55 \\ \hline
+\textit{Average} & 78.18 & 74.23 & 78.18 & 75.60 & 77.45 & 73.38 & 77.45 & 74.82 \\ \hline
+\end{tabular}
+  \caption{Compare the performance of FrnnMUTE from LSTM and BiLSTM in words' classification task with a decision tree.}
+  \label{tab:compare-rnns}
+\end{table}

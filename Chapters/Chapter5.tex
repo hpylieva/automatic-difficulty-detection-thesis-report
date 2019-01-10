@@ -1,12 +1,14 @@
 \chapter{Methodology}
 \label{ch:methodology}
 
-The purpose of this work is to categorize medical words, or terms, according to whether they can be understood or not by non-specialized people, using features obtained with deep learning methods. The manual annotations of there words provide the reference data. The categorization pipeline is the following: after features for each word are computed, they are used for training the classifiers, and the results are evaluated using the
-cross-validation.
-Thereby, the proposed method includes three phases: 
+The purpose of this work is to categorize medical words, or terms, according to whether they can be understood or not by non-specialized people, using features obtained with deep learning methods. The manual annotations of there words provide the reference data. 
+
+% The categorization pipeline is the following: after features for each word are computed, they are used for training the classifiers, and the results are evaluated using the cross-validation.
+
+The proposed method includes three steps: 
 \begin{enumerate}
     \item calculation of NLP features associated with the annotated words;
-    \item building a machine learning model for words classification;
+    \item training a machine learning model for words classification;
     \item evaluation of classification quality using cross-validation.
 \end{enumerate}
 
@@ -90,8 +92,11 @@ According to the general functionality of RNN expressed in \ref{sec:rnn}, the fi
 
 We utilized this idea for representing words from our dataset. To receive word representations from an RNN, we first trained it to classify words based on labels by one annotator (we chose $O1$), then for each word we found values of the last hidden state of the RNN and used this vector as features in words understandability detection for different users.
 
-As a direct classifier, we trained a character-level RNN using PyTorch framework\footnote{\url{https://pytorch.org/}} and one GPU Tesla K80. For training we lowercased all words and converted to a singular form, all Unicode symbols were substituted with ASCII analogs,  We tried several RNN architectures and hyperparameter sets; the detailed information is available in Appendix \label{appx:rnn}. The best F1-weighted on three classes we got for the following setting:
-\todo{check best model}
+As a direct classifier, we trained a character-level RNN using PyTorch framework\footnote{\url{https://pytorch.org/}} and one GPU Tesla K80. For training we lowercased all words, converted them to a singular form and substituted all Unicode symbols with ASCII analogs.  We tried several RNN architectures and hyperparameter sets; the detailed information is available in Appendix \label{appx:rnn}. 
+
+
+The best F1-weighted on three classes we got for the following setting:
+
 \begin{lstlisting}[language=Python]
 {
 'test_size': 0.1
@@ -102,8 +107,23 @@ As a direct classifier, we trained a character-level RNN using PyTorch framework
 }
 \end{lstlisting}
 
-This model reached the best performance on the eighth epoch with $F1= 78.94$ and $accuracy= 81.21\%$. Using this model we received 50-dimensional words' representations which we called FrnnMUTE (French RNN Medical Understandability Text Embeddings). 
+This model reached the best performance on the eighth epoch with $F1= 78.94$ and $accuracy = 81.21\%$. Using this model we received 50-dimensional words' representations which we called FrnnMUTE (French RNN Medical Understandability Text Embeddings). 
 
 
+\section{Cross-validation scenarios}
+For a thorough study of generalization abilities of the developed in this work classification models, we propose to consider three distinct cross-validation scenarios based on different combinations of users and vocabulary in train and test sets (fig. \ref{fig:experiments-description}).
 
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=14cm]{Images/Experiments.png}
+    \caption{Visual description of experiments.}
+    \label{fig:experiments-description}
+\end{figure} 
 
+\begin{enumerate}
+    \item \textbf{User-in vocabulary-out cross-validation.} This type of experiment follows the scenario from the paper \citep{Grabar-PITR2014} we compare the results with throughout this work.  The cross-validation is done on each dataset (i.e., each user's annotation) separately. The goal of these experiments is to measure the ability of the method (classification model) to generalize class recognition on the \textit{known user} and his known manner to annotate words (that is, his understanding of the meaning of medical words) for \textit{unknown words}. 
+    
+    \item \textbf{User-out vocabulary-in cross-validation.} In this experiment, we learn from all the annotations of one user and then test the model on annotations of another user. Thereby, in such a setting, we measure the ability of the classifier to generalize on all known words, but for unknown users. This scenario is realistic to a real-world situation: the reference annotations can be obtained only from a couple of users, presumably representing the overall population, but not from all the possible users. Yet, it is necessary to predict the familiarity of medical words for all the potential users even if they did not participate in the annotations.
+    
+    \item \textbf{User-out vocabulary-out cross-validation.} In this experiment, we take (k-1) folds of data from one user for training and use k-th fold for testing from the remaining user. In this case, we measure the ability of the method to generalize both on \textit{unknown users} and \textit{ unknown vocabulary}.
+\end{enumerate}

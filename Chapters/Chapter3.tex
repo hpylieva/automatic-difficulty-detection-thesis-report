@@ -71,6 +71,8 @@ Moreover, it is always a question what to prioritize, precision or recall, and h
     F_{1}=2\cdot {\frac {\mathrm {precision} \cdot \mathrm {recall} }{\mathrm {precision} +\mathrm {recall} }}
 \end{equation} 
 
+In our experiments described in chapter \ref{ch:experiments} we work with multiclass classification problem on unbalanced datasets (Table \ref{tab:annot-results}). The quality of the applied classification algorithms is evaluated using four standard measures: accuracy $A$, precision $P$, recall $R$ and F1-measure $F$. To effectively measure the ability of a model to distinguish between three target classes of words in an unbalanced dataset we use the weighted average of three one-vs-rest binary classifiers. 
+
 \section{Decision trees}
 Decision trees can be used for both regression and classification tasks. Learning a decision tree is the construction of a tree-like model out of class-labeled training tuples. An example of a decision tree is shown on fig. \ref{fig:decision-tree}. Such model is, in fact, a sequence of conditional control statements based on values of feature vectors characterizing input observations. 
 
@@ -112,7 +114,7 @@ An Artificial Neural Network (ANN) is a mathematical model which consists of int
 A neural network can be used for both supervised and unsupervised tasks. In the case of supervised training (such as classification), the network processes inputs and provides outputs (predictions). Predictions are then compared with the correct values of target variable values. Errors are then propagated back through the system. This process results in adjusted weights of a neural network. The aim is after many iterations of the described procedure to receive well-tweaked weights of the neural network which provide satisfactory performance of the model.
 
 \subsection{Recurrent neural networks}
-\lebel{sec:rnn}
+\label{sec:rnn}
 A Recurrent Neural Network (RNN) is a type of ANN for handling sequential data by processing them element-wise and storing in the internal memory (hidden state). A part of an RNN is presented on fig. \ref{fig:rnn}.
 
 \begin{figure}[h]
@@ -170,7 +172,7 @@ A nice property of word2vec words representation is that due to the way word emb
 For this reason, such vectors are frequently used as features for many canonical NLP prediction tasks, such as part-of-speech tagging, named entity recognition \citep{Collobert:DBLP}, or classification. In our work for the same purpose, we utilized fastText word embeddings - an advanced modification of word2vec model.
 
 \subsection{FastText word representations}
-In NLP applications it is common to use pre-trained word representations estimated from a large corpus of non-domain-specific texts: news collections, Wikipedia, Web Crawl. In vanilla word2vec setting word embeddings map each word to a distinct vector ignoring morphology. Moreover, words with low frequency in training corpora might be excluded from the final set of word-vector correspondences. This leads to a need of handling the problem of out-of-vocabulary (OOV) words when applying pre-trained word representations on a new corpus. When the domain of new texts contains much specific terminology, as in the case of our dataset of medical terms described in \ref{ch:dataset-description}, OOV problem becomes tough to resolve.
+In NLP applications it is common to use pre-trained word representations estimated from a large corpus of non-domain-specific texts: news collections, Wikipedia, Web Crawl. In vanilla word2vec setting word embeddings map each word to a distinct vector ignoring morphology. Moreover, words with low frequency in training corpora might be excluded from the final set of word-vector correspondences. This leads to a need of handling the problem of out-of-vocabulary (OOV) words when applying pre-trained word representations on a new corpus. When the domain of new texts contains much specific terminology, as in the case of our dataset of medical terms described in Chapter \ref{ch:dataset-description}, OOV problem becomes tough to resolve.
 
 FastText is a skip-gram model trained on \textit{n-grams} level introduced in \cite{Bojanowski-ACL2017}. In this approach, each word is represented as a sum of n-grams its components. This makes it easy to represent any OOV word. Pre-trained word vectors for 157 languages using fastText were received and made public \footnote{\url{https://fasttext.cc/docs/en/crawl-vectors.html}} by Facebook Research in 2017 \citep{Mikolov-2017}. The results of applying those vectors for the French language on our dataset are described in \ref{sec:cv-experiments}.
 

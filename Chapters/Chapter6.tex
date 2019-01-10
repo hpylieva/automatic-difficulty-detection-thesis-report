@@ -1,10 +1,12 @@
 \chapter{Experiments}
 \label{ch:experiments}
 
-\todo{Rename annotators! Add trees depth for all tables}
-We conducted a series of experiments to study the impact of adding vector words' representations as features for training a classification model on the quality of the words' categorization. The quality of the applied classification algorithms was evaluated using four standard measures: accuracy $A$, precision $P$, recall $R$ and F1-measure $F1$. To evaluate multiclass classification results for each of these measures we used a weighted average of three (as the number of classes described in \ref{sec:annotation-process}) one-vs-rest binary classifiers. Such an evaluation of models allows measuring the ability of a chosen methodology, which is a combination of a feature set and a classification method, to distinguish between three target classes of words in an unbalanced dataset. 
+\todo{Add trees depth for all tables. White about users == annotators}
 
-As in this work we compare results with ones in \cite{Grabar-PITR2014}, we first, reproduce results from the paper on the same datasets. Then we check how FastText word embeddings influence the quality of classification in different cross-validation scenarios. We notice that in one scenario FastText word embeddings significantly and confidently improve the performance of the classification model, so the next step is to study whether this model generalizes well on a greater variety of users. Finally, we study how FrnnMUTE used as features impact on classification quality in all the same cross-validation scenarios as previously and on all available users.
+
+% The quality of the applied classification algorithms was evaluated using four standard measures: accuracy $A$, precision $P$, recall $R$ and F1-measure $F$. To evaluate multiclass classification results for each of these measures we used a weighted average of three (as the number of classes described in \ref{sec:annotation-process}) one-vs-rest binary classifiers. Such evaluation of models allows measuring the ability of a chosen methodology, which is a combination of a feature set and a classification method, to distinguish between three target classes of words in an unbalanced dataset. 
+
+We conducted a series of experiments to study the impact of adding vector words' representations as features for a classification model on the quality of the words' categorization. As in this work we compare results with ones in \citep{Grabar-PITR2014}, we first, reproduce results from the paper on the same datasets. Then we check how FastText word embeddings influence the quality of classification in different cross-validation scenarios. We notice that in one scenario FastText word embeddings significantly and confidently improve the performance of the classification model, so the next step is to study whether this model generalizes well on a greater variety of users. Finally, we study how FrnnMUTE used as features impact on classification quality in all the same cross-validation scenarios as considered previously and on all available user annotations.
 
 \section{Reproduction of previous results}
 
@@ -15,238 +17,182 @@ Secondly, we developed a solution in Python based on DT classifier from well-kno
 \begin{table*}[h]
 \begin{tabular}{L|LLL}
 \hline
-\textit{annotator \textbackslash method} & \textit{Results from paper \citep{Grabar-PITR2014}} & \textit{WEKA J48} & \textit{Python Decision trees (10-fold CV, with shuffle)} \\ \hline
+\textit{user \textbackslash method} & \textit{Results from paper \citep{Grabar-PITR2014}} & \textit{WEKA J48} & \textit{Python Decision trees (10-fold CV, with shuffle)} \\ \hline
 $O1$ & 80.6 & 80.5 & 79.8 \\
 $O2$ & 81.4 & 80.9 & 80.0 \\
 $O3$ & 84.5 & 84.5 & 83.2 \\ \hline
 \end{tabular}
-    \caption{Comparison of different implementations for decision tree classifier on three sets f annotations (O1, O2, O3) in user-in vocabulary-out cross-validation. The best score for a combination of quality measure and experiment among three feature sets is in bold.}
+    \caption{Comparison of different implementations of a decision tree classifier on three sets of annotations (O1, O2, O3) in user-in vocabulary-out cross-validation. The DT in scikit-learn was restricted to depth not more than 3 (this showed the best result during grid-search of hyperparameters of the DT).}
     \label{tab:results-reproduction}
 \end{table*}
 
 Since the input features were identical for both of WEKA and scikit-learn frameworks, we concluded that the little degradation of quality in case of using scikit-learn is caused by the difference in implementations of decision tree classifiers in these frameworks. In all subsequent experiments, we will use a scikit-learn classification DT model for convenient experiments' results comparison. We will introduce slight changes in depth of a DT for different dimensions of feature sets.
 
-% \section{Selection of classifier}
-% Here will be shortly introduced results on using different classifiers and that DT was the best.
 
-\section{Experiments with cross-validation settings}
+\section{Experiments with cross-validation scenarios}
 \label{sec:cv-experiments}
 \subsection{User-in vocabulary-out cross-validation}
 
-These experiments also follow the scenario from \cite{Grabar-PITR2014}. The cross-validation is done on each dataset (i.e. each user's annotation) separately. The goal of these experiments is to measure the ability of the method to generalize class recognition on the \textit{known user} and his known manner to annotate words (that is, his understanding of the meaning of medical words) for \textit{unknown words}. 
+% These experiments also follow the scenario from \cite{Grabar-PITR2014}. The cross-validation is done on each dataset (i.e. each user's annotation) separately. The goal of these experiments is to measure the ability of the method to generalize class recognition on the \textit{known user} and his known manner to annotate words (that is, his understanding of the meaning of medical words) for \textit{unknown words}. 
 
-We carried out the experiments using (i) the standard features only, (ii) the FastText word embeddings only and (iii) their combination. Experiments with isolated FastText ~word embeddings as features and the data from three annotators resulted in poor F-scores (Table \ref{tab:user-in-voc-out}), that can be treated that contextual information which is dominant in the word embeddings is not enough to define the word understandability. Adding the FastText word embeddings to the standard feature set resulted in up to 1\% higher F-score due to higher Precision (up to 1.8\%), meaning that contextual information slightly impacts on the understandability of a word by a given person.
+We carried out the experiments using (i) the standard features only, (ii) the FastText word embeddings only and (iii) their combination. Experiments with isolated FastText word embeddings as features and the data from three annotators resulted in poor F1 scores (Table \ref{tab:user-in-voc-out}), that can be treated that contextual information which is dominant in the word embeddings is not enough to define the word understandability. Adding the FastText word embeddings to the standard feature set resulted in up to 1\% higher F1 score due to higher Precision (up to 1.8\%), meaning that contextual information slightly impacts on the understandability of a word by a given person.
 
 \begin{table*}[h]
 \begin{tabular}{cc|cccc|cccc|cccc}
-\multirow{2}{0.6cm}{\textit{Train user}} & \multirow{2}{0.6cm}{\textit{Test user}} & \multicolumn{4}{c|}{\textit{Standard features only}} & \multicolumn{4}{c|}{\textit{Embeddings only}} & \multicolumn{4}{X}{\textit{Standard features + FastText word embeddings}} \\ \cline{3-14} 
+\multirow{2}{0.6cm}{\textit{Train user}} & \multirow{2}{0.6cm}{\textit{Test user}} & \multicolumn{4}{c|}{\textit{Standard features}} & \multicolumn{4}{c|}{\textit{FastText embeddings}} & \multicolumn{4}{X}{\textit{Standard features + FastText embeddings}} \\ \cline{3-14} 
  &  & $A$ & $P$ & $R$ & $F$ & $A$ & $P$ & $R$ & $F$ & $A$ & $P$ & $R$ & $F$ \\ \hline
-$A1$ & $A1$ & \textbf{82.5} & 77.2 & \textbf{82.5} & 79.8 & 72.5 & 67 & 72.5 & 69.3 & 82.4 & \textbf{79} & 82.4 & \textbf{80.2} \\
-$A2$ & $A2$ & \textbf{82} & 78.9 & \textbf{82} & 80 & 73.5 & 69.9 & 73.5 & 71.3 & 81.9 & \textbf{79.5} & 81.9 & \textbf{80.3} \\ 
-$A3$ & $A3$ & 85.5 & 81.2 & 85.5 & 83.2 & 74.9 & 70.4 & 74.9 & 72.3 & \textbf{85.9} & \textbf{83} & \textbf{85.9} & \textbf{84.2} \\ \hline 
+$O1$ & $O1$ & \textbf{82.5} & 77.2 & \textbf{82.5} & 79.8 & 72.5 & 67 & 72.5 & 69.3 & 82.4 & \textbf{79} & 82.4 & \textbf{80.2} \\
+$O2$ & $O2$ & \textbf{82} & 78.9 & \textbf{82} & 80 & 73.5 & 69.9 & 73.5 & 71.3 & 81.9 & \textbf{79.5} & 81.9 & \textbf{80.3} \\ 
+$O3$ & $O3$ & 85.5 & 81.2 & 85.5 & 83.2 & 74.9 & 70.4 & 74.9 & 72.3 & \textbf{85.9} & \textbf{83} & \textbf{85.9} & \textbf{84.2} \\ \hline 
 \end{tabular}
-    \caption{Experiments on user-in vocabulary-out cross-validation}
+    \caption{Experiments on user-in vocabulary-out cross-validation. The best score for a combination of quality measure and experiment among three feature sets is in bold.}
     \label{tab:user-in-voc-out}
 \end{table*}
 
 
 \subsection{User-out vocabulary-in cross-validation}
 
-In this experiment, we learn from all the annotations of one user and then test the model on annotations of another user. In this setting, we measure the ability of the classifier to generalize on all known words, but for unknown users (Table \ref{tab:user-out-voc-in}). This scenario is realistic to a real-world situation: the reference annotations can be obtained only from a couple of users, presumably representing the overall population, but not from all the possible users. Yet, it is necessary to predict the familiarity of medical words for all the potential users even if they
-did not participate in the annotations.
+% In this setting, we measure the ability of the classifier to generalize on all known words, but for unknown users (Table \ref{tab:user-out-voc-in}). This scenario is realistic to a real-world situation: the reference annotations can be obtained only from a couple of users, presumably representing the overall population, but not from all the possible users. Yet, it is necessary to predict the familiarity of medical words for all the potential users even if they did not participate in the annotations.
+
+In these experiments we got a significant improvement of combined features in comparison to the standard features (Table \ref{tab:user-out-voc-in}). When knowledge of words understandability of one user is used to predict it for another user, adding the FastText word embeddings provides up to 2.9 better F1 score. Notice that used separately, standard features and embeddings show similar performance as in user-in vocabulary-out cross-validation (Table \ref{tab:user-in-voc-out}). Our hypothesis is that there exists a robust nonlinear dependency between some subsets of standard features and subword-level components of FastText word embeddings. Testing this hypothesis is the topic of our further research.
 
 \begin{table*}[h]
 \begin{tabular}{cc|cccc|cccc|cccc}
-\multirow{2}{0.6cm}{\textit{Train user}} & \multirow{2}{0.6cm}{\textit{Test user}} & \multicolumn{4}{c|}{\textit{Standard features only}} & \multicolumn{4}{c|}{\textit{Embeddings only}} & \multicolumn{4}{X}{\textit{Standard features + FastText word embeddings}} \\ \cline{3-14} 
+\multirow{2}{0.6cm}{\textit{Train user}} & \multirow{2}{0.6cm}{\textit{Test user}} & \multicolumn{4}{c|}{\textit{Standard features}} & \multicolumn{4}{c|}{\textit{FastText embeddings only}} & \multicolumn{4}{X}{\textit{Standard features + FastText embeddings}} \\ \cline{3-14} 
  &  & $A$ & $P$ & $R$ & $F$ & $A$ & $P$ & $R$ & $F$ & $A$ & $P$ & $R$ & $F$ \\ \hline
-\textit{A1} & \textit{A2} & 81.7 & 78.6 & 81.7 & 80.1 & 74 & 70.3 & 74 & 71.2 & \textbf{84.2} & \textbf{82} & \textbf{84.2} & \textbf{82.8} \\  
-\textit{A1} & \textit{A3} & 85 & 81.2 & 85 & 83 & 75.4 & 70.7 & 75.4 & 72.6 & \textbf{87.6} & \textbf{84.9} & \textbf{87.6} & \textbf{85.9} \\ \hline 
-\textit{A2} & \textit{A1} & 82.2 & 77 & 82.2 & 79.1 & 72.8 & 67.3 & 72.8 & 69.6 & \textbf{83.9} & \textbf{80.2} & \textbf{83.9} & \textbf{81.1} \\  
-\textit{A2} & \textit{A3} & 85.4 & 81.1 & 85.4 & 83 & 75.3 & 71.1 & 75.3 & 73 & \textbf{86.8} & \textbf{83.5} & \textbf{86.8} & \textbf{84.7} \\ \hline 
-\textit{A3} & \textit{A1} & 82.8 & 77.4 & 82.8 & 79.7 & 72.7 & 67.1 & 72.7 & 69.4 & \textbf{84.9} & \textbf{81.3} & \textbf{84.9} & \textbf{82.4} \\  
-\textit{A3} & \textit{A2} & 82.2 & 79 & 82.2 & 80.2 & 74.1 & 70.4 & 74.1 & 71.6 & \textbf{84.2} & \textbf{82.1} & \textbf{84.2} & \textbf{82.8} \\ \hline 
+\textit{O1} & \textit{O2} & 81.7 & 78.6 & 81.7 & 80.1 & 74 & 70.3 & 74 & 71.2 & \textbf{84.2} & \textbf{82} & \textbf{84.2} & \textbf{82.8} \\  
+\textit{O1} & \textit{O3} & 85 & 81.2 & 85 & 83 & 75.4 & 70.7 & 75.4 & 72.6 & \textbf{87.6} & \textbf{84.9} & \textbf{87.6} & \textbf{85.9} \\ \hline 
+\textit{O2} & \textit{O1} & 82.2 & 77 & 82.2 & 79.1 & 72.8 & 67.3 & 72.8 & 69.6 & \textbf{83.9} & \textbf{80.2} & \textbf{83.9} & \textbf{81.1} \\  
+\textit{O2} & \textit{O3} & 85.4 & 81.1 & 85.4 & 83 & 75.3 & 71.1 & 75.3 & 73 & \textbf{86.8} & \textbf{83.5} & \textbf{86.8} & \textbf{84.7} \\ \hline 
+\textit{O3} & \textit{O1} & 82.8 & 77.4 & 82.8 & 79.7 & 72.7 & 67.1 & 72.7 & 69.4 & \textbf{84.9} & \textbf{81.3} & \textbf{84.9} & \textbf{82.4} \\  
+\textit{O3} & \textit{O2} & 82.2 & 79 & 82.2 & 80.2 & 74.1 & 70.4 & 74.1 & 71.6 & \textbf{84.2} & \textbf{82.1} & \textbf{84.2} & \textbf{82.8} \\ \hline 
 \end{tabular}
-    \caption{Experiments on user-out vocabulary-in cross-validation}
+    \caption{Experiments on user-out vocabulary-in cross-validation.}
     \label{tab:user-out-voc-in}
 \end{table*}
 
 
-In these experiments we got a significant improvement of combined features in comparison to the standard features. When knowledge of words understandability of one user is used to predict it for another user, adding the FastText word embeddings provides up to 2.9 better F-score. Notice that used separately, standard features and embeddings shows similar performance as in user-in vocabulary-out cross-validation (Table \ref{tab:user-out-voc-in}). Our hypothesis is that there exists a robust nonlinear dependency between some subsets of standard features and subword-level components of FastText word embeddings. Testing this hypothesis is the topic of our further research.
-
 \subsection{User-out vocabulary-out cross-validation}
 
-In this experiment, we take (k-1) folds of data from one user for training and use k-th fold for testing from the remaining user. In this case, we measure the ability of the method to generalize both on \textit{unknown users} and \textit{ unknown vocabulary}.
-
-The cross-validation setting is now the most strict and knowledge of words understandability of one user is used to predict whether another user will understand other medical words. In these experiments, embeddings provide approximately 0.5\% higher F-score in case of learning on users A1 and A3 (Table \ref{tab:user-out-voc-out}). When learning on user A2, embeddings decrease F by 0.5, which means that annotations and health literacy of user A2 are different from users A1 and A3. It seems that adding embeddings makes overfitting of machine learning model to the dataset. As a result, tests on other ``kind of word understandability'' and on combined features are less successful compared to using standard features only for learning. This may be due to the lack of systematicity in annotations of A2.
+The cross-validation setting is now the most strict and knowledge of words understandability of one user is used to predict whether another user will understand other medical words. In these experiments, embeddings provide approximately 0.5\% higher F1 score in case of learning on users O1 and O3 (Table \ref{tab:user-out-voc-out}). When learning on user O2, embeddings decrease F by 0.5, which means that annotations and health literacy of user O2 are different from users O1 and O3. It seems that adding embeddings makes overfitting of machine learning model to the dataset. As a result, tests on other ``kind of word understandability'' and on combined features are less successful compared to using standard features only for learning. This may be due to the lack of systematicity in annotations of O2.
 
 \begin{table*}[h]
 \begin{tabular}{cc|cccc|cccc|cccc}
-\multirow{2}{0.6cm}{\textit{Train user}} & \multirow{2}{0.6cm}{\textit{Test user}} & \multicolumn{4}{c|}{\textit{Standard features only}} & \multicolumn{4}{c|}{\textit{Embeddings only}} & \multicolumn{4}{X}{\textit{Standard features + FastText word embeddings}} \\ \cline{3-14} 
+\multirow{2}{0.6cm}{\textit{Train user}} & \multirow{2}{0.6cm}{\textit{Test user}} & \multicolumn{4}{c|}{\textit{Standard features}} & \multicolumn{4}{c|}{\textit{FastText embeddings}} & \multicolumn{4}{X}{\textit{Standard features + FastText embeddings}} \\ \cline{3-14} 
  &  & $A$ & $P$ & $R$ & $F$ & $A$ & $P$ & $R$ & $F$ & $A$ & $P$ & $R$ & $F$ \\ \hline
-\textit{A1} & \textit{A2} & 81.7 & 78.6 & 81.7 & 80.1 & 73.6 & 69.9 & 73.6 & 71.3 & \textbf{81.8} & \textbf{79.8} & \textbf{81.8} & \textbf{80.6} \\ 
-\textit{A1} & \textit{A3} & \textbf{85} & 81.2 & \textbf{85} & 83 & 74.8 & 70.4 & 74.8 & 72.4 & 84.9 & \textbf{82.2} & 84.9 & \textbf{83.4} \\ \hline 
-\textit{A2} & \textit{A1} & \textbf{82.2} & 76.9 & \textbf{82.2} & \textbf{79.1} & 72.5 & 66.9 & 72.5 & 69.3 & 81.7 & \textbf{77.5} & 81.7 & \textbf{79.1} \\
-\textit{A2} & \textit{A3} & \textbf{85.3} & 81 & \textbf{85.3} & \textbf{83} & 75.1 & 70.7 & 75.1 & 72.7 & 84.4 & \textbf{81.3} & 84.4 & 82.5 \\ \hline 
-\textit{A3} & \textit{A2} & \textbf{82.7} & 77.3 & \textbf{82.7} & 79.7 & 72.5 & 66.9 & 72.5 & 69.2 & 82.6 & \textbf{78.9} & 82.6 & \textbf{80.2} \\ 
-\textit{A3} & \textit{A3} & 82.1 & 79 & 82.1 & 80.1 & 73.8 & 70.2 & 73.8 & 71.4 & \textbf{82.2} & \textbf{80} & \textbf{82.2} & \textbf{80.7} \\ \hline 
+\textit{O1} & \textit{O2} & 81.7 & 78.6 & 81.7 & 80.1 & 73.6 & 69.9 & 73.6 & 71.3 & \textbf{81.8} & \textbf{79.8} & \textbf{81.8} & \textbf{80.6} \\ 
+\textit{O1} & \textit{O3} & \textbf{85} & 81.2 & \textbf{85} & 83 & 74.8 & 70.4 & 74.8 & 72.4 & 84.9 & \textbf{82.2} & 84.9 & \textbf{83.4} \\ \hline 
+\textit{O2} & \textit{O1} & \textbf{82.2} & 76.9 & \textbf{82.2} & \textbf{79.1} & 72.5 & 66.9 & 72.5 & 69.3 & 81.7 & \textbf{77.5} & 81.7 & \textbf{79.1} \\
+\textit{O2} & \textit{O3} & \textbf{85.3} & 81 & \textbf{85.3} & \textbf{83} & 75.1 & 70.7 & 75.1 & 72.7 & 84.4 & \textbf{81.3} & 84.4 & 82.5 \\ \hline 
+\textit{O3} & \textit{O2} & \textbf{82.7} & 77.3 & \textbf{82.7} & 79.7 & 72.5 & 66.9 & 72.5 & 69.2 & 82.6 & \textbf{78.9} & 82.6 & \textbf{80.2} \\ 
+\textit{O3} & \textit{O3} & 82.1 & 79 & 82.1 & 80.1 & 73.8 & 70.2 & 73.8 & 71.4 & \textbf{82.2} & \textbf{80} & \textbf{82.2} & \textbf{80.7} \\ \hline 
 \end{tabular}
-    \caption{Experiments on user-out vocabulary-out cross-validation}
+    \caption{Experiments on user-out vocabulary-out cross-validation.}
     \label{tab:user-out-voc-out}
 \end{table*}
 
 \section{Generalizability study}
 \label{sec:generalizability-study}
-In the previous experiments we concentrated on three annotators' data to be consistent with the research in paper \citep{Grabar-PITR2014}. To study better generalizability of models for words' understandability detection we included 4 more annotators in an experiment.
+In the previous experiments, we concentrated on three annotators' data to be consistent with the research in paper \citep{Grabar-PITR2014}. To study better generalizability of models for words' understandability detection, we included four more annotators in an experiment.
 
-In this part we concentrated on the user-out vocabulary-in cross-validation scenario as the most realistic one. Here understanding of generalizability quality is crucial for usage of the model in real world client-doctor relationship.
+In this part, we concentrated on the user-out vocabulary-in cross-validation scenario as the most realistic one. Here understanding of the quality of generalization is crucial for usage of the model in real world client-doctor relationship.
 
 \begin{table*}
   \centering
   \begin{tabular}{c|c|c|c|c||c|c|c||c|c|c}
-    \it Train & \it Test  & \multicolumn{3}{c||}{\it Standard features} & \multicolumn{3}{c||}{\it Embeddings} & \multicolumn{3}{c}{\it Standard features}\\
-    \it annotator & \it annotator & \multicolumn{3}{c||}{\it } & \multicolumn{3}{c||}{\it } & \multicolumn{3}{c}{\it embeddings}\\
+    \multirow{2}{0.6cm}{\textit{Train user}} & \multirow{2}{0.6cm}{\textit{Test user}}  & \multicolumn{3}{L||}{\it Standard features} & \multicolumn{3}{L||}{\it FastText embeddings} & \multicolumn{3}{L}{\it Standard features + FastText emb}\\ \cline{3-11} 
+  &  & $P$ & $R$ & $F$ & $P$ & $R$ & $F$ & $P$ & $R$ & $F$
+  \\ \hline
+$O1$&$O1$&\he{77.2}&\he{82.5}&\he{79.7}&\he{67.0}&\he{72.5}&\he{69.3}&\he{79.0}&\he{82.4}&\he{80.2}\\
+$O1$&$O2$&\he{78.6}&\he{81.7}&\he{80.1}&\he{70.3}&\he{74.0}&\he{71.2}&\he{82.0}&\he{84.2}&\he{82.8}\\
+$O1$&$O3$&\he{81.2}&\he{85.0}&\he{83.0}&\he{70.7}&\he{75.4}&\he{72.6}&\he{84.9}&\he{87.6}&\he{85.9}\\
+$O1$&$A1$&\he{71.0}&\he{74.7}&\he{71.2}&\he{62.1}&\he{63.8}&\he{58.8}&\he{74.1}&\he{75.4}&\he{72.2}\\
+$O1$&$A2$&\he{70.6}&\he{78.4}&\he{74.0}&\he{61.9}&\he{68.5}&\he{63.3}&\he{75.0}&\he{80.1}&\he{76.2}\\
+$O1$&$A7$&\he{72.6}&\he{77.5}&\he{74.2}&\he{63.0}&\he{66.6}&\he{61.9}&\he{76.2}&\he{78.9}&\he{75.8}\\
+$O1$&$A8$&\he{82.3}&\he{84.9}&\he{83.5}&\he{73.1}&\he{76.8}&\he{74.5}&\he{85.7}&\he{87.8}&\he{86.6}\\
 \hline
-  &  & P & R & F & P & R & F & P & R & F\\
+$O2$&$O1$&\he{77.0}&\he{82.2}&\he{79.1}&\he{67.3}&\he{72.8}&\he{69.6}&\he{80.2}&\he{83.9}&\he{81.1}\\
+$O2$&$O2$&\he{78.9}&\he{82.0}&\he{80.0}&\he{69.9}&\he{73.5}&\he{71.3}&\he{79.5}&\he{81.9}&\he{80.3}\\
+$O2$&$O3$&\he{81.1}&\he{85.4}&\he{83.0}&\he{71.1}&\he{75.3}&\he{73.0}&\he{83.5}&\he{86.8}&\he{84.7}\\
+$O2$&$A1$&\he{71.1}&\he{72.1}&\he{68.2}&\he{61.7}&\he{64.5}&\he{60.2}&\he{74.0}&\he{75.1}&\he{71.5}\\
+$O2$&$A2$&\he{70.8}&\he{77.3}&\he{72.7}&\he{61.8}&\he{68.9}&\he{64.2}&\he{76.0}&\he{79.8}&\he{75.5}\\
+$O2$&$A7$&\he{72.7}&\he{75.6}&\he{71.8}&\he{62.6}&\he{67.0}&\he{62.8}&\he{75.9}&\he{78.3}&\he{74.9}\\
+$O2$&$A8$&\he{83.0}&\he{86.2}&\he{84.4}&\he{73.7}&\he{77.1}&\he{75.3}&\he{85.4}&\he{88.2}&\he{86.7}\\
 \hline
-O1&O1&\he{77.2}&\he{82.5}&\he{79.7}&\he{67.0}&\he{72.5}&\he{69.3}&\he{79.0}&\he{82.4}&\he{80.2}\\
-O1&O2&\he{78.6}&\he{81.7}&\he{80.1}&\he{70.3}&\he{74.0}&\he{71.2}&\he{82.0}&\he{84.2}&\he{82.8}\\
-O1&O3&\he{81.2}&\he{85.0}&\he{83.0}&\he{70.7}&\he{75.4}&\he{72.6}&\he{84.9}&\he{87.6}&\he{85.9}\\
-O1&A1&\he{71.0}&\he{74.7}&\he{71.2}&\he{62.1}&\he{63.8}&\he{58.8}&\he{74.1}&\he{75.4}&\he{72.2}\\
-O1&A2&\he{70.6}&\he{78.4}&\he{74.0}&\he{61.9}&\he{68.5}&\he{63.3}&\he{75.0}&\he{80.1}&\he{76.2}\\
-O1&A7&\he{72.6}&\he{77.5}&\he{74.2}&\he{63.0}&\he{66.6}&\he{61.9}&\he{76.2}&\he{78.9}&\he{75.8}\\
-O1&A8&\he{82.3}&\he{84.9}&\he{83.5}&\he{73.1}&\he{76.8}&\he{74.5}&\he{85.7}&\he{87.8}&\he{86.6}\\
+$O3$&$O1$&\he{77.4}&\he{82.8}&\he{79.7}&\he{67.1}&\he{72.7}&\he{69.4}&\he{81.3}&\he{84.9}&\he{82.4}\\
+$O3$&$O2$&\he{79.0}&\he{82.2}&\he{80.2}&\he{70.4}&\he{74.1}&\he{71.6}&\he{82.1}&\he{84.2}&\he{82.8}\\
+$O3$&$O3$&\he{81.2}&\he{85.5}&\he{83.2}&\he{70.4}&\he{74.9}&\he{72.3}&\he{83.0}&\he{85.9}&\he{84.2}\\
+$O3$&$A1$&\he{71.8}&\he{73.3}&\he{69.5}&\he{61.7}&\he{64.1}&\he{59.6}&\he{75.1}&\he{75.4}&\he{72.1}\\
+$O3$&$A2$&\he{71.2}&\he{78.0}&\he{73.5}&\he{61.8}&\he{68.7}&\he{63.9}&\he{76.8}&\he{80.2}&\he{76.3}\\
+$O3$&$A7$&\he{73.2}&\he{76.5}&\he{72.9}&\he{62.4}&\he{66.6}&\he{62.2}&\he{77.2}&\he{78.8}&\he{75.8}\\
+$O3$&$A8$&\he{82.6}&\he{85.8}&\he{84.1}&\he{73.7}&\he{77.2}&\he{75.2}&\he{86.0}&\he{88.0}&\he{86.9}\\
 \hline
-O2&O1&\he{77.0}&\he{82.2}&\he{79.1}&\he{67.3}&\he{72.8}&\he{69.6}&\he{80.2}&\he{83.9}&\he{81.1}\\
-O2&O2&\he{78.9}&\he{82.0}&\he{80.0}&\he{69.9}&\he{73.5}&\he{71.3}&\he{79.5}&\he{81.9}&\he{80.3}\\
-O2&O3&\he{81.1}&\he{85.4}&\he{83.0}&\he{71.1}&\he{75.3}&\he{73.0}&\he{83.5}&\he{86.8}&\he{84.7}\\
-O2&A1&\he{71.1}&\he{72.1}&\he{68.2}&\he{61.7}&\he{64.5}&\he{60.2}&\he{74.0}&\he{75.1}&\he{71.5}\\
-O2&A2&\he{70.8}&\he{77.3}&\he{72.7}&\he{61.8}&\he{68.9}&\he{64.2}&\he{76.0}&\he{79.8}&\he{75.5}\\
-O2&A7&\he{72.7}&\he{75.6}&\he{71.8}&\he{62.6}&\he{67.0}&\he{62.8}&\he{75.9}&\he{78.3}&\he{74.9}\\
-O2&A8&\he{83.0}&\he{86.2}&\he{84.4}&\he{73.7}&\he{77.1}&\he{75.3}&\he{85.4}&\he{88.2}&\he{86.7}\\
+$A1$&$O1$&\he{77.2}&\he{82.5}&\he{79.8}&\he{66.5}&\he{67.9}&\he{66.6}&\he{76.9}&\he{79.5}&\he{77.6}\\
+$A1$&$O2$&\he{78.6}&\he{81.6}&\he{80.1}&\he{69.2}&\he{69.0}&\he{68.5}&\he{78.8}&\he{79.6}&\he{78.9}\\
+$A1$&$O3$&\he{81.2}&\he{84.9}&\he{82.9}&\he{70.7}&\he{69.6}&\he{69.2}&\he{81.8}&\he{82.0}&\he{81.0}\\
+$A1$&$A1$&\he{70.9}&\he{74.7}&\he{71.3}&\he{59.4}&\he{64.6}&\he{61.8}&\he{72.4}&\he{75.1}&\he{72.9}\\
+$A1$&$A2$&\he{70.5}&\he{78.3}&\he{74.0}&\he{60.6}&\he{66.4}&\he{63.2}&\he{73.7}&\he{78.6}&\he{75.0}\\
+$A1$&$A7$&\he{72.6}&\he{77.5}&\he{74.2}&\he{61.3}&\he{66.1}&\he{63.6}&\he{75.1}&\he{79.2}&\he{76.5}\\
+$A1$&$A8$&\he{82.2}&\he{84.8}&\he{83.5}&\he{72.3}&\he{70.4}&\he{70.4}&\he{81.5}&\he{81.0}&\he{80.5}\\
 \hline
-O3&O1&\he{77.4}&\he{82.8}&\he{79.7}&\he{67.1}&\he{72.7}&\he{69.4}&\he{81.3}&\he{84.9}&\he{82.4}\\
-O3&O2&\he{79.0}&\he{82.2}&\he{80.2}&\he{70.4}&\he{74.1}&\he{71.6}&\he{82.1}&\he{84.2}&\he{82.8}\\
-O3&O3&\he{81.2}&\he{85.5}&\he{83.2}&\he{70.4}&\he{74.9}&\he{72.3}&\he{83.0}&\he{85.9}&\he{84.2}\\
-O3&A1&\he{71.8}&\he{73.3}&\he{69.5}&\he{61.7}&\he{64.1}&\he{59.6}&\he{75.1}&\he{75.4}&\he{72.1}\\
-O3&A2&\he{71.2}&\he{78.0}&\he{73.5}&\he{61.8}&\he{68.7}&\he{63.9}&\he{76.8}&\he{80.2}&\he{76.3}\\
-O3&A7&\he{73.2}&\he{76.5}&\he{72.9}&\he{62.4}&\he{66.6}&\he{62.2}&\he{77.2}&\he{78.8}&\he{75.8}\\
-O3&A8&\he{82.6}&\he{85.8}&\he{84.1}&\he{73.7}&\he{77.2}&\he{75.2}&\he{86.0}&\he{88.0}&\he{86.9}\\
+$A2$&$O1$&\he{77.3}&\he{82.6}&\he{79.8}&\he{67.2}&\he{72.6}&\he{69.6}&\he{81.0}&\he{82.8}&\he{81.8}\\
+$A2$&$O2$&\he{78.6}&\he{81.6}&\he{80.1}&\he{70.4}&\he{74.0}&\he{71.9}&\he{82.0}&\he{82.0}&\he{82.0}\\
+$A2$&$O3$&\he{81.2}&\he{84.9}&\he{83.0}&\he{71.0}&\he{75.2}&\he{73.0}&\he{84.9}&\he{85.4}&\he{85.1}\\
+$A2$&$A1$&\he{70.9}&\he{74.6}&\he{71.2}&\he{61.5}&\he{64.6}&\he{60.4}&\he{76.5}&\he{76.5}&\he{74.7}\\
+$A2$&$A2$&\he{70.6}&\he{78.4}&\he{74.0}&\he{61.2}&\he{68.4}&\he{63.7}&\he{74.7}&\he{77.8}&\he{75.6}\\
+$A2$&$A7$&\he{72.6}&\he{77.5}&\he{74.2}&\he{62.4}&\he{67.0}&\he{63.0}&\he{77.6}&\he{78.9}&\he{77.3}\\
+$A2$&$A8$&\he{82.2}&\he{84.8}&\he{83.4}&\he{73.8}&\he{77.0}&\he{75.3}&\he{85.6}&\he{85.3}&\he{85.4}\\
 \hline
-A1&O1&\he{77.2}&\he{82.5}&\he{79.8}&\he{66.5}&\he{67.9}&\he{66.6}&\he{76.9}&\he{79.5}&\he{77.6}\\
-A1&O2&\he{78.6}&\he{81.6}&\he{80.1}&\he{69.2}&\he{69.0}&\he{68.5}&\he{78.8}&\he{79.6}&\he{78.9}\\
-A1&O3&\he{81.2}&\he{84.9}&\he{82.9}&\he{70.7}&\he{69.6}&\he{69.2}&\he{81.8}&\he{82.0}&\he{81.0}\\
-A1&A1&\he{70.9}&\he{74.7}&\he{71.3}&\he{59.4}&\he{64.6}&\he{61.8}&\he{72.4}&\he{75.1}&\he{72.9}\\
-A1&A2&\he{70.5}&\he{78.3}&\he{74.0}&\he{60.6}&\he{66.4}&\he{63.2}&\he{73.7}&\he{78.6}&\he{75.0}\\
-A1&A7&\he{72.6}&\he{77.5}&\he{74.2}&\he{61.3}&\he{66.1}&\he{63.6}&\he{75.1}&\he{79.2}&\he{76.5}\\
-A1&A8&\he{82.2}&\he{84.8}&\he{83.5}&\he{72.3}&\he{70.4}&\he{70.4}&\he{81.5}&\he{81.0}&\he{80.5}\\
+$A7$&$O1$&\he{77.1}&\he{82.5}&\he{79.7}&\he{67.6}&\he{73.2}&\he{69.9}&\he{79.4}&\he{81.9}&\he{80.3}\\
+$A7$&$O2$&\he{78.5}&\he{81.6}&\he{80.0}&\he{70.6}&\he{74.2}&\he{71.8}&\he{80.6}&\he{81.4}&\he{80.9}\\
+$A7$&$O3$&\he{81.0}&\he{84.9}&\he{82.9}&\he{71.3}&\he{75.7}&\he{73.3}&\he{83.1}&\he{83.8}&\he{83.0}\\
+$A7$&$A1$&\he{71.0}&\he{74.4}&\he{70.9}&\he{62.1}&\he{64.8}&\he{60.3}&\he{75.8}&\he{78.0}&\he{75.7}\\
+$A7$&$A2$&\he{70.5}&\he{78.2}&\he{73.8}&\he{62.0}&\he{69.1}&\he{64.3}&\he{75.3}&\he{79.6}&\he{76.5}\\
+$A7$&$A7$&\he{72.6}&\he{77.4}&\he{74.0}&\he{62.2}&\he{67.0}&\he{63.1}&\he{74.5}&\he{77.5}&\he{75.3}\\
+$A7$&$A8$&\he{81.9}&\he{84.7}&\he{83.3}&\he{73.7}&\he{77.2}&\he{75.3}&\he{82.8}&\he{82.7}&\he{82.4}\\
 \hline
-A2&O1&\he{77.3}&\he{82.6}&\he{79.8}&\he{67.2}&\he{72.6}&\he{69.6}&\he{81.0}&\he{82.8}&\he{81.8}\\
-A2&O2&\he{78.6}&\he{81.6}&\he{80.1}&\he{70.4}&\he{74.0}&\he{71.9}&\he{82.0}&\he{82.0}&\he{82.0}\\
-A2&O3&\he{81.2}&\he{84.9}&\he{83.0}&\he{71.0}&\he{75.2}&\he{73.0}&\he{84.9}&\he{85.4}&\he{85.1}\\
-A2&A1&\he{70.9}&\he{74.6}&\he{71.2}&\he{61.5}&\he{64.6}&\he{60.4}&\he{76.5}&\he{76.5}&\he{74.7}\\
-A2&A2&\he{70.6}&\he{78.4}&\he{74.0}&\he{61.2}&\he{68.4}&\he{63.7}&\he{74.7}&\he{77.8}&\he{75.6}\\
-A2&A7&\he{72.6}&\he{77.5}&\he{74.2}&\he{62.4}&\he{67.0}&\he{63.0}&\he{77.6}&\he{78.9}&\he{77.3}\\
-A2&A8&\he{82.2}&\he{84.8}&\he{83.4}&\he{73.8}&\he{77.0}&\he{75.3}&\he{85.6}&\he{85.3}&\he{85.4}\\
-\hline
-A7&O1&\he{77.1}&\he{82.5}&\he{79.7}&\he{67.6}&\he{73.2}&\he{69.9}&\he{79.4}&\he{81.9}&\he{80.3}\\
-A7&O2&\he{78.5}&\he{81.6}&\he{80.0}&\he{70.6}&\he{74.2}&\he{71.8}&\he{80.6}&\he{81.4}&\he{80.9}\\
-A7&O3&\he{81.0}&\he{84.9}&\he{82.9}&\he{71.3}&\he{75.7}&\he{73.3}&\he{83.1}&\he{83.8}&\he{83.0}\\
-A7&A1&\he{71.0}&\he{74.4}&\he{70.9}&\he{62.1}&\he{64.8}&\he{60.3}&\he{75.8}&\he{78.0}&\he{75.7}\\
-A7&A2&\he{70.5}&\he{78.2}&\he{73.8}&\he{62.0}&\he{69.1}&\he{64.3}&\he{75.3}&\he{79.6}&\he{76.5}\\
-A7&A7&\he{72.6}&\he{77.4}&\he{74.0}&\he{62.2}&\he{67.0}&\he{63.1}&\he{74.5}&\he{77.5}&\he{75.3}\\
-A7&A8&\he{81.9}&\he{84.7}&\he{83.3}&\he{73.7}&\he{77.2}&\he{75.3}&\he{82.8}&\he{82.7}&\he{82.4}\\
-\hline
-A8&O1&\he{77.0}&\he{82.4}&\he{79.6}&\he{67.2}&\he{72.7}&\he{69.6}&\he{80.8}&\he{84.4}&\he{81.7}\\
-A8&O2&\he{78.4}&\he{81.5}&\he{79.8}&\he{70.4}&\he{74.0}&\he{71.7}&\he{82.0}&\he{84.7}&\he{83.0}\\
-A8&O3&\he{80.9}&\he{84.9}&\he{82.8}&\he{71.0}&\he{75.2}&\he{72.9}&\he{84.7}&\he{87.6}&\he{85.6}\\
-A8&A1&\he{71.0}&\he{74.2}&\he{70.7}&\he{61.4}&\he{64.3}&\he{60.0}&\he{73.7}&\he{75.0}&\he{71.5}\\
-A8&A2&\he{70.4}&\he{78.1}&\he{73.7}&\he{61.7}&\he{68.8}&\he{64.1}&\he{75.0}&\he{80.1}&\he{75.9}\\
-A8&A7&\he{72.6}&\he{77.2}&\he{73.7}&\he{62.2}&\he{66.6}&\he{62.5}&\he{75.7}&\he{78.2}&\he{74.9}\\
-A8&A8&\he{81.9}&\he{84.9}&\he{83.4}&\he{73.6}&\he{77.0}&\he{75.1}&\he{84.2}&\he{86.5}&\he{85.2}\\
+$A8$&$O1$&\he{77.0}&\he{82.4}&\he{79.6}&\he{67.2}&\he{72.7}&\he{69.6}&\he{80.8}&\he{84.4}&\he{81.7}\\
+$A8$&$O2$&\he{78.4}&\he{81.5}&\he{79.8}&\he{70.4}&\he{74.0}&\he{71.7}&\he{82.0}&\he{84.7}&\he{83.0}\\
+$A8$&$O3$&\he{80.9}&\he{84.9}&\he{82.8}&\he{71.0}&\he{75.2}&\he{72.9}&\he{84.7}&\he{87.6}&\he{85.6}\\
+$A8$&$A1$&\he{71.0}&\he{74.2}&\he{70.7}&\he{61.4}&\he{64.3}&\he{60.0}&\he{73.7}&\he{75.0}&\he{71.5}\\
+$A8$&$A2$&\he{70.4}&\he{78.1}&\he{73.7}&\he{61.7}&\he{68.8}&\he{64.1}&\he{75.0}&\he{80.1}&\he{75.9}\\
+$A8$&$A7$&\he{72.6}&\he{77.2}&\he{73.7}&\he{62.2}&\he{66.6}&\he{62.5}&\he{75.7}&\he{78.2}&\he{74.9}\\
+$A8$&$A8$&\he{81.9}&\he{84.9}&\he{83.4}&\he{73.6}&\he{77.0}&\he{75.1}&\he{84.2}&\he{86.5}&\he{85.2}\\
 \end{tabular}
-  \caption{Experiments on portability of models from one user to another}
+  \caption{Experiments on portability of models from one user to another. User-in vocabulary-out results are integrated in this table for convenience of analysis.}
   \label{tab:user-out-voc-in-generalizability}
 \end{table*}
 
-The results obtained are presented in
-Table~\ref{tab:user-out-voc-in-generalizability}. The first two columns indicate the
-annotators.
-%%
-Data provided by each annotator are used for training the classifier
-(first column). The model generated is then tested on data from all
-the annotators including the reference annotator (second column).
-%%
-Three sets of such experiments are performed, depending on features
-exploited: standard features, word embeddings, and combination of all
-the features available.
-%%
-Each experiment is evaluated with several measures: $P$ Precision, $R$
-Recall, $F$ F-measure to evaluate the efficiency in prediction which
-medical words are understandable or not understandable for a given
-annotator.
-
-We can do several observations on these results.
-%%
-Features used shows an impact on the results obtained. Thus, standard
-features usually show better results than embeddings. One explanation
-is that standard features include 24 individual features covering
-different aspects of linguistic and non-linguistic description of
-words, while word embeddings rely only on distribution of words and
-their similarity. Yet, combination of all the features (standard and
-embeddings) usually improves overall results, sometimes going to up to
-2.9 improvement of F-measure.  Our hypothesis is that there exists a
-robust nonlinear dependency between some subsets of standard features
-and subword-level components of FastText word embeddings. Testing this
-hypothesis is the topic of our further research.
-
-Recall values are always higher than Precision values.
-%%
-In each set of experiments, the best results are not obtained when the
-model of a given annotator is applied to own data. For instance, the
-{\it O1} model provides better results when tested on data from
-annotators {\it O2, O3} and {\it A8}.  Similarly, the {\it A7} model
-shows better results when applied to data from annotators {\it O1, O2,
-  O3} and {\it A8}. This is an important issue because it shows that
-the models acquired from one annotator can be successfully generalized
-over other annotators.
-
-Besides, it seems that the annotators form two clusters according to
-the classification of difficult medical words: one cluster with four
-annotators ({\it O1, O2, O3, A8}) and one cluster with three
-annotators ({\it A1, A2, A7}). This issue may be related to the health
-literacy of annotators. This may indicate that the annotation models
-can be shared by people with similar skills and knowledge. Yet, to
-confirm this hypothesis, it is necessary to define the level of health
-literacy of annotators. This task is rather difficult because there is
-no existing tests created for computing the health literacy level for
-French-speaking healthy people. Another hypothesis is that some models
-may be better generalizable than other models. This hypothesis must
-also be verified with additional experiments;
-
-Another important point is that, while the annotations go forward, the
-annotators usually show {\it learning} progress in decoding the
-morphological structure of terms and their understanding
-\citep{Grabar-BIONLP2017}. This progress is not taken into account in
-the current experiments.
+The results obtained for this part are presented in Table~\ref{tab:user-out-voc-in-generalizability}. We can do several observations on them:
+\begin{enumerate}
+    \item The used features show an impact on the results. Thus, standard features usually show better F1 than FastText word embeddings. One explanation is that standard features include 24 individual features covering different aspects of the linguistic and non-linguistic description of words, while the pretrained FastText word embeddings rely only on the distribution of words and their similarity. Yet, the combination of all the features (standard and embeddings) usually improves overall results, sometimes going to up to 2.9 improvement of F-measure.  We hypothesize that there exists a robust nonlinear dependency between some subsets of standard features and subword-level components of FastText word embeddings. Testing this hypothesis is the topic of our further research.
+    
+    \item Recall values are always higher than Precision values. This means that the algorithm performs slightly better in returning most of the relevant results, than in providing correct class labels. 
+    
+    \item In each set of experiments, the best results are not obtained when the model of a given annotator is applied to own data. For instance, the {\it O1} model provides better results when tested on data from annotators {\it O2, O3} and {\it A8}.  Similarly, the {\it A7} model shows better results when applied to data from annotators {\it O1, O2, O3} and {\it A8}. This is an important issue because it shows that the models acquired from one annotator can be successfully generalized over other annotators.
+    
+    \item Besides, it seems that the considered annotators form two clusters according to the classification of difficult medical words: one cluster with four annotators ({\it O1, O2, O3, A8}) and one cluster with three annotators ({\it A1, A2, A7}). This issue may be related to the health literacy of annotators. This may indicate that the annotation models can be shared by people with similar skills and knowledge. Yet, to confirm this hypothesis, it is necessary to define the level of health literacy of annotators. This task is rather difficult because there are no existing tests created for computing the health literacy level for French-speaking healthy people. Another hypothesis is that some models may be better generalizable than other models. This hypothesis must also be verified with additional experiments.
+    
+\end{enumerate}
 
 
 \section{FrnnMUTE impact study}
-With FrnnMUTE we experimented on using them both solely and in combination with standard features and FastText word embeddings as feature sets for classifying medical words using a Decision Tree. The results of our experiments are represented in table \ref{tab:rnn-embs}.
-\todo{Introduce frnnmute in table notations}
+With FrnnMUTE we experimented on using them both solely and in combination with standard features and FastText word embeddings as feature sets for classifying medical words using a decision tree. The results of our experiments are represented in table \ref{tab:rnn-embs}.
+
 \begin{table}[h]
 \centering
 \begin{tabular}{L|MMMN}
 \hline
-mu +/- sigma & user-in vocabulary-out & user-out vocabulary-in & user-out vocabulary-out \\ \hline
-Only Standard features & 78 +/- 4.8 & 77.7 +/- 4.9 & 77.6 +/- 4.9 &\\[10pt]
-Only FT emb & 68.1 +/- 5.2 & 67.6 +/- 5.3 & 67.3 +/- 5.2 &\\[10pt]
-Only RNN emb & 75.6 +/- 3.8 & 77.1 +/- 3.9 & 74.5 +/- 3.9 &\\[10pt]
+$\mu$ +/- $\sigma$ & user-in vocabulary-out & user-out vocabulary-in & user-out vocabulary-out \\ \hline
+Standard features & 78 +/- 4.8 & 77.7 +/- 4.9 & 77.6 +/- 4.9 &\\[10pt]
+FT emb & 68.1 +/- 5.2 & 67.6 +/- 5.3 & 67.3 +/- 5.2 &\\[10pt]
+FrnnMUTE & 75.6 +/- 3.8 & 77.1 +/- 3.9 & 74.5 +/- 3.9 &\\[10pt]
 Standard features + FT emb & 79.1 +/- 4.7 & 79.5 +/- 4.6 & 77.1 +/- 4.6 &\\[10pt]
-Standard features + RNN emb & 80.3 +/- 4.7 & 80.3 +/- 4.3 & 78.6 +/- 4.4 &\\[10pt]
-Standard features + FT emb + RNN emb & 80.2 +/- 4.6 & 80.4 +/- 4.3 & 78.1 +/- 4.3 &\\ \hline
+Standard features + FrnnMUTE & 80.3 +/- 4.7 & 80.3 +/- 4.3 & 78.6 +/- 4.4 &\\[10pt]
+Standard features + FT emb + FrnnMUTE & 80.2 +/- 4.6 & 80.4 +/- 4.3 & 78.1 +/- 4.3 &\\ \hline
 \end{tabular}
-  \caption{Studying RNN supervised representations performance for words understandibility detection. For classifying words with Only Standard features/ Only FastText word embeddings/ Only RNN supervised representations Decision Tree of depth 4 was trained. On all the rest of feature sets Decision Tree of depth 9 was trained.}
+  \caption{Study of our FrnnMUTE's performance for words understandibility detection. For words categorization with Only standard features/ Only FastText word embeddings/ Only FrnnMUTE a decision tree of depth 4 was trained. On all the rest of feature sets a decision tree of depth 9 was trained.}
   \label{tab:rnn-embs}
 \end{table}
 
-We observed that "Only RNN supervised representations" perform better than "Only FastText word embeddings" and the results have the smallest dispersion among all considered feature sets. Moreover,  for "user in vocabulary out" and "user out vocabulary out standard features with words embeddings show the best performance the feature sets. This testifies that RNN supervised words' representations help standard linguistic and non-linguistic features to capture words' understandibility better.  
+We observed that our FrnnMUTE perform better than FastText word embeddings and the results have the smallest dispersion among all considered feature sets. Moreover,  for "user-in vocabulary-out" and "user-out vocabulary-out" standard features with FrnnMUTE in almost all cases show the best performance among all the features sets. This testifies that FrnnMUTE help standard linguistic and non-linguistic features to capture words' understandibility better.  

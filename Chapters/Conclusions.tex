@@ -2,28 +2,56 @@
 \label{ch:conclusions}
 
 \section{Contribution}
-This work has several key contributions.
-We proposed to address the detection of medical words which understanding may be difficult for non-specialized users of the medical area. We exploit for this machine learning algorithms,
-reference data from seven annotators, and several sets of NLP features: standard features (syntactic information, reference lexica, frequency, etc.), distributional features (word embeddings), and their
-combination.
+% In this work we made several key contributions:
+% \begin{enumerate}
+%     \item 
+% \end{enumerate}
+% We proposed to address the detection of medical words which understanding may be difficult for non-specialized users of the medical area. For this task we exploited machine learning algorithms,
+% reference data from seven annotators, and several sets of NLP features: standard features (syntactic information, reference lexica, frequency, etc.), distributional features (word embeddings), and their combination.
 
-Our results provide several indications.
-% Firstly, we found out that adding FastText word embeddings provide a significant improvement of the performance for the generalization for unknown users (up to 2.9 F-score) but provides a slight increase (0.5 - 1 F-score) or even decrease (-0.5 F-score) of performance for unknown words. We consider this positive issue because it is important to be able to generalize annotations provided by a set of users on the whole population.
-%%
-Hence, the combination of all features is the most efficient.
-%%
-Concerning the generalization, we propose to learn model on a given
-annotator and then to apply it to data obtained from other annotators.
-This set of experiments indicate that models provide better results
-when tested on data from other annotators.
-%%
-We consider this to be a positive issue because it is important to be
-able to generalize annotations provided by a set of users on the whole
-population.
-%%
-Yet, these results may point out that the users should be apprehended
-through their health literacy, while currently there is no available
-tests for measuring it in French-language healthy people.
+% Our results provide several indications.
+% % Firstly, we found out that adding FastText word embeddings provide a significant improvement of the performance for the generalization for unknown users (up to 2.9 F-score) but provides only a slight increase (0.5 - 1 F-score) or even decrease (-0.5 F-score) of performance for unknown words. We consider this a positive issue because it is important to be able to generalize annotations provided by a set of users on the whole population.
+% %%
+
+% %%
+% Concerning the generalization, we propose to learn model on a given
+% annotator and then to apply it to data obtained from other annotators.
+% This set of experiments indicate that models provide better results
+% when tested on data from other annotators.
+% %%
+% We consider this to be a positive issue because it is important to be
+% able to generalize annotations provided by a set of users on the whole
+% population.
+% %%
+% Yet, these results may point out that the users should be apprehended
+% through their health literacy, while currently there is no available
+% tests for measuring it in French-language healthy people.
+
+%  I propose to totally rewrite this section and make it in 1.. .2... 3... and add concrete results. The good template for one item in this section is the following: 1. The [extra-short description of contribution] was done, that provides/ensures/increases [very concrete description of benefit, in terms of dataset names and points of f1 score or % of increase] because of [here the extra-short description WHY this boost of performance was achieved].
+
+In this work we considered the task of medical words' understandability detection. This task was tackled as a multiclass classification problem and we made the following contributions:
+
+\begin{enumerate}
+    \item We broaden the methodology of working with the task by introducing two new types of cross-validation scenarios for model validation. Those scenarios are close to real-world situations:
+    \begin{itemize}
+        \item when having the reference annotations from only a small group of users we want our model to predict the understandibility of the same set of words for all patients. 
+        \item when the reference annotations are only available for a couple of users and for unfull set of possible words and we want our model to predict whether new users understand new words.
+    \end{itemize}
+    
+    \item For the first time for the task we utilized pre-trained FastText word embeddings as features. We found out that the embeddings solely as features are not enough for a good words' categorization as they don't capture important linguistic and non-linguistic description of words. Whereas adding FastText word embeddings to standard features results in a significant improvement of classification model's performance when generalising for unknown users (up to 2.9 higher F1 score), but provides only a slight increase (0.5 - 1 higher F1 score) or even decrease (-0.5 in F1 score) of performance for unknown words. We consider this a positive issue because it is important to be able to generalize annotations provided by a set of users on the whole population.
+    
+    \item Inspired by the encoeer part of seq2seq models, we implemented a novel type of embeddings and called them FrnnMUTE (French RNN Medical Understandability Text Embeddings). We found out that our FrnnMUTE combined with standard features improve performance of classification model for all possible generalization scenarios, both by unknown users and unknown words, reaching up to 2.9 higher F1 score in average by all available users.
+\end{enumerate}
+
+
+
 
 \section{Future work}
-We have several directions for future work. We currently use existing pre-trained word embeddings. Yet, we assume that their training on medical data may improve their impact on the categorization results. We also plan to implement and test other deep learning/neural networks/NLP methods which use the morphological information of words, such as character-level recurrent neural networks and character embeddings together with 1D convolutions. Indeed, when language data present stable patterns, which is the case in the medical field, processing of subword strings may help for the generalization over new and unseen words. As we presented above, this is one of the current limitations of our work. 
+We have several directions for future work:
+\begin{enumerate}
+    \item Currently we use existing pre-trained on Wikipedia and Web Crawl word embeddings. We assume that training words embeddings on medical data may improve their impact on the categorization results.
+    
+    \item After analysis of results of application of FastText word embeddings in categorization task, we assumed an existence of a robust nonlinear dependency between some subsets of standard features and subword-level components of FastText word embeddings. We plan to test this hypothesis in further research.
+    
+    \item While the annotations go forward, the annotators usually show {\it learning} progress in decoding the morphological structure of terms and their understanding \citep{Grabar-BIONLP2017}. This progress is not taken into account in the current experiments. 
+\end{enumerate}
