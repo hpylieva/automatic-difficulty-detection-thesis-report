@@ -1,9 +1,10 @@
 \chapter{Related Work}
 \label{ch:related-work}
 
-Related work is globally related to the detection of technical contents in documents and to their adaptation. Here, we are interested in the first aspect: detection and diagnosis of technical medical contents. 
+Related work is globally related to the detection of technical contents in documents and to their adaptation. Here, we are interested in the first aspect: detection and diagnosis of technical medical contents. In general non-domain specific context this task is also known in literature as complex words identification (CWI). 
 
-In the NLP (Natural Language Processing) area, work related to the diagnosis of technical medical documents is quite frequent. Traditionally, researchers exploit the readability measures. Among these measures, it is possible to distinguish classical readability measures and computational readability measures \citep{Francois-TAL2013}. Classical measures usually rely on number of letters and/or of syllables a word contains and on linear regression models \citep{Flesch1948,Gunning1973}, while computational readability
+\section{Natural language processing}
+In the NLP (Natural Language Processing) area, work related to the diagnosis of technical medical words in documents is quite frequent. Traditionally, researchers exploit the readability measures. Among these measures, it is possible to distinguish classical readability measures and computational readability measures \citep{Francois-TAL2013}. Classical measures usually rely on number of letters and/or of syllables a word contains and on linear regression models \citep{Flesch1948,Gunning1973}, while computational readability
 measures may involve vector models and a great variability of
 features, among which the following have been used for processing the
 biomedical documents: combination of classical readability formulas
@@ -12,28 +13,36 @@ characters \citep{Poprat-MIE2006}, stylistic \citep{Grabar-AMIA2007} or
 discursive \citep{Goeuriot-LREC2008} features, lexicon
 \citep{Miller-HICSS2007}, morphological features
 \citep{Chmielik-TAL2011}, combinations of different features
-\citep{Zeng-MEDINFO2007}.
+\citep{Zeng-MEDINFO2007}. At a more fine-grained level, the readability of words has been
+addressed much less frequently. 
 
-At a more fine-grained level, the readability of words has been
-addressed much less frequently. In the general language, some research
-actions are often performed as part of the NLP challenges, such as the
-SemEval NLP challenge\footnote{\url{http://www.cs.york.ac.uk/semeval-2012}} held
-in 2012. This challenge proposed the following task: for a short text
-and a target word, several possible substitutions satisfying the
-context have also been proposed. The objective was to rate and to
-order the substitutions according to their degree of simplicity
-\citep{specia-SEMEVAL2012}. The participants applied rule-based and/or
-machine learning systems. Combinations of various features, designed
-to detect the simplicity of words, have been used, such as: lexicon
-from spoken corpus and from Wikipedia, Google n-grams, WordNet
-\citep{sinha-SEMEVAL2012}; word length, number of syllables, latent
-semantic analysis, mutual information and word
-frequency\citep{jauhar-SEMEVAL2012}; Wikipedia frequency, word length,
-n-grams of characters and of words, random indexing and syntactic
-complexity of documents \citep{johannsen-SEMEVAL2012}; n-grams and
-frequency from Wikipedia, Google n-grams \citep{ligozat-SEMEVAL2012};
-WordNet and word frequency \citep{amoia-SEMEVAL2012}. The best systems
-reached up to 0.60 Top-rank and 0.575 Recall.
+In the general language, some research
+actions are often performed as part of the NLP challenges. For example, there was a shared task on CWI on SemEval-2016 NLP challenge\footnote{\url{http://alt.qcri.org/semeval2016/task11/}}. The goal was to provide a framework for evaluation of CWI methods, which involved:
+\begin{enumerate}
+    \item understanding the distinctive characteristics of words which are difficult for non-native speakers;
+    \item finding out how well the vocabulary limitations of an individual can be predicted from the knowledge of vocabulary limitations of the group they are part of;
+    \item introducing a gold-standard dataset for text simplification and tasks related to topic modeling and semantics.
+\end{enumerate}
+
+The participants applied rule-based and/or
+machine learning systems, including neural networks for building solutions.
+Combinations of various features, designed
+to detect the complexity of words, have been used. The most popular among them were: 
+
+\begin{itemize}
+    \item simple features: word length, number of
+syllables, named-entity type, part-of-speech, position of word insentence \citep{Bingel-SemEval2016};
+    \item number of synsets, senses, synonyms, hyponyms, relations, disctinct POSs in WordNet \citep{Ronzano-SemEval2016};
+    
+    \item corpus-based frequency in large corpora: Wikipedia, Simple Wikipedia \citep{Kauchak-2013}, SubIMDB \citep{Paetzold-SemEval2016solution}, British National Corpus \citep{Ronzano-SemEval2016}, Gigaword corpus and the International Conference on Web and Social Media (ICWSM) blog corpus \citep{Brooke-SemEval2016}. Mostly the frequency was calculated for word-level, but some participants utilized the frequency of char-level n-grams also \citep{Bingel-SemEval2016}.
+\end{itemize}
+
+
+The results of this shared task (described in detail in \cite{Paetzold-SemEval2016overview}) highlighted that the most effectively CWI task is solved by decision trees \citep{Malmasi-SemEval2016} and ensemble methods \citep{Paetzold-SemEval2016solution, Ronzano-SemEval2016}. Moreover, according to the results, word frequencies remained the most reliable predicting feature of word complexity. The best systems reached up to 0.774 G-score, which measures the harmonic mean between Accuracy and Recall, and 0.353 F-score. 
+
+In this challenge, attempts to apply neural networks showed poor results. Whereas after post-task experiments authors gained competitve results changing the framework of NN implementation, revising architecture and the feature set \citep{Bingel-SemEval2016}. Among features, 300-dimensional GloVe\footnote{\url{https://nlp.stanford.edu/projects/glove/}} word embeddings were found to be the main contributor to NN's performance improvement (from 0.506 to 0.756 G-score). 
+
+% A recent work was done on prediction of words' complexity for non-native speakers \citep{DeHertog-ACL2018}. The task involved English news dataset and Spanish Wikipedia, and was performed on manual annotations of words by a mixture of native and nonnative speakers.
 %%
 Another work has been done on scholar texts in French written for
 children with the purpose to differentiate between the texts from
@@ -41,6 +50,7 @@ various scholar levels and to test various features suitable for that
 \citep{Gala-ELEX2013}. This system reached up to 0.62 classification
 accuracy.
 
+\section{Medical area}
 In the medical area, we can mention three experiments: manual rating
 of medical words \citep{Zheng-AMIA2002}, automatic rating of medical
 words on the basis of their presence in different vocabularies
@@ -49,7 +59,7 @@ with various features \citep{Grabar-PITR2014}. This last experiment
 achieved up to 0.85 F-measure on individual annotations.
 
 Another issue is to know what are the most suitable data for the
-analysis of text readability. These data have indeed crutial impact on
+analysis of text readability. These data have indeed cruсial impact on
 models created and on their usability.  Several approaches have been
 proposed:
 \begin{itemize}
@@ -80,4 +90,3 @@ Related to this issue is the question on generalizability of data and
 of models generated from these data.  For instance, it has been
 observed that data from experts are difficult to generalize over the
 population \citep{DeClerc-NLE2014}.
-

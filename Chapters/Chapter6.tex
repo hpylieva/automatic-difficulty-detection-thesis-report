@@ -1,10 +1,7 @@
 \chapter{Experiments}
 \label{ch:experiments}
 
-\todo{Add trees depth for all tables. White about users == annotators}
-
-
-% The quality of the applied classification algorithms was evaluated using four standard measures: accuracy $A$, precision $P$, recall $R$ and F1-measure $F$. To evaluate multiclass classification results for each of these measures we used a weighted average of three (as the number of classes described in \ref{sec:annotation-process}) one-vs-rest binary classifiers. Such evaluation of models allows measuring the ability of a chosen methodology, which is a combination of a feature set and a classification method, to distinguish between three target classes of words in an unbalanced dataset. 
+% \todo{Add trees depth for all tables. White about users == annotators}
 
 We conducted a series of experiments to study the impact of adding vector words' representations as features for a classification model on the quality of the words' categorization. As in this work we compare results with ones in \citep{Grabar-PITR2014}, we first, reproduce results from the paper on the same datasets. Then we check how FastText word embeddings influence the quality of classification in different cross-validation scenarios. We notice that in one scenario FastText word embeddings significantly and confidently improve the performance of the classification model, so the next step is to study whether this model generalizes well on a greater variety of users. Finally, we study how FrnnMUTE used as features impact on classification quality in all the same cross-validation scenarios as considered previously and on all available user annotations.
 
@@ -73,8 +70,9 @@ In these experiments we got a significant improvement of combined features in co
 
 
 \subsection{User-out vocabulary-out cross-validation}
+\label{sec:user-out-voc-out}
 
-The cross-validation setting is now the most strict and knowledge of words understandability of one user is used to predict whether another user will understand other medical words. In these experiments, embeddings provide approximately 0.5\% higher F1 score in case of learning on users O1 and O3 (Table \ref{tab:user-out-voc-out}). When learning on user O2, embeddings decrease F by 0.5, which means that annotations and health literacy of user O2 are different from users O1 and O3. It seems that adding embeddings makes overfitting of machine learning model to the dataset. As a result, tests on other ``kind of word understandability'' and on combined features are less successful compared to using standard features only for learning. This may be due to the lack of systematicity in annotations of O2.
+The cross-validation setting is now the most strict and knowledge of words understandability of one user is used to predict whether another user will understand other medical words. In these experiments, FastText word embeddings provide approximately 0.5\% higher F1 score in case of learning on users O1 and O3 (Table \ref{tab:user-out-voc-out}). When learning on user O2, embeddings decrease F by 0.5, which means that annotations and health literacy of user O2 are different from users O1 and O3. It seems that adding embeddings makes overfitting of machine learning model to the dataset. As a result, tests on other "kind of word understandability" and on combined features are less successful compared to using standard features only for learning. This may be due to the lack of systematicity in annotations of O2. We will also encounter this issue when more annotators are involved in experiments in sections \ref{sec:generalizability-study} and \ref{sec:frnnmute-study}.
 
 \begin{table*}[h]
 \begin{tabular}{cc|cccc|cccc|cccc}
@@ -100,7 +98,7 @@ In this part, we concentrated on the user-out vocabulary-in cross-validation sce
 \begin{table*}
   \centering
   \begin{tabular}{c|c|c|c|c||c|c|c||c|c|c}
-    \multirow{2}{0.6cm}{\textit{Train user}} & \multirow{2}{0.6cm}{\textit{Test user}}  & \multicolumn{3}{L||}{\it Standard features} & \multicolumn{3}{L||}{\it FastText embeddings} & \multicolumn{3}{L}{\it Standard features + FastText emb}\\ \cline{3-11} 
+    \multirow{2}{0.6cm}{\textit{Train user}} & \multirow{2}{0.6cm}{\textit{Test user}}  & \multicolumn{3}{L||}{\it Standard features} & \multicolumn{3}{L||}{\it FastText embeddings} & \multicolumn{3}{L}{\it Standard features + FastText emb}\\ \cline{3-11}
   &  & $P$ & $R$ & $F$ & $P$ & $R$ & $F$ & $P$ & $R$ & $F$
   \\ \hline
 $O1$&$O1$&\he{77.2}&\he{82.5}&\he{79.7}&\he{67.0}&\he{72.5}&\he{69.3}&\he{79.0}&\he{82.4}&\he{80.2}\\
@@ -164,20 +162,102 @@ $A8$&$A8$&\he{81.9}&\he{84.9}&\he{83.4}&\he{73.6}&\he{77.0}&\he{75.1}&\he{84.2}&
 \end{table*}
 
 The results obtained for this part are presented in Table~\ref{tab:user-out-voc-in-generalizability}. We can do several observations on them:
-\begin{enumerate}
-    \item The used features show an impact on the results. Thus, standard features usually show better F1 than FastText word embeddings. One explanation is that standard features include 24 individual features covering different aspects of the linguistic and non-linguistic description of words, while the pretrained FastText word embeddings rely only on the distribution of words and their similarity. Yet, the combination of all the features (standard and embeddings) usually improves overall results, sometimes going to up to 2.9 improvement of F-measure.  We hypothesize that there exists a robust nonlinear dependency between some subsets of standard features and subword-level components of FastText word embeddings. Testing this hypothesis is the topic of our further research.
+\begin{enumerate}[listparindent=1.5em]
+    \item The used features show an impact on the results. Thus, standard features usually show better F1 than FastText word embeddings. One explanation is that standard features include 24 individual features covering different aspects of the linguistic and non-linguistic description of words, while the pretrained FastText word embeddings rely only on the distribution of words and their similarity. Yet, the combination of two features (standard and FastText embeddings) usually improves overall results, sometimes going to up to 4.8 improvement of F-measure.  We hypothesize that there exists a robust nonlinear dependency between some subsets of standard features and subword-level components of FastText word embeddings. Testing this hypothesis is the topic of our further research.
     
     \item Recall values are always higher than Precision values. This means that the algorithm performs slightly better in returning most of the relevant results, than in providing correct class labels. 
     
     \item In each set of experiments, the best results are not obtained when the model of a given annotator is applied to own data. For instance, the {\it O1} model provides better results when tested on data from annotators {\it O2, O3} and {\it A8}.  Similarly, the {\it A7} model shows better results when applied to data from annotators {\it O1, O2, O3} and {\it A8}. This is an important issue because it shows that the models acquired from one annotator can be successfully generalized over other annotators.
     
-    \item Besides, it seems that the considered annotators form two clusters according to the classification of difficult medical words: one cluster with four annotators ({\it O1, O2, O3, A8}) and one cluster with three annotators ({\it A1, A2, A7}). This issue may be related to the health literacy of annotators. This may indicate that the annotation models can be shared by people with similar skills and knowledge. Yet, to confirm this hypothesis, it is necessary to define the level of health literacy of annotators. This task is rather difficult because there are no existing tests created for computing the health literacy level for French-speaking healthy people. Another hypothesis is that some models may be better generalizable than other models. This hypothesis must also be verified with additional experiments.
+    \item Besides, it seems that the considered annotators form two clusters according to the classification of difficult medical words: one cluster with four annotators ({\it O1, O2, O3, A8}) and one cluster with three annotators ({\it A1, A2, A7}). We can observe a decrease up to -3 in F-measure for combination of features (standard and FastText embeddings) compared to standard features only when cross-validating between users from different clusters (fig. \ref{fig:f1-diff-frnnmute-ft}). As we already explained in section \ref{sec:user-out-voc-out}, this issue may be related to the health literacy of annotators. This may indicate that the annotation models can be shared by people with similar skills and knowledge. Yet, to confirm this hypothesis, it is necessary to define the level of health literacy of annotators. This task is rather difficult because there are no existing tests created for computing the health literacy level for French-speaking healthy people. Another hypothesis is that some models may be better generalizable than other models. This hypothesis must also be verified with additional experiments.
     
 \end{enumerate}
 
 
 \section{FrnnMUTE impact study}
-With FrnnMUTE we experimented on using them both solely and in combination with standard features and FastText word embeddings as feature sets for classifying medical words using a decision tree. The results of our experiments are represented in table \ref{tab:rnn-embs}.
+\label{sec:frnnmute-study}
+
+With FrnnMUTE we experimented on using them both solely and in combination with standard features and FastText word embeddings as feature sets for classifying medical words using a decision tree. The detailed results of testing FrnnMUTE in user-in vocabulary-out and user-out vocabulary-in cross-validation scenarios are displayed in Table \ref{tab:frnnmute-details}. To simplify the process of analyzing and comparing the results of this and the previous part, we aggregated the resulting F1 scores for combinations of a feature set and cross-validation scenario over all available users(Table \ref{tab:frnnmute}).  From the available results tables we can draw the following conclusions:
+\begin{enumerate}
+    \item We observed that our FrnnMUTE solely perform better than FastText word embeddings solely in all cross-validation scenarios reaching up to 13.3 higher F1 score. 
+    \item FrnnMUTE's results have the smallest dispersion (3.8-3.9)  among all considered "solo" feature sets types (4.8-5.3) when aggregating by all available users. This means that FrnnMUTE are more robust in generalizing information from user to user and between different subsets of vocabulary.
+    \item For user-in vocabulary-out and user-out vocabulary-out experiments the combination of standard features and FrnnMUTE in almost all cases show the best performance among all seven features sets. The improvement in F1 score over standard features with  FastText embeddings can be observed on fig. \ref{fig:f1-diff-frnnmute-ft}. We can observe that the difference in F1 reaches 2.9 for some users pairs and the maximum improvement achieved by combining standard features with FrnnMUTE over using standard features only hits 5.2 in F-measure.  This testifies that FrnnMUTE help standard linguistic and non-linguistic features to capture words' understandability better than FastText embeddings.  
+    \item The fact that the combination of all three types of feature sets performs insignificantly better of even worse than standard features with only FrnnMUTE can be explained by overfitting of the classification model in the first case as the resulting feature vector has the biggest dimensionality.
+\end{enumerate}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=15cm]{Images/f1-diff-frnnmute-ft.png}
+    \caption{The difference of F1 score received for user pairs with a classification model built on combination of features (standard and based on deep learning) and on only standard features. }
+    \label{fig:f1-diff-frnnmute-ft}
+\end{figure} 
+
+\begin{table*}
+  \centering
+  \begin{tabular}{c|c|c|c|c||c|c|c||c|c|c}
+    \multirow{2}{0.6cm}{\textit{Train user}} & \multirow{2}{0.6cm}{\textit{Test user}}  & \multicolumn{3}{L||}{\it Standard features} & \multicolumn{3}{L||}{\it FrnnMUTE} & \multicolumn{3}{L}{\it Standard features + FrnnMUTE}\\ \cline{3-11} 
+  &  & $P$ & $R$ & $F$ & $P$ & $R$ & $F$ & $P$ & $R$ & $F$
+  \\ \hline
+$O1$&$O1$&\he{77.2}&\he{82.5}&\he{79.7}&\he{76.1}&\he{81.0}&\he{78.4}&\he{79.3}&\he{84.9}&\he{82.0}\\
+$O1$&$O2$&\he{78.6}&\he{81.7}&\he{80.1}&\he{78.8}&\he{80.7}&\he{79.6}&\he{82.2}&\he{82.9}&\he{82.5}\\
+$O1$&$O3$&\he{81.2}&\he{85.0}&\he{83.0}&\he{80.7}&\he{82.6}&\he{81.3}&\he{85.3}&\he{86.5}&\he{85.8}\\
+$O1$&$A1$&\he{71.0}&\he{74.7}&\he{71.2}&\he{71.4}&\he{74.5}&\he{71.5}&\he{75.0}&\he{75.7}&\he{73.3}\\
+$O1$&$A2$&\he{70.6}&\he{78.4}&\he{74.0}&\he{72.0}&\he{77.3}&\he{73.6}&\he{76.5}&\he{80.2}&\he{77.4}\\
+$O1$&$A7$&\he{72.6}&\he{77.5}&\he{74.2}&\he{74.4}&\he{78.1}&\he{75.2}&\he{77.5}&\he{79.4}&\he{77.3}\\
+$O1$&$A8$&\he{82.3}&\he{84.9}&\he{83.5}&\he{81.2}&\he{82.2}&\he{81.5}&\he{85.5}&\he{85.8}&\he{85.7}\\
+\hline
+$O2$&$O1$&\he{77.0}&\he{82.2}&\he{79.1}&\he{77.4}&\he{82.3}&\he{79.5}&\he{82.0}&\he{85.4}&\he{82.7}\\
+$O2$&$O2$&\he{78.9}&\he{82.0}&\he{80.0}&\he{76.1}&\he{79.3}&\he{77.6}&\he{80.8}&\he{83.9}&\he{82.1}\\
+$O2$&$O3$&\he{81.1}&\he{85.4}&\he{83.0}&\he{79.6}&\he{83.1}&\he{81.2}&\he{84.6}&\he{87.5}&\he{85.5}\\
+$O2$&$A1$&\he{71.1}&\he{72.1}&\he{68.2}&\he{71.3}&\he{73.7}&\he{70.1}&\he{74.8}&\he{76.2}&\he{72.8}\\
+$O2$&$A2$&\he{70.8}&\he{77.3}&\he{72.7}&\he{72.9}&\he{77.4}&\he{73.1}&\he{76.4}&\he{80.5}&\he{76.3}\\
+$O2$&$A7$&\he{72.7}&\he{75.6}&\he{71.8}&\he{73.9}&\he{77.1}&\he{73.7}&\he{76.9}&\he{79.6}&\he{76.3}\\
+$O2$&$A8$&\he{83.0}&\he{86.2}&\he{84.4}&\he{81.5}&\he{83.8}&\he{82.4}&\he{85.8}&\he{88.1}&\he{86.7}\\
+\hline
+$O3$&$O1$&\he{77.4}&\he{82.8}&\he{79.7}&\he{78.9}&\he{82.5}&\he{80.0}&\he{82.5}&\he{85.8}&\he{83.5}\\
+$O3$&$O2$&\he{79.0}&\he{82.2}&\he{80.2}&\he{79.0}&\he{81.3}&\he{79.7}&\he{82.9}&\he{84.7}&\he{83.5}\\
+$O3$&$O3$&\he{81.2}&\he{85.5}&\he{83.2}&\he{77.0}&\he{80.6}&\he{78.7}&\he{85.4}&\he{87.3}&\he{85.1}\\
+$O3$&$A1$&\he{71.8}&\he{73.3}&\he{69.5}&\he{72.6}&\he{72.8}&\he{69.4}&\he{75.5}&\he{75.9}&\he{72.8}\\
+$O3$&$A2$&\he{71.2}&\he{78.0}&\he{73.5}&\he{74.0}&\he{77.1}&\he{73.1}&\he{77.2}&\he{80.8}&\he{77.2}\\
+$O3$&$A7$&\he{73.2}&\he{76.5}&\he{72.9}&\he{74.5}&\he{76.3}&\he{73.1}&\he{77.6}&\he{79.4}&\he{76.5}\\
+$O3$&$A8$&\he{82.6}&\he{85.8}&\he{84.1}&\he{81.4}&\he{83.6}&\he{82.3}&\he{86.2}&\he{88.0}&\he{87.0}\\
+\hline
+$A1$&$O1$&\he{77.2}&\he{82.5}&\he{79.8}&\he{78.4}&\he{80.6}&\he{78.7}&\he{80.2}&\he{82.4}&\he{80.5}\\
+$A1$&$O2$&\he{78.6}&\he{81.6}&\he{80.1}&\he{78.3}&\he{79.1}&\he{78.3}&\he{80.6}&\he{81.2}&\he{80.5}\\
+$A1$&$O3$&\he{81.2}&\he{84.9}&\he{82.9}&\he{80.2}&\he{80.2}&\he{79.3}&\he{82.8}&\he{82.9}&\he{81.9}\\
+$A1$&$A1$&\he{70.9}&\he{74.7}&\he{71.3}&\he{70.0}&\he{73.5}&\he{70.4}&\he{71.5}&\he{76.8}&\he{73.5}\\
+$A1$&$A2$&\he{70.5}&\he{78.3}&\he{74.0}&\he{73.4}&\he{77.4}&\he{73.8}&\he{76.6}&\he{80.4}&\he{76.9}\\
+$A1$&$A7$&\he{72.6}&\he{77.5}&\he{74.2}&\he{74.9}&\he{78.7}&\he{76.0}&\he{78.1}&\he{81.5}&\he{78.9}\\
+$A1$&$A8$&\he{82.2}&\he{84.8}&\he{83.5}&\he{80.3}&\he{79.7}&\he{79.3}&\he{82.7}&\he{82.1}&\he{81.7}\\
+\hline
+$A2$&$O1$&\he{77.3}&\he{82.6}&\he{79.8}&\he{79.6}&\he{81.7}&\he{80.5}&\he{82.4}&\he{84.5}&\he{83.3}\\
+$A2$&$O2$&\he{78.6}&\he{81.6}&\he{80.1}&\he{79.4}&\he{79.9}&\he{79.6}&\he{82.7}&\he{83.0}&\he{82.8}\\
+$A2$&$O3$&\he{81.2}&\he{84.9}&\he{83.0}&\he{81.3}&\he{81.7}&\he{81.2}&\he{85.2}&\he{85.9}&\he{85.5}\\
+$A2$&$A1$&\he{70.9}&\he{74.6}&\he{71.2}&\he{73.9}&\he{75.4}&\he{73.3}&\he{77.4}&\he{77.7}&\he{75.8}\\
+$A2$&$A2$&\he{70.6}&\he{78.4}&\he{74.0}&\he{72.1}&\he{75.7}&\he{71.6}&\he{76.4}&\he{80.3}&\he{76.4}\\
+$A2$&$A7$&\he{72.6}&\he{77.5}&\he{74.2}&\he{75.6}&\he{78.1}&\he{76.1}&\he{79.1}&\he{80.6}&\he{78.8}\\
+$A2$&$A8$&\he{82.2}&\he{84.8}&\he{83.4}&\he{81.8}&\he{81.5}&\he{81.4}&\he{85.8}&\he{85.6}&\he{85.7}\\
+\hline
+$A7$&$O1$&\he{77.1}&\he{82.5}&\he{79.7}&\he{79.1}&\he{81.1}&\he{79.2}&\he{80.9}&\he{83.7}&\he{81.5}\\
+$A7$&$O2$&\he{78.5}&\he{81.6}&\he{80.0}&\he{78.7}&\he{79.3}&\he{78.6}&\he{81.1}&\he{82.4}&\he{81.5}\\
+$A7$&$O3$&\he{81.0}&\he{84.9}&\he{82.9}&\he{80.5}&\he{80.5}&\he{79.6}&\he{82.9}&\he{84.0}&\he{82.7}\\
+$A7$&$A1$&\he{71.0}&\he{74.4}&\he{70.9}&\he{72.5}&\he{76.3}&\he{73.4}&\he{75.1}&\he{79.1}&\he{76.1}\\
+$A7$&$A2$&\he{70.5}&\he{78.2}&\he{73.8}&\he{73.1}&\he{77.4}&\he{73.8}&\he{75.6}&\he{80.4}&\he{76.5}\\
+$A7$&$A7$&\he{72.6}&\he{77.4}&\he{74.0}&\he{70.4}&\he{76.1}&\he{73.1}&\he{74.3}&\he{80.1}&\he{76.9}\\
+$A7$&$A8$&\he{81.9}&\he{84.7}&\he{83.3}&\he{80.5}&\he{80.0}&\he{79.6}&\he{83.0}&\he{83.3}&\he{82.6}\\
+\hline
+$A8$&$O1$&\he{77.0}&\he{82.4}&\he{79.6}&\he{78.2}&\he{82.4}&\he{79.6}&\he{81.8}&\he{85.3}&\he{82.6}\\
+$A8$&$O2$&\he{78.4}&\he{81.5}&\he{79.8}&\he{79.3}&\he{81.9}&\he{80.2}&\he{82.9}&\he{85.2}&\he{83.6}\\
+$A8$&$O3$&\he{80.9}&\he{84.9}&\he{82.8}&\he{80.9}&\he{83.7}&\he{81.7}&\he{85.0}&\he{88.1}&\he{86.1}\\
+$A8$&$A1$&\he{71.0}&\he{74.2}&\he{70.7}&\he{72.0}&\he{73.1}&\he{69.5}&\he{74.5}&\he{75.2}&\he{71.6}\\
+$A8$&$A2$&\he{70.4}&\he{78.1}&\he{73.7}&\he{73.1}&\he{77.3}&\he{72.9}&\he{75.5}&\he{80.4}&\he{76.1}\\
+$A8$&$A7$&\he{72.6}&\he{77.2}&\he{73.7}&\he{73.5}&\he{76.5}&\he{73.0}&\he{76.2}&\he{78.7}&\he{75.3}\\
+$A8$&$A8$&\he{81.9}&\he{84.9}&\he{83.4}&\he{78.0}&\he{81.2}&\he{79.5}&\he{84.3}&\he{87.5}&\he{85.8}\\
+\end{tabular}
+  \caption{Detailed study of FrnnMUTE’s performance for words understandibility detection.}
+  \label{tab:frnnmute-details}
+\end{table*}
+
 
 \begin{table}[h]
 \centering
@@ -192,7 +272,7 @@ Standard features + FrnnMUTE & 80.3 +/- 4.7 & 80.3 +/- 4.3 & 78.6 +/- 4.4 &\\[10
 Standard features + FT emb + FrnnMUTE & 80.2 +/- 4.6 & 80.4 +/- 4.3 & 78.1 +/- 4.3 &\\ \hline
 \end{tabular}
   \caption{Study of our FrnnMUTE's performance for words understandibility detection. For words categorization with Only standard features/ Only FastText word embeddings/ Only FrnnMUTE a decision tree of depth 4 was trained. On all the rest of feature sets a decision tree of depth 9 was trained.}
-  \label{tab:rnn-embs}
+  \label{tab:frnnmute}
 \end{table}
 
-We observed that our FrnnMUTE perform better than FastText word embeddings and the results have the smallest dispersion among all considered feature sets. Moreover,  for "user-in vocabulary-out" and "user-out vocabulary-out" standard features with FrnnMUTE in almost all cases show the best performance among all the features sets. This testifies that FrnnMUTE help standard linguistic and non-linguistic features to capture words' understandibility better.  
+

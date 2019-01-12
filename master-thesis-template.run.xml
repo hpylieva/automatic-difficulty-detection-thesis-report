@@ -84,7 +84,7 @@
       <file>master-thesis-template-blx.bib</file>
     </requires>
     <requires type="editable">
-      <file>example.bib</file>
+      <file>master-thesis-template.bib</file>
     </requires>
     <requires type="static">
       <file>biblatex.bst</file>

@@ -24,7 +24,7 @@
 
 \documentclass[
 11pt, % The default document font size, options: 10pt, 11pt, 12pt
-%oneside, % Two side (alternating margins) for binding by default, uncomment to switch to one side
+oneside, % Two side (alternating margins) for binding by default, uncomment to switch to one side
 english, % ngerman for German
 singlespacing, % Single line spacing, alternatives: onehalfspacing or doublespacing
 %draft, % Uncomment to enable draft mode (no pictures, no links, overfull hboxes indicated)
@@ -41,6 +41,7 @@ headsepline, % Uncomment to get a line under the header
 \usepackage[utf8]{inputenc} % Required for inputting international characters
 \usepackage[T1]{fontenc} % Output font encoding for international characters
 \usepackage{listings} % for code chunks
+\usepackage{enumitem,kantlipsum} % to indent paragraphs in enumerated lists
 
 \usepackage{mathpazo} % Use the Palatino font by default
 
@@ -220,8 +221,7 @@ headsepline, % Uncomment to get a line under the header
 
 \begin{abstract}
 \addchaptertocentry{\abstractname} % Add the abstract to the table of contents
-\todo{write abstract}
-The Thesis Abstract is written here (and usually kept to just this page). The page is kept centered vertically so can expand into the blank space above the title too\ldots
+In the medical domain, non-specialized users often require a better understanding of medical information provided by doctors. In this work, we address this need. We show how to improve identification of readability and understandability of medical words by applying novel embeddings received from RNN as features in the classification task. We also found out that adding pre-trained FastText word embeddings to the feature set significantly improves the performance of the classification model. For generalizability study of different models, we introduce a methodology comprising three cross-validation scenarios which allow testing classifiers in real-world conditions: when understanding of medical words by new users is unknown or when no information about understandability of new words is provided for the model.
 
 \end{abstract}
 
@@ -231,11 +231,11 @@ The Thesis Abstract is written here (and usually kept to just this page). The pa
 
 \begin{acknowledgements}
 \addchaptertocentry{\acknowledgementname} % Add the acknowledgements to the table of contents
-First of all, I would like to thank my supervisor Artem Chernodub who directed me throughout research for this thesis and provided a lot of useful pieces of advice regarding contents, structure and possible future development of the project. 
+First of all, I would like to thank my supervisor Artem Chernodub (Ukrainian Catholic University, Grammarly) who directed me throughout research for this thesis and provided a lot of useful pieces of advice regarding contents, structure and possible future development of the project. 
 
 Also, I would like to thank Natalia Grabar (CNRS at Université de Lille, France), and Thierry Hamon (LIMSI, CNRS at Université Paris-Saclay, France and Université Paris 13, France) who agreed to proceed the work on detection of understandability of medical words, provided data for the research and actively participated in discussions on the project's progress and preparation of publications. 
 
-Finally, I am grateful to Ukrainian Catholic University and Oleksii Molchanovskyi personally for a master program which became a crucial factor in my career development as a data scientist. 
+Finally, I am grateful to Ukrainian Catholic University and Oleksii Molchanovskyi personally for the Master Program which was an important step in my career development as a data scientist. 
 
 \end{acknowledgements}
 
@@ -336,7 +336,7 @@ $\sigma$ standard deviation of a sample \\
 % Uncomment the lines as you write the Appendices
 
 \include{Appendices/AppendixA}
-%\include{Appendices/AppendixB}
+% \include{Appendices/AppendixB}
 %\include{Appendices/AppendixC}
 
 %----------------------------------------------------------------------------------------

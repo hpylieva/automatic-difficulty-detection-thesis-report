@@ -1,3 +1,21 @@
 \boolfalse {citerequest}\boolfalse {citetracker}\boolfalse {pagetracker}\boolfalse {backtracker}\relax 
 \babel@toc {english}{}
 \addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {4.1}{\ignorespaces Number (and percentage) of words assigned to reference categories by seven annotators (O1, O2, O3, A1, A2, A7, A8).\relax }}{14}{table.caption.50}
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {6.1}{\ignorespaces Comparison of different implementations of a decision tree classifier on three sets of annotations (O1, O2, O3) in user-in vocabulary-out cross-validation. The DT in scikit-learn was restricted to depth not more than 3 (this showed the best result during grid-search of hyperparameters of the DT).\relax }}{20}{table.caption.85}
+\contentsline {table}{\numberline {6.2}{\ignorespaces Experiments on user-in vocabulary-out cross-validation. The best score for a combination of quality measure and experiment among three feature sets is in bold.\relax }}{20}{table.caption.88}
+\contentsline {table}{\numberline {6.3}{\ignorespaces Experiments on user-out vocabulary-in cross-validation.\relax }}{21}{table.caption.90}
+\contentsline {table}{\numberline {6.4}{\ignorespaces Experiments on user-out vocabulary-out cross-validation.\relax }}{21}{table.caption.92}
+\contentsline {table}{\numberline {6.5}{\ignorespaces Experiments on portability of models from one user to another. User-in vocabulary-out results are integrated in this table for convenience of analysis.\relax }}{22}{table.caption.94}
+\contentsline {table}{\numberline {6.6}{\ignorespaces Study of our FrnnMUTE's performance for words understandibility detection. For words categorization with Only standard features/ Only FastText word embeddings/ Only FrnnMUTE a decision tree of depth 4 was trained. On all the rest of feature sets a decision tree of depth 9 was trained.\relax }}{24}{table.caption.104}
+\addvspace {10\p@ }
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {A.1}{\ignorespaces Experimenting with different configurations of RNN for words' classification.\relax }}{27}{table.caption.115}
+\contentsline {table}{\numberline {A.2}{\ignorespaces Compare the performance of FrnnMUTE from LSTM and BiLSTM in words' classification task with a decision tree.\relax }}{28}{table.caption.116}
+\addvspace {10\p@ }
+\contentsline {table}{\numberline {B.1}{\ignorespaces Detailed study of FrnnMUTE\IeC {\textquoteright }s performance for words under-standibility detection.\relax }}{30}{table.caption.118}
