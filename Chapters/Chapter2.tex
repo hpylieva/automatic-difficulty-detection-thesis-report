@@ -1,44 +1,34 @@
 \chapter{Related Work}
 \label{ch:related-work}
 
-Related work is globally related to text simplification task which involves the detection of complex contents in documents and their adaptation for the target population. In this work we are interested in the first aspect with additional constraints: detection and diagnosis of technical contents in texts of medical domain. In general non-domain specific context, this task is also known in the literature as complex words identification (CWI). From the overview of related works it will be clear that in the NLP (Natural Language Processing) area, work related to the diagnosis of technical content in general and in medical domain in particular is quite frequent and topical. 
+Related work is globally related to text simplification task which involves the detection of complex contents in documents and their adaptation for the target population. In this work, we are interested in the first aspect with additional constraints: detection and diagnosis of technical contents in texts of medical domain. In general non-domain specific context, this task is also known in the literature as complex words identification (CWI). From the overview of related works it will be clear that in the NLP (Natural Language Processing) area, work related to the diagnosis of technical content in general and in the medical domain in particular is quite frequent and topical. 
 
-\section{Data sources for text understandability detection}
 
-\todo[inline]{TH:I don't really understand why you make such distinction between NLP and Medical area: some (most of ?) works presented in the NLP section are related to the medical area, and  in medical area section, you mention some works related to NLP. There are in fact several mentioned points: (1) proposition of metrics (without considering NLP or Computer science approaches) for rating words according to their complexity for understanding (Flesch and Gunning); (2) design of resources or annotated texts, the purpose is to have reference for the evaluation or examples for ML approaches; (3a) word understanding and complexity in general language texts and (3b) in medical texts, both with NLP approaches. There is also another point to address: it is the reusability of the approaches on different languages (English, French), i.e. some approaches (Flesch for instance) have been developed for a Language (English) and it is a question to know if those approaches are relevant and useful for other languages (e.g. French) or not. I think also a last point to mention (here or in conclusion): here it is assumed that people who read the texts don't have problems or disabilities related to reading (e.g. dyslexia).  If you have time, it would good to reorganise the chapter, and may be mentioned limitations or additional aspects.}
+\section{Early research in readability measurement}
 
-% \todo{ngr: I would move the 1st paragraph to the previous section and name this section smth like "Suitable data for readability diagnosis"} - done
+Readability is the ease of understanding written text. The study of readability and how it can be measured takes origin from 1880th with analytics of literature and poetry \citep{Sherman-1893}. Then,  \textit{traditional readability measures} were invented. They rely on two main factors: the familiarity of semantic units such as words or
+phrases, and the complexity of syntax. Due to the intention of making these measures straightforward for applications, some simplifying assumptions were used. As a result, final formulas mostly rely on the number of letters and/or of syllables a word contains and on linear regression models \citep{Flesch1948,Gunning1973}. While such readability measures are easy to compute, they are based on shallow characteristics of text, ignoring deeper levels of text processing which are important factors in readability, such as cohesion, syntactic ambiguity, rhetorical organization, and propositional density \citep{Collins-2014}. Moreover, traditional measures of readability were demonstrated to be unreliable for Web pages and other types of non-traditional documents during the recent studies \citep{Si-2001}. As a result of such limitations and due to the recent growth of computational and data resources,  researchers in Natural Language Processing (NLP) area started to work on \textit{computational} readability measurements, which relies on the use of machine learning algorithms on reacher linguistic features.
 
-In detection of difficult for understanding contents a separate issue is to get suitable data for the analysis. These data have indeed crucial impact on models created and on their usability. Several approaches have been proposed:
+
+\section{Data sources}
+
+Machine learning-based approaches require suitable data to result with accurate and usable models. In the detection of difficult for understanding contents creation of data sources is a separate field of study. In recent years, several approaches have been proposed:
 \begin{itemize}
-\item exploitation of expert judgment, who have an idea on needs of population aimed in the study \citep{DeClerc-NLE2014}. The main limitation is that experts may have difficulties to figure out what are the real needs of population;
-\item exploitation of text books created for population according to their readability levels, such as school books \citep{Gala-ELEX2013}. The main limitation is that such books are
+\item exploitation of expert judgment, who have an idea on needs of population aimed in the study \citep{DeClerc-NLE2014}. The main limitation is that experts may have difficulties to figure out what are the real needs of the population;
+\item exploitation of textbooks created for population according to their readability levels, such as school books \citep{Gala-ELEX2013}. The main limitation is that such books are
   usually created by experts using theoretical basis and observations;
 \item exploitation of crowdsourcing involving large population \citep{DeClerc-NLE2014}.  The main limitation is that the population involved is uncontrolled and unknown;
 \item exploitation of eye-tracking methods for a more fine-grained
   analysis of reading difficulties \citep{Yaneva-CCA2015,Grabar-ICHI2018}.  The main limitation is that only short text spans can be used;
-\item manual annotation by human annotators \citep{Grabar-LREC2016t}. In this case, the annotators represent the population, they are part of the controlled population, they can
-  perform more complicated tasks than in case of crowdsourcing, although they are usually less many than in crowdsourcing experiments. In this work the data source was constructed using this method. It also was expluatated in CWI challenges mentioned in the next section (SemEval-2016 and CWI 2018 Shared Task).
+\item manual annotation by human annotators \citep{Grabar-LREC2016t}. In this case, the annotators represent the population; they are part of the controlled population, they can perform more complicated tasks than in case of crowdsourcing, although they are usually less many than in crowdsourcing experiments. In this work, the data source was constructed using this method. It also was exploited in CWI challenges mentioned in the next section (SemEval-2016 and CWI 2018 Shared Task).
 \end{itemize}
-%%
-Related to this issue is the question on generalizability of data and of models generated from these data.  For instance, it has been observed that data from experts are difficult to generalize over the population \citep{DeClerc-NLE2014}.
+
+Related to this issue is the question on the generalizability of data and models generated from these data.  For instance, it has been observed that data from experts are difficult to generalize over the population \citep{DeClerc-NLE2014}.
 
 
-\section{Readability measures}
-Readability provides a set of methods to compute and quantify the understandability of
-words
-Traditionally, researchers exploit the readability measures. Among these measures, it is possible to distinguish standard readability measures and computational readability measures \citep{Francois-TAL2013}. Classical measures usually rely on the number of letters and/or of syllables a word contains and on linear regression models \citep{Flesch1948,Gunning1973}, while computational readability
-measures may involve vector models and great variability of
-features, among which the following have been used for processing the
-biomedical documents: a combination of classical readability formulas
-with medical terminologies \citep{Kokkinakis-2006}; n-grams of
-characters \citep{Poprat-MIE2006}, stylistic \citep{Grabar-AMIA2007} or
-discursive \citep{Goeuriot-LREC2008} features, lexicon
-\citep{Miller-HICSS2007}, morphological features
-\citep{Chmielik-TAL2011}, combinations of different features
-\citep{Zeng-MEDINFO2007}. At a more fine-grained level, the readability of words has been
-addressed much less frequently. 
+\section{Automated Readability Assessment}
 
+\subsection{General Language}
 For general language, research actions are often performed as part of the NLP challenges. For the case pf CWI for example, there was a shared task on CWI on SemEval-2016 NLP challenge\footnote{\url{http://alt.qcri.org/semeval2016/task11/}}. The goal was to provide a framework for the evaluation of CWI methods, which involved:
 \begin{enumerate}
     \item understanding the distinctive characteristics of words which are difficult for non-native speakers;
@@ -52,7 +42,7 @@ Combinations of various features, designed
 to detect the complexity of words, have been used. The most popular among them were: 
 
 \begin{itemize}
-    \item simple features: word length, number of syllables, named-entity type, part-of-speech, position of word in sentence \citep{Bingel-SemEval2016};
+    \item simple features: word length, number of syllables, named-entity type, part-of-speech, the position of a word in sentence \citep{Bingel-SemEval2016};
     
     \item number of synsets, senses, synonyms, hyponyms, relations, distinct POSs in WordNet \citep{Ronzano-SemEval2016};
     
@@ -67,8 +57,9 @@ Our task is slightly different from the one described in SemEval-2016 Shared tas
 
 After the success of SemEval-2016, the second CWI Shared task\footnote{\url{https://sites.google.com/view/cwisharedtask2018/}} was organized at Building Educational Applications workshop 2018\footnote{\url{http://www.cs.rochester.edu/~tetreaul/naacl-bea13.html}}. This time the data was provided on four languages: English, German, Spanish and French. Whereas, for French, only the test set was available and no French training data. English corpora were extended and involved three genres: news, Wikinews and Wikipedia data. For comparison, on SemEval-2016 the corpora were formed from only Simple Wikipedia data. In 2018 the aim of the CWI Shared
 task was to identify challenging for non-native speakers words based on the annotations collected from both native and non-native speakers. 
-The analysis \citep{Yimam-BEA2018} of 12 submitted systems and 11 system description papers from 30 teams shows that traditional feature engineering-based approaches (mostly involving words' length and frequency features) still perform better than neural network and word embedding-based approaches. Whereas this time much more participants used deep learning approach in their solutions. This resulted in significant improvement of performance in CWI task on monolingual English track: the top rank systems reached from 0.811 to 0.874 F-score for different English datasets. At the same time cross-lingual German, Spanish and French tracks resulted in slightly lower F-score: 0.745, 0.769 and 0.759 correspondingly. Nevertheless, cross-lingual results were considered highly promising. This was the most important finding of this shared task. 
-Among deep learning solutions used for resolving the CWI 2018 Shared Task  there were:
+The analysis \citep{Yimam-BEA2018} of 12 submitted systems and 11 system description papers from 30 teams shows that traditional feature engineering-based approaches (mostly involving words' length and frequency features) still perform better than neural network and word embedding-based approaches. This time much more participants used deep learning approach in their solutions, which resulted in significant improvement of performance in CWI task on monolingual English track: the top rank systems reached from 0.811 to 0.874 F-score for different English datasets. At the same time cross-lingual German, Spanish and French tracks resulted in slightly lower F-score: 0.745, 0.769 and 0.759 correspondingly. Nevertheless, cross-lingual results were considered highly promising. This point was the most important finding of this shared task. 
+
+Among the deep learning solutions used for resolving the CWI 2018 Shared Task  there were:
 \begin{itemize}
     \item application of Convolutional Neural Network (CNN) for the first time for CWI task \citep{Aroyehun-BEA2018}. The solution is based on 2D convolution and word-embedding representation of the target text fragment and its context. The CNN-based system did not show significant improvement in performance compared to an alternative system based in feature engineering and Tree Ensembles developed by the same team. 
     
@@ -77,11 +68,29 @@ Among deep learning solutions used for resolving the CWI 2018 Shared Task  there
 
 In contrast to the last solution, in this work, we test the performance of FastText (described in the next chapter \ref{sec:fasttext}), which is a word2vec's modification and captures not only distributional properties of words but also morphological ones, as this model is trained on subword instead of word level. And again, in  CWI 2018 Shared Task words were provided in context, which is different to our setting.
 
-In the medical area, we can mention three experiments: manual rating
-of medical words \citep{Zheng-AMIA2002}, automatic rating of medical
-words on the basis of their presence in different vocabularies
-\citep{Borst-MIE2008}, and exploitation of machine learning approach
-with various features \citep{Grabar-PITR2014}. This last experiment
-achieved up to 0.85 F-measure on individual annotations.
 
+\subsection{Medical domain}
+Not so much effort has been devoted to the exploitation of NLP potential in the measurement of readability of medical texts.
+In the biomedical domain, the readability assessment currently is approached as a classification task as well as in general language. The difference is that here a much smaller variety of features has been tested. The following feature types are mostly used for processing of biomedical documents:
+\begin{itemize}
+    \item a combination of classical readability formulas
+with medical terminologies \citep{Kokkinakis-2006};
+    \item n-grams of characters \citep{Poprat-MIE2006}, 
+    \item stylistic \citep{Grabar-AMIA2007} or discursive \citep{Goeuriot-LREC2008} features which characterize the discourse of documents,
+    \item lexicon features, for example, lexical density - the number of unique number of words within a given unit (e.g. sentence, document) \citep{Miller-HICSS2007},
+    \item morphological features \citep{Chmielik-TAL2011},
+    \items combinations of different features from the listed above
+    \citep{Zeng-MEDINFO2007}.
+\end{itemize}
 
+Among the recent experiments dedicated to readability study in the medical domain are, for example, the following: 
+\begin{itemize}
+    \item manual rating of medical words \citep{Zheng-AMIA2002},
+    \item automatic rating of medical words on the basis of their presence in different vocabularies
+    \citep{Borst-MIE2008},
+    \item exploitation of machine learning approach
+    with various features \citep{Grabar-PITR2014}.
+\end{itemize}
+The last experiment achieved up to 0.85 F-measure on individual annotations.
+
+Due to the recent significant advance in readability study in general language and relatively slow progress with the task in the medical area, there is a great potential of experimenting with the application of various machine learning-based approaches on medical texts. This fact motivated us for for this work.
