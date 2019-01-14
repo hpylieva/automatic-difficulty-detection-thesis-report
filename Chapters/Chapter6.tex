@@ -32,7 +32,7 @@ Since the input features were identical for both of WEKA and scikit-learn framew
 
 % These experiments also follow the scenario from \cite{Grabar-PITR2014}. The cross-validation is done on each dataset (i.e. each user's annotation) separately. The goal of these experiments is to measure the ability of the method to generalize class recognition on the \textit{known user} and his known manner to annotate words (that is, his understanding of the meaning of medical words) for \textit{unknown words}. 
 
-We carried out the experiments using (i) the standard features only, (ii) the FastText word embeddings only and (iii) their combination. Experiments with isolated FastText word embeddings as features and the data from three annotators resulted in poor F1 scores (Table \ref{tab:user-in-voc-out}), that can be treated that contextual information which is dominant in the word embeddings is not enough to define the word understandability. Adding the FastText word embeddings to the standard feature set resulted in up to 1\% higher F1 score due to higher Precision (up to 1.8\%), meaning that contextual information slightly impacts on the understandability of a word by a given person.
+We carried out the experiments using (i) the standard features only, (ii) the FastText word embeddings only and (iii) their combination. Experiments with isolated FastText word embeddings as features and the data from three annotators resulted in poor F1 scores (Table \ref{tab:user-in-voc-out}), that can be treated that contextual information which is dominant in the word embeddings is not enough to define the word understandability. Adding the FastText word embeddings to the standard feature set resulted in up to 1.0 higher F1 score due to higher Precision (up to 1.8), meaning that contextual information slightly impacts on the understandability of a word by a given person.
 
 \begin{table*}[h]
 \begin{tabular}{cc|cccc|cccc|cccc}
@@ -51,7 +51,7 @@ $O3$ & $O3$ & 85.5 & 81.2 & 85.5 & 83.2 & 74.9 & 70.4 & 74.9 & 72.3 & \textbf{85
 
 % In this setting, we measure the ability of the classifier to generalize on all known words, but for unknown users (Table \ref{tab:user-out-voc-in}). This scenario is realistic to a real-world situation: the reference annotations can be obtained only from a couple of users, presumably representing the overall population, but not from all the possible users. Yet, it is necessary to predict the familiarity of medical words for all the potential users even if they did not participate in the annotations.
 
-In these experiments we got a significant improvement of combined features in comparison to the standard features (Table \ref{tab:user-out-voc-in}). When knowledge of words understandability of one user is used to predict it for another user, adding the FastText word embeddings provides up to 2.9 better F1 score. Notice that used separately, standard features and embeddings show similar performance as in user-in vocabulary-out cross-validation (Table \ref{tab:user-in-voc-out}). Our hypothesis is that there exists a robust nonlinear dependency between some subsets of standard features and subword-level components of FastText word embeddings. Testing this hypothesis is the topic of our further research.
+In these experiments we got a significant\todo{ngr: important or statistically significant?} improvement of combined features in comparison to the standard features (Table \ref{tab:user-out-voc-in}). When knowledge of words understandability of one user is used to predict it for another user, adding the FastText word embeddings provides up to 2.9 better F1 score. Notice that used separately, standard features and embeddings show similar performance as in user-in vocabulary-out cross-validation (Table \ref{tab:user-in-voc-out}). Our hypothesis is that there exists a robust nonlinear dependency between some subsets of standard features and subword-level components of FastText word embeddings. Testing this hypothesis is the topic of our further research.
 
 \begin{table*}[h]
 \begin{tabular}{cc|cccc|cccc|cccc}
@@ -161,15 +161,19 @@ $A8$&$A8$&\he{81.9}&\he{84.9}&\he{83.4}&\he{73.6}&\he{77.0}&\he{75.1}&\he{84.2}&
   \label{tab:user-out-voc-in-generalizability}
 \end{table*}
 
-The results obtained for this part are presented in Table~\ref{tab:user-out-voc-in-generalizability}. We can do several observations on them:
+The results obtained for this part are presented in Table~\ref{tab:user-out-voc-in-generalizability}. We can do several observations on them:\todo{ngr: may be explain the meaning of colors and how to read the table}
 \begin{enumerate}[listparindent=1.5em]
     \item The used features show an impact on the results. Thus, standard features usually show better F1 than FastText word embeddings. One explanation is that standard features include 24 individual features covering different aspects of the linguistic and non-linguistic description of words, while the pretrained FastText word embeddings rely only on the distribution of words and their similarity. Yet, the combination of two features (standard and FastText embeddings) usually improves overall results, sometimes going to up to 4.8 improvement of F-measure.  We hypothesize that there exists a robust nonlinear dependency between some subsets of standard features and subword-level components of FastText word embeddings. Testing this hypothesis is the topic of our further research.
     
     \item Recall values are always higher than Precision values. This means that the algorithm performs slightly better in returning most of the relevant results, than in providing correct class labels. 
     
     \item In each set of experiments, the best results are not obtained when the model of a given annotator is applied to own data. For instance, the {\it O1} model provides better results when tested on data from annotators {\it O2, O3} and {\it A8}.  Similarly, the {\it A7} model shows better results when applied to data from annotators {\it O1, O2, O3} and {\it A8}. This is an important issue because it shows that the models acquired from one annotator can be successfully generalized over other annotators.
+
+\todo[inline]{it is surprising that you don't have the best or at
+  least one of best results when you applied the model of an annotator
+  on the own data. Don 't you have a idea of the reason for that ?}
     
-    \item Besides, it seems that the considered annotators form two clusters according to the classification of difficult medical words: one cluster with four annotators ({\it O1, O2, O3, A8}) and one cluster with three annotators ({\it A1, A2, A7}). We can observe a decrease up to -3 in F-measure for combination of features (standard and FastText embeddings) compared to standard features only when cross-validating between users from different clusters (fig. \ref{fig:f1-diff-frnnmute-ft}). As we already explained in section \ref{sec:user-out-voc-out}, this issue may be related to the health literacy of annotators. This may indicate that the annotation models can be shared by people with similar skills and knowledge. Yet, to confirm this hypothesis, it is necessary to define the level of health literacy of annotators. This task is rather difficult because there are no existing tests created for computing the health literacy level for French-speaking healthy people. Another hypothesis is that some models may be better generalizable than other models. This hypothesis must also be verified with additional experiments.
+    \item Besides, it seems that the considered annotators form two clusters according to the classification of difficult medical words: one cluster with four annotators ({\it O1, O2, O3, A8}) and one cluster with three annotators ({\it A1, A2, A7}). We can observe a decrease up to -3 in F-measure for combination of features (standard and FastText embeddings) compared to standard features only when cross-validating between users from different clusters (fig. \ref{fig:f1-diff-frnnmute-ft}\todo{Is it the right figure? It is also referred later for another point.}). As we already explained in section \ref{sec:user-out-voc-out}, this issue may be related to the health literacy of annotators. This may indicate that the annotation models can be shared by people with similar skills and knowledge. Yet, to confirm this hypothesis, it is necessary to define the level of health literacy of annotators. This task is rather difficult because there are no existing tests created for computing the health literacy level for French-speaking healthy people. Another hypothesis is that some models may be better generalizable than other models. This hypothesis must also be verified with additional experiments.
     
 \end{enumerate}
 
@@ -177,7 +181,7 @@ The results obtained for this part are presented in Table~\ref{tab:user-out-voc-
 \section{FrnnMUTE impact study}
 \label{sec:frnnmute-study}
 
-With FrnnMUTE we experimented on using them both solely and in combination with standard features and FastText word embeddings as feature sets for classifying medical words using a decision tree. The detailed results of testing FrnnMUTE in user-in vocabulary-out and user-out vocabulary-in cross-validation scenarios are displayed in Table \ref{tab:frnnmute-details}. To simplify the process of analyzing and comparing the results of this and the previous part, we aggregated the resulting F1 scores for combinations of a feature set and cross-validation scenario over all available users(Table \ref{tab:frnnmute}).  From the available results tables we can draw the following conclusions:
+With FrnnMUTE we experimented on using them both solely and in combination with standard features and FastText word embeddings as feature sets for classifying medical words using a decision tree. The detailed results of testing FrnnMUTE in user-in vocabulary-out and user-out vocabulary-in cross-validation scenarios are displayed in Table \ref{tab:frnnmute-details}. To simplify the process of analyzing and comparing the results of this and the previous part, we aggregated the resulting F1 scores for combinations of a feature set and cross-validation scenario over all available users (Table~\ref{tab:frnnmute}).  From the available results tables we can draw the following conclusions:
 \begin{enumerate}
     \item We observed that our FrnnMUTE solely perform better than FastText word embeddings solely in all cross-validation scenarios reaching up to 13.3 higher F1 score. 
     \item FrnnMUTE's results have the smallest dispersion (3.8-3.9)  among all considered "solo" feature sets types (4.8-5.3) when aggregating by all available users. This means that FrnnMUTE are more robust in generalizing information from user to user and between different subsets of vocabulary.
@@ -261,18 +265,19 @@ $A8$&$A8$&\he{81.9}&\he{84.9}&\he{83.4}&\he{78.0}&\he{81.2}&\he{79.5}&\he{84.3}&
 
 \begin{table}[h]
 \centering
-\begin{tabular}{L|MMMN}
+\begin{tabular}{L|MMM}
 \hline
 $\mu$ +/- $\sigma$ & user-in vocabulary-out & user-out vocabulary-in & user-out vocabulary-out \\ \hline
-Standard features & 78 +/- 4.8 & 77.7 +/- 4.9 & 77.6 +/- 4.9 &\\[10pt]
-FT emb & 68.1 +/- 5.2 & 67.6 +/- 5.3 & 67.3 +/- 5.2 &\\[10pt]
-FrnnMUTE & 75.6 +/- 3.8 & 77.1 +/- 3.9 & 74.5 +/- 3.9 &\\[10pt]
-Standard features + FT emb & 79.1 +/- 4.7 & 79.5 +/- 4.6 & 77.1 +/- 4.6 &\\[10pt]
-Standard features + FrnnMUTE & 80.3 +/- 4.7 & 80.3 +/- 4.3 & 78.6 +/- 4.4 &\\[10pt]
-Standard features + FT emb + FrnnMUTE & 80.2 +/- 4.6 & 80.4 +/- 4.3 & 78.1 +/- 4.3 &\\ \hline
+Standard features & 78 +/- 4.8 & 77.7 +/- 4.9 & 77.6 +/- 4.9 \\[10pt]
+FT emb & 68.1 +/- 5.2 & 67.6 +/- 5.3 & 67.3 +/- 5.2 \\[10pt]
+FrnnMUTE & 75.6 +/- 3.8 & 77.1 +/- 3.9 & 74.5 +/- 3.9 \\[10pt]
+Standard features + FT emb & 79.1 +/- 4.7 & 79.5 +/- 4.6 & 77.1 +/- 4.6 \\[10pt]
+Standard features + FrnnMUTE & 80.3 +/- 4.7 & 80.3 +/- 4.3 & 78.6 +/- 4.4 \\[10pt]
+Standard features + FT emb + FrnnMUTE & 80.2 +/- 4.6 & 80.4 +/- 4.3 & 78.1 +/- 4.3 \\ \hline
 \end{tabular}
   \caption{Study of our FrnnMUTE's performance for words understandibility detection. For words categorization with Only standard features/ Only FastText word embeddings/ Only FrnnMUTE a decision tree of depth 4 was trained. On all the rest of feature sets a decision tree of depth 9 was trained.}
   \label{tab:frnnmute}
 \end{table}
 
 
+\todo[inline]{you should add a discussion addressing the limitations of your work.}

@@ -1,13 +1,36 @@
 \chapter{Related Work}
 \label{ch:related-work}
 
-Related work is globally related to the detection of technical contents in documents and to their adaptation. Here, we are interested in the first aspect: detection and diagnosis of technical medical contents. In general non-domain specific context this task is also known in literature as complex words identification (CWI). 
+Related work is globally related to text simplification task which involves the detection of complex contents in documents and their adaptation for the target population. In this work we are interested in the first aspect with additional constraints: detection and diagnosis of technical contents in texts of medical domain. In general non-domain specific context, this task is also known in the literature as complex words identification (CWI). From the overview of related works it will be clear that in the NLP (Natural Language Processing) area, work related to the diagnosis of technical content in general and in medical domain in particular is quite frequent and topical. 
 
-\section{Natural language processing}
-In the NLP (Natural Language Processing) area, work related to the diagnosis of technical medical words in documents is quite frequent. Traditionally, researchers exploit the readability measures. Among these measures, it is possible to distinguish classical readability measures and computational readability measures \citep{Francois-TAL2013}. Classical measures usually rely on number of letters and/or of syllables a word contains and on linear regression models \citep{Flesch1948,Gunning1973}, while computational readability
-measures may involve vector models and a great variability of
+\section{Data sources for text understandability detection}
+
+\todo[inline]{TH:I don't really understand why you make such distinction between NLP and Medical area: some (most of ?) works presented in the NLP section are related to the medical area, and  in medical area section, you mention some works related to NLP. There are in fact several mentioned points: (1) proposition of metrics (without considering NLP or Computer science approaches) for rating words according to their complexity for understanding (Flesch and Gunning); (2) design of resources or annotated texts, the purpose is to have reference for the evaluation or examples for ML approaches; (3a) word understanding and complexity in general language texts and (3b) in medical texts, both with NLP approaches. There is also another point to address: it is the reusability of the approaches on different languages (English, French), i.e. some approaches (Flesch for instance) have been developed for a Language (English) and it is a question to know if those approaches are relevant and useful for other languages (e.g. French) or not. I think also a last point to mention (here or in conclusion): here it is assumed that people who read the texts don't have problems or disabilities related to reading (e.g. dyslexia).  If you have time, it would good to reorganise the chapter, and may be mentioned limitations or additional aspects.}
+
+% \todo{ngr: I would move the 1st paragraph to the previous section and name this section smth like "Suitable data for readability diagnosis"} - done
+
+In detection of difficult for understanding contents a separate issue is to get suitable data for the analysis. These data have indeed crucial impact on models created and on their usability. Several approaches have been proposed:
+\begin{itemize}
+\item exploitation of expert judgment, who have an idea on needs of population aimed in the study \citep{DeClerc-NLE2014}. The main limitation is that experts may have difficulties to figure out what are the real needs of population;
+\item exploitation of text books created for population according to their readability levels, such as school books \citep{Gala-ELEX2013}. The main limitation is that such books are
+  usually created by experts using theoretical basis and observations;
+\item exploitation of crowdsourcing involving large population \citep{DeClerc-NLE2014}.  The main limitation is that the population involved is uncontrolled and unknown;
+\item exploitation of eye-tracking methods for a more fine-grained
+  analysis of reading difficulties \citep{Yaneva-CCA2015,Grabar-ICHI2018}.  The main limitation is that only short text spans can be used;
+\item manual annotation by human annotators \citep{Grabar-LREC2016t}. In this case, the annotators represent the population, they are part of the controlled population, they can
+  perform more complicated tasks than in case of crowdsourcing, although they are usually less many than in crowdsourcing experiments. In this work the data source was constructed using this method. It also was expluatated in CWI challenges mentioned in the next section (SemEval-2016 and CWI 2018 Shared Task).
+\end{itemize}
+%%
+Related to this issue is the question on generalizability of data and of models generated from these data.  For instance, it has been observed that data from experts are difficult to generalize over the population \citep{DeClerc-NLE2014}.
+
+
+\section{Readability measures}
+Readability provides a set of methods to compute and quantify the understandability of
+words
+Traditionally, researchers exploit the readability measures. Among these measures, it is possible to distinguish standard readability measures and computational readability measures \citep{Francois-TAL2013}. Classical measures usually rely on the number of letters and/or of syllables a word contains and on linear regression models \citep{Flesch1948,Gunning1973}, while computational readability
+measures may involve vector models and great variability of
 features, among which the following have been used for processing the
-biomedical documents: combination of classical readability formulas
+biomedical documents: a combination of classical readability formulas
 with medical terminologies \citep{Kokkinakis-2006}; n-grams of
 characters \citep{Poprat-MIE2006}, stylistic \citep{Grabar-AMIA2007} or
 discursive \citep{Goeuriot-LREC2008} features, lexicon
@@ -16,8 +39,7 @@ discursive \citep{Goeuriot-LREC2008} features, lexicon
 \citep{Zeng-MEDINFO2007}. At a more fine-grained level, the readability of words has been
 addressed much less frequently. 
 
-In the general language, some research
-actions are often performed as part of the NLP challenges. For example, there was a shared task on CWI on SemEval-2016 NLP challenge\footnote{\url{http://alt.qcri.org/semeval2016/task11/}}. The goal was to provide a framework for evaluation of CWI methods, which involved:
+For general language, research actions are often performed as part of the NLP challenges. For the case pf CWI for example, there was a shared task on CWI on SemEval-2016 NLP challenge\footnote{\url{http://alt.qcri.org/semeval2016/task11/}}. The goal was to provide a framework for the evaluation of CWI methods, which involved:
 \begin{enumerate}
     \item understanding the distinctive characteristics of words which are difficult for non-native speakers;
     \item finding out how well the vocabulary limitations of an individual can be predicted from the knowledge of vocabulary limitations of the group they are part of;
@@ -30,27 +52,31 @@ Combinations of various features, designed
 to detect the complexity of words, have been used. The most popular among them were: 
 
 \begin{itemize}
-    \item simple features: word length, number of
-syllables, named-entity type, part-of-speech, position of word insentence \citep{Bingel-SemEval2016};
-    \item number of synsets, senses, synonyms, hyponyms, relations, disctinct POSs in WordNet \citep{Ronzano-SemEval2016};
+    \item simple features: word length, number of syllables, named-entity type, part-of-speech, position of word in sentence \citep{Bingel-SemEval2016};
+    
+    \item number of synsets, senses, synonyms, hyponyms, relations, distinct POSs in WordNet \citep{Ronzano-SemEval2016};
     
     \item corpus-based frequency in large corpora: Wikipedia, Simple Wikipedia \citep{Kauchak-2013}, SubIMDB \citep{Paetzold-SemEval2016solution}, British National Corpus \citep{Ronzano-SemEval2016}, Gigaword corpus and the International Conference on Web and Social Media (ICWSM) blog corpus \citep{Brooke-SemEval2016}. Mostly the frequency was calculated for word-level, but some participants utilized the frequency of char-level n-grams also \citep{Bingel-SemEval2016}.
 \end{itemize}
 
+The results of this shared task are described in detail in \cite{Paetzold-SemEval2016overview}. The analysis of 42 submitted systems by 21 teams highlighted that the most effectively CWI task is solved by decision trees \citep{Malmasi-SemEval2016} and ensemble methods \citep{Paetzold-SemEval2016solution, Ronzano-SemEval2016}. Moreover, according to the results, word frequencies remained the most reliable predicting feature of word complexity. The best systems reached up to 0.774 G-score, which measures the harmonic mean between Accuracy and Recall, and 0.353 F-score. 
 
-The results of this shared task (described in detail in \cite{Paetzold-SemEval2016overview}) highlighted that the most effectively CWI task is solved by decision trees \citep{Malmasi-SemEval2016} and ensemble methods \citep{Paetzold-SemEval2016solution, Ronzano-SemEval2016}. Moreover, according to the results, word frequencies remained the most reliable predicting feature of word complexity. The best systems reached up to 0.774 G-score, which measures the harmonic mean between Accuracy and Recall, and 0.353 F-score. 
+In this challenge, attempts to apply neural networks showed poor results. Whereas after post-task experiments authors gained competitive results changing the framework of NN implementation, revising architecture and the feature set \citep{Bingel-SemEval2016}. Among features, 300-dimensional GloVe\footnote{\url{https://nlp.stanford.edu/projects/glove/}} word embeddings were found to be the main contributor to NN's performance improvement (from 0.506 to 0.756 G-score). 
 
-In this challenge, attempts to apply neural networks showed poor results. Whereas after post-task experiments authors gained competitve results changing the framework of NN implementation, revising architecture and the feature set \citep{Bingel-SemEval2016}. Among features, 300-dimensional GloVe\footnote{\url{https://nlp.stanford.edu/projects/glove/}} word embeddings were found to be the main contributor to NN's performance improvement (from 0.506 to 0.756 G-score). 
+Our task is slightly different from the one described in SemEval-2016 Shared task \citep{Paetzold-SemEval2016overview} where given a sentence and a target word within it, the goal is to predict whether or not a non-native English speaker would be able to understand the meaning of the target word. In our formulation we do not have the context near target medical words, so we cannot use it during the training. In other words, the task in SemEval-2016 is CWI in its ordinary meaning, whereas in our case the task comes down to words' classification. The usefulness of standard word embeddings for our task is also not clear, therefore. Moreover, in SemEval-2016 and our task user annotations are made in different languages: English and French correspondingly, -  and have different goals.
 
-% A recent work was done on prediction of words' complexity for non-native speakers \citep{DeHertog-ACL2018}. The task involved English news dataset and Spanish Wikipedia, and was performed on manual annotations of words by a mixture of native and nonnative speakers.
-%%
-Another work has been done on scholar texts in French written for
-children with the purpose to differentiate between the texts from
-various scholar levels and to test various features suitable for that
-\citep{Gala-ELEX2013}. This system reached up to 0.62 classification
-accuracy.
+After the success of SemEval-2016, the second CWI Shared task\footnote{\url{https://sites.google.com/view/cwisharedtask2018/}} was organized at Building Educational Applications workshop 2018\footnote{\url{http://www.cs.rochester.edu/~tetreaul/naacl-bea13.html}}. This time the data was provided on four languages: English, German, Spanish and French. Whereas, for French, only the test set was available and no French training data. English corpora were extended and involved three genres: news, Wikinews and Wikipedia data. For comparison, on SemEval-2016 the corpora were formed from only Simple Wikipedia data. In 2018 the aim of the CWI Shared
+task was to identify challenging for non-native speakers words based on the annotations collected from both native and non-native speakers. 
+The analysis \citep{Yimam-BEA2018} of 12 submitted systems and 11 system description papers from 30 teams shows that traditional feature engineering-based approaches (mostly involving words' length and frequency features) still perform better than neural network and word embedding-based approaches. Whereas this time much more participants used deep learning approach in their solutions. This resulted in significant improvement of performance in CWI task on monolingual English track: the top rank systems reached from 0.811 to 0.874 F-score for different English datasets. At the same time cross-lingual German, Spanish and French tracks resulted in slightly lower F-score: 0.745, 0.769 and 0.759 correspondingly. Nevertheless, cross-lingual results were considered highly promising. This was the most important finding of this shared task. 
+Among deep learning solutions used for resolving the CWI 2018 Shared Task  there were:
+\begin{itemize}
+    \item application of Convolutional Neural Network (CNN) for the first time for CWI task \citep{Aroyehun-BEA2018}. The solution is based on 2D convolution and word-embedding representation of the target text fragment and its context. The CNN-based system did not show significant improvement in performance compared to an alternative system based in feature engineering and Tree Ensembles developed by the same team. 
+    
+    \item a DNN which was feed with both word-level and character-level embeddings \citep{DeHertog-ACL2018}. The word-level representations were trained by team on their own on COW-corpora\footnote{\url{https://corporafromtheweb.org/}} with gensimfootnote{\url{https://radimrehurek.com/gensim/}} implementation of word2vec model (described in the next chapter \ref{sec:word2vec}). The character-level embeddings were trained by the DNN itself when learning to classify words into complex and non-complex.
+\end{itemize}
 
-\section{Medical area}
+In contrast to the last solution, in this work, we test the performance of FastText (described in the next chapter \ref{sec:fasttext}), which is a word2vec's modification and captures not only distributional properties of words but also morphological ones, as this model is trained on subword instead of word level. And again, in  CWI 2018 Shared Task words were provided in context, which is different to our setting.
+
 In the medical area, we can mention three experiments: manual rating
 of medical words \citep{Zheng-AMIA2002}, automatic rating of medical
 words on the basis of their presence in different vocabularies
@@ -58,35 +84,4 @@ words on the basis of their presence in different vocabularies
 with various features \citep{Grabar-PITR2014}. This last experiment
 achieved up to 0.85 F-measure on individual annotations.
 
-Another issue is to know what are the most suitable data for the
-analysis of text readability. These data have indeed cruсial impact on
-models created and on their usability.  Several approaches have been
-proposed:
-\begin{itemize}
-\item exploitation of expert judgment, who have an idea on needs of
-  population aimed in the study \citep{DeClerc-NLE2014}. The main
-  limitation is that experts may have difficulties to figure out what
-  are the real needs of population;
-\item exploitation of text books created for population according to
-  their readability levels, such as school books
-  \citep{Gala-ELEX2013}. The main limitation is that such books are
-  usually created by experts using theoretical basis and observations;
-\item exploitation of crowdsourcing involving large population
-  \citep{DeClerc-NLE2014}.  The main limitation is that the
-  population involved is uncontrolled and unknown;
-\item exploitation of eye-tracking methods for a more fine-grained
-  analysis of reading difficulties
-  \citep{Yaneva-CCA2015,Grabar-ICHI2018}.  The main limitation is that
-  only short text spans can be used;
-\item manual annotation by human annotators
-  \citep{Grabar-LREC2016t}. In this case, the annotators represent the
-  population, they are part of the controlled population, they can
-  perform more complicated tasks than in case of crowdsourcing,
-  although they are usually less many than in crowdsourcing
-  experiments.
-\end{itemize}
-%%
-Related to this issue is the question on generalizability of data and
-of models generated from these data.  For instance, it has been
-observed that data from experts are difficult to generalize over the
-population \citep{DeClerc-NLE2014}.
+

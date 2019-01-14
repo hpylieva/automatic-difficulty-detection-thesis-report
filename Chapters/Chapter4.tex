@@ -1,15 +1,17 @@
 \chapter{Dataset description}
 \label{ch:dataset-description}
 
-For the experiments with the supervised words' categorization task in this work we used the publicly available set of words with annotations\footnote{\url{http://natalia.grabar.free.fr/resources.php#rated}} collected according to the procedure described in \cite{Grabar-PITR2014}. Additionally, for the research of generalization abilities of our models described in \ref{sec:generalizability-study}, we were provided with four more sets of annotations.
+For the experiments with the supervised words' categorization task in this work we used the publicly available set of words with annotations\footnote{\url{http://natalia.grabar.free.fr/resources.php\#rated}} collected according to the procedure described in \citep{Grabar-PITR2014}. Additionally, for the research of generalization abilities of our models described in \ref{sec:generalizability-study}, we were provided with four more sets of annotations.
 The initial process of words' collection and annotation is briefly described below.
 
 \section{Linguistic data description}
 \label{sec:linguistic-data-description}
 
-The set of required biomedical terms was obtained from Snomed International \citep{Cote-93} - the medical source of terminology in French, available from the ASIP SANTE website\footnote{\url{http://esante.gouv.fr/services/referentiels/referentiels-d-interoperabilite/snomed-35vf}}. The purpose of the terminology stored here is to provide an extensive up-to-date overview of the medical field. Snomed contains 151,104 medical terms organized into eleven semantic axes such as disorders and abnormalities, procedures, chemical products, living organisms, anatomy, social status, etc. For words' understandability study five axes related to the main medical notions were chosen: disorders, abnormalities, procedures, functions, and anatomy. These categories are assumed to contain terms which are familiar to a layman, in contrast to contents of such specific groups as chemical products (\textit{hydrogen sulfide}) and living organisms (\textit{Sapromyces, Acholeplasma laidlawii}).
+The set of required biomedical terms was obtained from the French part of Snomed International \citep{Cote-93} - a medical terminology\todo{th: I correct this point}, available from the ASIP SANTE website\footnote{\url{http://esante.gouv.fr/services/referentiels/referentiels-d-interoperabilite/snomed-35vf}}. The purpose of the terminology stored here is to provide an extensive up-to-date overview of the medical field. Snomed contains 151,104 medical terms organized into eleven semantic axes such as disorders and abnormalities, procedures, chemical products, living organisms, anatomy, social status, etc. For words' understandability study five axes related to the main medical notions were chosen: disorders, abnormalities, procedures, functions, and anatomy. These categories are assumed to contain terms which are familiar to a layman, in contrast to contents of such specific groups as chemical products (\textit{hydrogen sulfide}) and living organisms (\textit{Sapromyces, Acholeplasma laidlawii}).
 
-The 104,649 selected terms were lemmatized and tokenized into words (or tokens) resulting in 29,641 unique words, for instance, the term `\textit{trisulfure d'hydrog\`{e}ne'} provided three words (\textit{trisulfure, de, hydrog\`{e}ne}).
+The 104,649 selected terms were tokenized into words (or tokens) which are then lemmatized\todo{th: I made some modifications}, resulting in 29,641 unique words, for instance, the term `\textit{trisulfure d'hydrog\`{e}ne'} provided three words (\textit{trisulfure, de, hydrog\`{e}ne}).
+
+\todo[inline]{th:you should indicate that the tokenization and the lemmatisation have been performed by TreeTagger \citep{Schmid-1994} and Flemm \citep{Namer-TAL2000}.}
 
 The final dataset contains three morphological groups of words:
 \begin{itemize}
@@ -47,3 +49,4 @@ The assumption is that the words, which are not understandable by the annotators
 \end{table}
 
 
+\todo[inline]{th: you should add a conclusion or a discussion, in order to conclude this chapter}

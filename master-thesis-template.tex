@@ -221,7 +221,7 @@ headsepline, % Uncomment to get a line under the header
 
 \begin{abstract}
 \addchaptertocentry{\abstractname} % Add the abstract to the table of contents
-In the medical domain, non-specialized users often require a better understanding of medical information provided by doctors. In this work, we address this need. We show how to improve identification of readability and understandability of medical words by applying novel embeddings received from RNN as features in the classification task. We also found out that adding pre-trained FastText word embeddings to the feature set significantly improves the performance of the classification model. For generalizability study of different models, we introduce a methodology comprising three cross-validation scenarios which allow testing classifiers in real-world conditions: when understanding of medical words by new users is unknown or when no information about understandability of new words is provided for the model.
+In the medical domain, non-specialized users often require a better understanding of medical information provided by doctors. In this work, we address this need. We introduce novel embeddings received from RNN - FrnnMUTE (French RNN Medical Understandability Text Embeddings) - and show how they help to improve identification of readability and understandability of medical words when applied as features in the classification task. We also found out that adding pre-trained FastText word embeddings to the feature set significantly improves the performance of the classification model. For generalizability study of different models, we introduce a methodology comprising three cross-validation scenarios which allow testing classifiers in real-world conditions: when understanding of medical words by new users is unknown or when no information about understandability of new words is provided for the model.
 
 \end{abstract}
 
@@ -255,13 +255,17 @@ Finally, I am grateful to Ukrainian Catholic University and Oleksii Molchanovsky
 
 \begin{abbreviations}{ll} % Include a list of abbreviations (a table of two columns)
 
-\textbf{NLP} & \textbf{N}atural \textbf{L}anguage \textbf{P}rocessing\\
-\textbf{ANN} & \textbf{A}rtificial \textbf{N}eural \textbf{N}etwork\\
-\textbf{DNN} & \textbf{D}eep \textbf{N}eural \textbf{N}etwork\\
-\textbf{RNN} & \textbf{R}ecurrent \textbf{N}eural \textbf{N}etwork\\
-\textbf{DT} & \textbf{D}ecision \textbf{T}ree\\
+\textbf{ANN} & \textbf{A}rtificial \textbf{N}eural 
+\textbf{N}etwork\\
 \textbf{CV} & \textbf{C}ross-\textbf{v}alidation\\
+\textbf{DNN} & \textbf{D}eep \textbf{N}eural 
+\textbf{N}etwork\\
+\textbf{DT} & \textbf{D}ecision \textbf{T}ree\\
+\textbf{FrnnMute} & \textbf{F}rench \textbf{r}ecurrent \textbf{n}neural \textbf{n}network \textbf{M}edical \textbf{U}nderstability \textbf{T}ext \textbf{E}mbeddings\\
 \textbf{GPU} & \textbf{G}raphics \textbf{P}rocessing \textbf{U}nit\\
+\textbf{NLP} & \textbf{N}atural \textbf{L}anguage 
+\textbf{P}rocessing\\
+\textbf{RNN} & \textbf{R}ecurrent \textbf{N}eural \textbf{N}etwork\\
 
 \end{abbreviations}
 
@@ -287,7 +291,7 @@ Finally, I am grateful to Ukrainian Catholic University and Oleksii Molchanovsky
 $A$ accuracy \\
 $P$ precision \\ 
 $R$ recall \\
-$F$ F1 score \\
+$F$ F\_1 score \\
 $\mu$ mean of a sample \\ 
 $\sigma$ standard deviation of a sample \\
 \todo{add symbols from formulas}

@@ -2,7 +2,7 @@
 \label{ch:conclusions}
 
 \section{Contribution}
-In this work, we considered the task of medical words' understandability detection. This task was tackled as a multiclass classification problem, and we made the following contributions:
+In this work, we considered the task of medical words' understandability detection. This task was tackled as a multiclass classification problem, and we made the following contributions:\todo{ngr: you may try to do the link with the existing work (like use of NN, embeddings etc.) stressing on whether your results are similar or not. this issue can also be part of discussion of your results}
 
 \begin{enumerate}[listparindent=1.5em]
     \item We broaden the methodology of working with the task by introducing two new types of cross-validation scenarios for model validation. Those scenarios are close to real-world situations:
@@ -13,11 +13,11 @@ In this work, we considered the task of medical words' understandability detecti
     
     \item For the first time for the task of words' understandability detection, we utilized FastText word embeddings as features. We found out that the embeddings solely as features are not enough for good words' categorization as they do not capture the important linguistic and non-linguistic description of words. Whereas adding FastText word embeddings to standard features results in a significant improvement of classification model's performance when generalizing for unknown users (up to 4.8 higher F1 score), but may provide a decrease in performance for user pairs with different level of health literacy. Nonetheless, we consider the improvement of model's generalization ability for most of the user pairs a positive issue as when scaling to the real-world situation it is important to be able to generalize annotations provided by a small set of users on the whole population.
     
-    These results of applying FastText word embeddings for automatic words' categorization on data from three annotators were published and presented on Informatics & Data-Driven Medicine workshop\footnote{\url{http://science.lpnu.ua/iddm-2018}} \citep{Pylieva:2018}.
+    These results of applying FastText word embeddings for automatic words' categorization on data from three annotators were published and presented on 1st International Workshop on Informatics \& Data-Driven Medicine \footnote{\url{http://science.lpnu.ua/iddm-2018}} \citep{Pylieva:2018}.
     
-    \item Inspired by the encoder part of seq2seq models \citep{Sutskever-NIPS2014}, we implemented a novel type of embeddings and called them FrnnMUTE (French RNN Medical Understandability Text Embeddings). We found out that compared with the case of using only standard features, the combination of our FrnnMUTE with standard features substantially improve the performance of classification model for all three generalization scenarios, both by unknown users and unknown words, reaching up to 5.2 higher F1 score. We also observed that the performance of standard features with FrnnMUTE is more robust and significantly better (up to 2.9 higher F-measure in user-out vocabulary-in cross-validation) than the performance of standard features with FastText word embeddings. This indicates that FrnnMUTE captures better the specifics of words needed for identifying their understandability by different users, than FastText word embeddings.
+    \item Inspired by the encoder part of seq2seq models \citep{Sutskever-NIPS2014}, we implemented a novel type of embeddings and called them FrnnMUTE (French RNN Medical Understandability Text Embeddings). We found out that compared with the case of using only standard features, the combination of our FrnnMUTE with standard features substantially improve the performance of classification model for all three generalization scenarios, both by unknown users and unknown words, reaching up to 5.2 higher F1 score. We also observed that the performance of standard features with FrnnMUTE is more robust and significantly better (up to 2.9 higher F-measure in user-out vocabulary-in cross-validation) than the performance of standard features with FastText word embeddings. This indicates that FrnnMUTE captures better the specifics of medical words required for identifying their understandability by different users, than FastText word embeddings.
     
-    The FrnnMUTE trained as described in \ref{sec:frnnmute-learning} are available for public access on \href{https://github.com/hpylieva/FrnnMUTE}{GitHub} and can be used by anyone for medical purposes.
+    The FrnnMUTE trained as described in \ref{sec:frnnmute-learning} is available for public access at GitHub\footnote{\url{https://github.com/hpylieva/FrnnMUTE}} and can be used for scientific non-commercial purposes.
 \end{enumerate}
 
 \section{Future work}
@@ -27,5 +27,5 @@ We have several directions for future work:
     
     \item After analysis of results of the application of FastText word embeddings in a categorization task, we assumed the existence of a robust nonlinear dependency between some subsets of standard features and subword-level components of FastText word embeddings. We plan to test this hypothesis in further research.
     
-    \item While the annotations go forward, the annotators usually show {\it learning} progress in decoding the morphological structure of terms and their understanding \citep{Grabar-BIONLP2017}. This progress is not taken into account in the current experiments. 
+    \item While the annotations go forward, the annotators usually show {\it learning} progress in decoding the morphological structure of terms and their understanding \citep{Grabar-BIONLP2017}. This progress is not taken into account in the current experiments, this is the topic of our future research. 
 \end{enumerate}

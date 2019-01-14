@@ -25,9 +25,15 @@ In this research we want to provide answers to the following questions:
 \label{sec:standard-features}
 We will refer to the previously used NLP features described in \citep{Grabar-PITR2014} as \textit{"standard features"} (opposed to two kinds of \textit{"embeddings"} described in the next subsection). They include 24 linguistic and extra-linguistic features related to general and specialized languages. The features are computed automatically and can be grouped into ten classes: 
 
+
+\todo[inline]{In the list below, you should not use ``we'' to be
+  honest since these you received the data with the NLP features. When
+  reading the (false) impression that you compute the NLP features.}
+
 \begin{itemize}
 \item {\it Syntactic categories.}  Syntactic categories and lemmas are
-  computed by TreeTagger \citep{Schmid-1994} and then checked by Flemm
+  computed by TreeTagger \citep{Schmid-1994} and then checked
+  \todo{th: corrected} by Flemm
   \citep{Namer-TAL2000}.  The syntactic categories are assigned to
   words within the context of their terms.  If a given word receives
   more than one category, the most frequent one is kept as feature.
@@ -94,7 +100,7 @@ According to the general functionality of RNN expressed in \ref{sec:rnn}, the fi
 
 We utilized this idea for representing words from our dataset. To receive word representations from an RNN, we first trained it to classify words based on labels by one annotator (we chose $O1$), then for each word we found values of the last hidden state of the RNN and used this vector as features in words understandability detection for different users.
 
-As a direct classifier, we trained a character-level RNN using PyTorch framework\footnote{\url{https://pytorch.org/}} and one GPU Tesla K80. For training we lowercased all words, converted them to a singular form and substituted all Unicode symbols with ASCII analogs.  We tried several RNN architectures and hyperparameter sets; the detailed information is available in Appendix \label{appx:rnn}. 
+As a direct classifier, we trained a character-level RNN using PyTorch framework\footnote{\url{https://pytorch.org/}} and one GPU Tesla K80. For training we lowercased all words, converted them to a singular form and substituted all Unicode symbols with ASCII analogs.  We tried several RNN architectures and hyperparameter sets; the detailed information is available in Appendix \ref{appx:rnn}. 
 
 
 The best F1-weighted on three classes we got for the following setting:
@@ -109,7 +115,17 @@ The best F1-weighted on three classes we got for the following setting:
 }
 \end{lstlisting}
 
-This model reached the best performance on the eighth epoch with $F1= 78.94$ and $accuracy = 81.21\%$. Using this model we received 50-dimensional words' representations which we called FrnnMUTE (French RNN Medical Understandability Text Embeddings). 
+\todo[inline]{Don't expect that everybody understand the code
+  above. So you should not put code in the text (at least here), but
+  explain the parameter values (test\_size, input\_size, etc.) and the
+  configuration (what is LSTM ? FC ?). You never mention LSTM before.}
+
+
+This model reached the best performance on the eighth epoch \todo{you
+  must explain what is a epoch and maybe the impact on the results and
+  the system} with $F1= 78.94$ and $accuracy =
+81.21\%$\todo{Is the evaluation performed with development set or with
+cross-validation?}. Using this model we received 50-dimensional words' representations which we called FrnnMUTE (French RNN Medical Understandability Text Embeddings). 
 
 
 \section{Cross-validation scenarios}
@@ -124,8 +140,24 @@ For a thorough study of generalization abilities of the developed in this work c
 
 \begin{enumerate}
     \item \textbf{User-in vocabulary-out cross-validation.} This type of experiment follows the scenario from the paper \citep{Grabar-PITR2014} we compare the results with throughout this work.  The cross-validation is done on each dataset (i.e., each user's annotation) separately. The goal of these experiments is to measure the ability of the method (classification model) to generalize class recognition on the \textit{known user} and his known manner to annotate words (that is, his understanding of the meaning of medical words) for \textit{unknown words}. 
-    
+
+\todo[inline]{In a pratical perspective: You may introduce the fact that user-in correspond to
+  learning the profile of a user. So the model is a representation of
+  the understanding/knowledge of the annotator.}
+      
     \item \textbf{User-out vocabulary-in cross-validation.} In this experiment, we learn from all the annotations of one user and then test the model on annotations of another user. Thereby, in such a setting, we measure the ability of the classifier to generalize on all known words, but for unknown users. This scenario is realistic to a real-world situation: the reference annotations can be obtained only from a couple of users, presumably representing the overall population, but not from all the possible users. Yet, it is necessary to predict the familiarity of medical words for all the potential users even if they did not participate in the annotations.
-    
+
+\todo[inline]{similarly here, you can go further: The model represents the profile of a
+  user/annotator and you try to identify if a new user has the same
+  profile as a another. In that respect, for a user, the model that
+  matches may be used to identify not understandable words for the new
+user.}
+      
     \item \textbf{User-out vocabulary-out cross-validation.} In this experiment, we take (k-1) folds of data from one user for training and use k-th fold for testing from the remaining user. In this case, we measure the ability of the method to generalize both on \textit{unknown users} and \textit{ unknown vocabulary}.
+
+\todo[inline]{I think (but I'm not quite sure) that this last experiment must give you an idea of how many
+  words you need to determine whether the profile of a user is the
+  same as another.}
 \end{enumerate}
+
+\todo[inline]{You should add a conclusion or a discussion}
