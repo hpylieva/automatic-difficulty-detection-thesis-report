@@ -28,7 +28,7 @@ Related to this issue is the question on the generalizability of data and models
 
 \section{Automated Readability Assessment}
 
-\subsection{General Language}
+\subsection{General language}
 For general language, research actions are often performed as part of the NLP challenges. For the case pf CWI for example, there was a shared task on CWI on SemEval-2016 NLP challenge\footnote{\url{http://alt.qcri.org/semeval2016/task11/}}. The goal was to provide a framework for the evaluation of CWI methods, which involved:
 \begin{enumerate}
     \item understanding the distinctive characteristics of words which are difficult for non-native speakers;
@@ -49,48 +49,48 @@ to detect the complexity of words, have been used. The most popular among them w
     \item corpus-based frequency in large corpora: Wikipedia, Simple Wikipedia \citep{Kauchak-2013}, SubIMDB \citep{Paetzold-SemEval2016solution}, British National Corpus \citep{Ronzano-SemEval2016}, Gigaword corpus and the International Conference on Web and Social Media (ICWSM) blog corpus \citep{Brooke-SemEval2016}. Mostly the frequency was calculated for word-level, but some participants utilized the frequency of char-level n-grams also \citep{Bingel-SemEval2016}.
 \end{itemize}
 
-The results of this shared task are described in detail in \cite{Paetzold-SemEval2016overview}. The analysis of 42 submitted systems by 21 teams highlighted that the most effectively CWI task is solved by decision trees \citep{Malmasi-SemEval2016} and ensemble methods \citep{Paetzold-SemEval2016solution, Ronzano-SemEval2016}. Moreover, according to the results, word frequencies remained the most reliable predicting feature of word complexity. The best systems reached up to 0.774 G-score, which measures the harmonic mean between Accuracy and Recall, and 0.353 F-score. 
+The results of this shared task are described in detail in \cite{Paetzold-SemEval2016overview}. The analysis of 42 submitted systems by 21 teams highlighted that the most effectively CWI task is solved by decision trees \citep{Malmasi-SemEval2016} and ensemble methods \citep{Paetzold-SemEval2016solution, Ronzano-SemEval2016}. Moreover, according to the results, word frequencies remained the most reliable predicting feature of word complexity. The best systems reached up to 77.4 G-score, which measures the harmonic mean between Accuracy and Recall, and 35.3 F-score. 
 
-In this challenge, attempts to apply neural networks showed poor results. Whereas after post-task experiments authors gained competitive results changing the framework of NN implementation, revising architecture and the feature set \citep{Bingel-SemEval2016}. Among features, 300-dimensional GloVe\footnote{\url{https://nlp.stanford.edu/projects/glove/}} word embeddings were found to be the main contributor to NN's performance improvement (from 0.506 to 0.756 G-score). 
+In this challenge, attempts to apply neural networks showed poor results. Whereas after post-task experiments authors gained competitive results changing the framework of NN implementation, revising architecture and the feature set \citep{Bingel-SemEval2016}. Among features, 300-dimensional GloVe\footnote{\url{https://nlp.stanford.edu/projects/glove/}} word embeddings were found to be the main contributor to NN's performance improvement (from 50.6 to 75.6 G-score). 
 
 Our task is slightly different from the one described in SemEval-2016 Shared task \citep{Paetzold-SemEval2016overview} where given a sentence and a target word within it, the goal is to predict whether or not a non-native English speaker would be able to understand the meaning of the target word. In our formulation we do not have the context near target medical words, so we cannot use it during the training. In other words, the task in SemEval-2016 is CWI in its ordinary meaning, whereas in our case the task comes down to words' classification. The usefulness of standard word embeddings for our task is also not clear, therefore. Moreover, in SemEval-2016 and our task user annotations are made in different languages: English and French correspondingly, -  and have different goals.
 
 After the success of SemEval-2016, the second CWI Shared task\footnote{\url{https://sites.google.com/view/cwisharedtask2018/}} was organized at Building Educational Applications workshop 2018\footnote{\url{http://www.cs.rochester.edu/~tetreaul/naacl-bea13.html}}. This time the data was provided on four languages: English, German, Spanish and French. Whereas, for French, only the test set was available and no French training data. English corpora were extended and involved three genres: news, Wikinews and Wikipedia data. For comparison, on SemEval-2016 the corpora were formed from only Simple Wikipedia data. In 2018 the aim of the CWI Shared
 task was to identify challenging for non-native speakers words based on the annotations collected from both native and non-native speakers. 
-The analysis \citep{Yimam-BEA2018} of 12 submitted systems and 11 system description papers from 30 teams shows that traditional feature engineering-based approaches (mostly involving words' length and frequency features) still perform better than neural network and word embedding-based approaches. This time much more participants used deep learning approach in their solutions, which resulted in significant improvement of performance in CWI task on monolingual English track: the top rank systems reached from 0.811 to 0.874 F-score for different English datasets. At the same time cross-lingual German, Spanish and French tracks resulted in slightly lower F-score: 0.745, 0.769 and 0.759 correspondingly. Nevertheless, cross-lingual results were considered highly promising. This point was the most important finding of this shared task. 
+The analysis \citep{Yimam-BEA2018} of 12 submitted systems and 11 system description papers from 30 teams shows that traditional feature engineering-based approaches (mostly involving words' length and frequency features) still perform better than neural network and word embedding-based approaches. This time much more participants used deep learning approach in their solutions, which resulted in significant improvement of performance in CWI task on monolingual English track: the top rank systems reached from 0.811 to 87.4 F-score for different English datasets. At the same time cross-lingual German, Spanish and French tracks resulted in slightly lower F-score: 74.5, 76.9 and 75.9 correspondingly. Nevertheless, cross-lingual results were considered highly promising. This point was the most important finding of this shared task. 
 
 Among the deep learning solutions used for resolving the CWI 2018 Shared Task  there were:
 \begin{itemize}
     \item application of Convolutional Neural Network (CNN) for the first time for CWI task \citep{Aroyehun-BEA2018}. The solution is based on 2D convolution and word-embedding representation of the target text fragment and its context. The CNN-based system did not show significant improvement in performance compared to an alternative system based in feature engineering and Tree Ensembles developed by the same team. 
     
-    \item a DNN which was feed with both word-level and character-level embeddings \citep{DeHertog-ACL2018}. The word-level representations were trained by team on their own on COW-corpora\footnote{\url{https://corporafromtheweb.org/}} with gensimfootnote{\url{https://radimrehurek.com/gensim/}} implementation of word2vec model (described in the next chapter \ref{sec:word2vec}). The character-level embeddings were trained by the DNN itself when learning to classify words into complex and non-complex.
+    \item a DNN which was feed with both word-level and character-level embeddings \citep{DeHertog-ACL2018}. The word-level representations were trained by team on their own on COW-corpora\footnote{\url{https://corporafromtheweb.org/}} with gensim\footnote{\url{https://radimrehurek.com/gensim/}} implementation of word2vec model (described in the next chapter \ref{sec:word2vec}). The character-level embeddings were trained by the DNN itself when learning to classify words into complex and non-complex.
 \end{itemize}
 
 In contrast to the last solution, in this work, we test the performance of FastText (described in the next chapter \ref{sec:fasttext}), which is a word2vec's modification and captures not only distributional properties of words but also morphological ones, as this model is trained on subword instead of word level. And again, in  CWI 2018 Shared Task words were provided in context, which is different to our setting.
 
 
-\subsection{Medical domain}
+\subsection{Medical area}
 Not so much effort has been devoted to the exploitation of NLP potential in the measurement of readability of medical texts.
 In the biomedical domain, the readability assessment currently is approached as a classification task as well as in general language. The difference is that here a much smaller variety of features has been tested. The following feature types are mostly used for processing of biomedical documents:
 \begin{itemize}
     \item a combination of classical readability formulas
 with medical terminologies \citep{Kokkinakis-2006};
-    \item n-grams of characters \citep{Poprat-MIE2006}, 
-    \item stylistic \citep{Grabar-AMIA2007} or discursive \citep{Goeuriot-LREC2008} features which characterize the discourse of documents,
-    \item lexicon features, for example, lexical density - the number of unique number of words within a given unit (e.g. sentence, document) \citep{Miller-HICSS2007},
-    \item morphological features \citep{Chmielik-TAL2011},
-    \items combinations of different features from the listed above
+    \item n-grams of characters \citep{Poprat-MIE2006}; 
+    \item stylistic \citep{Grabar-AMIA2007} or discursive \citep{Goeuriot-LREC2008} features which characterize the discourse of documents;
+    \item lexicon features, for example, lexical density - the number of unique number of words within a given unit (e.g. sentence, document) \citep{Miller-HICSS2007};
+    \item morphological features \citep{Chmielik-TAL2011};
+    \item combinations of different features from the listed above
     \citep{Zeng-MEDINFO2007}.
 \end{itemize}
 
 Among the recent experiments dedicated to readability study in the medical domain are, for example, the following: 
 \begin{itemize}
     \item manual rating of medical words \citep{Zheng-AMIA2002},
-    \item automatic rating of medical words on the basis of their presence in different vocabularies
-    \citep{Borst-MIE2008},
+    \item automatic rating of medical words on the basis of their presence in different vocabularies \citep{Borst-MIE2008},
     \item exploitation of machine learning approach
     with various features \citep{Grabar-PITR2014}.
 \end{itemize}
-The last experiment achieved up to 0.85 F-measure on individual annotations.
+The last experiment achieved up to 85.0 F-score on individual annotations.
 
+\bigskip
 Due to the recent significant advance in readability study in general language and relatively slow progress with the task in the medical area, there is a great potential of experimenting with the application of various machine learning-based approaches on medical texts. This fact motivated us for for this work.

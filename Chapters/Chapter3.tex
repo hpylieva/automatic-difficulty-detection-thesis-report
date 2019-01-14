@@ -7,15 +7,13 @@
   you will describe the basic notion regarding the methodology
   described later.}
 
-In this chapter we will cover in brief the basic notion regarding the methodology we propose for the categorization of words in terms of understandibility, which is described later in chapter \ref{ch:methodology}.
+In this chapter we will cover in brief the basic notion regarding the methodology we propose for the categorization of words in terms of understandibility, which is described in chapter \ref{ch:methodology}.
 
 \section{Classification problem}
 Classification is a supervised machine learning problem. Given a set
-of $n$ attributes (features), a set of $k$ classes and \todo{``described
-  by'' rather than ``and''} a set of $m$
-labeled training instances $$\{(x_i,y_i); i=1,...,m\},$$ where $x_i$
+of $n$ attributes (features), a set of $k$ classes and described by a set of $m$ labeled training instances $$\{(x_i,y_i); i=1,...,m\},$$ where $x_i$
 is a feature vector and $y_i$  is a label, the task is to find such a
-rule\todo{I would use the word ``model''}, which predicts the class of any instance from the values of its attributes.
+model, which predicts the class of any instance from the values of its attributes.
 
 A lot of real-world problems can be considered as a classification problem, for instance \citep{Ng-2012cs229}:
 \begin{itemize}
@@ -23,8 +21,7 @@ A lot of real-world problems can be considered as a classification problem, for 
     \item distinguishing spam and non-spam emails by the words they contain,
     \item identifying fraudulent transactions among normal ones using their metadata.
 \end{itemize}
-To handle those tasks a large toolkit \todo{``set'' or ``many
-  classification algorithmes''} of classification algorithms currently exist, among which the most commonly used groups are: 
+To handle those tasks a lot of classification algorithms currently exist, among which the most commonly used groups are: 
 \begin{itemize}
  \item linear classifiers,
  \item support vector machines,
@@ -46,9 +43,8 @@ When training any machine learning model, the full set of available data is comm
 
 To evaluate a classification model predicted labels results are compared with class labels provided in development or test set. This allows checking the generalization ability of the model.
 
-Binary classifiers \todo{Maybe, you should explain what is a binary
-  classifier. Besides, confusion matrix will not be the same if you
-  have more than two labels.} are mostly evaluated using confusion matrix (fig. \ref{fig:confusion-matrix}).
+For simplicity of the explanation how a classifier is evaluated, we will consider evaluation of a binary classifier, which has only two target classes for prediction: positive and negative. 
+Binary classifiers are mostly evaluated using confusion matrix (fig. \ref{fig:confusion-matrix}).
 
 \begin{figure}[h]
     \centering
@@ -58,7 +54,7 @@ Binary classifiers \todo{Maybe, you should explain what is a binary
 \end{figure}
 
 Performance measures calculated from the confusion matrix entries are
-the following \citep{kohavi:glossary}\todo{you should cite \citep{Sebastiani2002}}:
+the following \citep{Sebastiani2002}:
 \begin{itemize}
     \item Accuracy $= (a + d)/(a + b + c + d) =
     (TN + TP)/total$ ;
@@ -130,7 +126,9 @@ An Artificial Neural Network (ANN) is a mathematical model which consists of int
     \label{fig:neural-net}
 \end{figure} 
 
-A neural network can be used for both supervised and unsupervised tasks. In the case of supervised training (such as classification), the network processes inputs and provides outputs (predictions). Predictions are then compared with the correct values of target variable values. Errors are then propagated back through the system. This process results in adjusted weights of a neural network. The aim is after many iterations of the described procedure to receive well-tweaked weights of the neural network which provide satisfactory performance of the model.
+A neural network can be used for both supervised and unsupervised tasks. In the case of supervised training (such as classification), the network processes inputs and provides outputs (predictions). Predictions are then compared with the correct values of target variable values. Errors are then propagated back through the system. This process results in adjusted weights of a neural network. The aim is after many iterations of the described procedure to receive well-tweaked weights of the neural network which provide satisfactory performance of the model. 
+
+As ANNs contain a lot of connections (which are expressed as weights in mathematical model), much data needs to pass through the model to train it well. As the data passed to model is stored in random-access memory (RAM) of the working machine during forward and backward passes, we mostly cannot pass all the available data at once to our model. That is why data is split by small portions called \textit{batches}. A complete pass of a given dataset through the model is called \textit{epoch}. It is one iteration of learning. The different number of epochs is needed to learn different DNN architectures, from 5 to hundreds. In this work, we trained neural networks for at most 16 epochs, which was enough for our task.
 
 \subsection{Recurrent neural networks}
 \label{sec:rnn}
@@ -139,7 +137,7 @@ A Recurrent Neural Network (RNN) is a type of ANN for handling sequential data b
 \begin{figure}[h]
     \centering
     \includegraphics[width=10cm]{Images/RNN-unrolled.png}
-    \caption{A rolled (on the left) and unrolled (on the right) part of RNN. At each time step $t$ the model takes the $t^{th}$ member of sequence $x_t$ and outputs a hidden state value $h_t$. Source: \citep{Olah-2015}}
+    \caption{A rolled (on the left) and unrolled (on the right) part of vanilla (or conventional) RNN. At each time step $t$ the model takes the $t^{th}$ member of sequence $x_t$ and outputs a hidden state value $h_t$. Source: \citep{Olah-2015}}
     \label{fig:rnn}
 \end{figure} 
 
@@ -158,9 +156,33 @@ where $x^{t}$ is an input vector, $y^{t}$ is an output vector and the parameters
 
 Due to the specifics of RNNs, these models are widely used not only for solving classical NLP ones like machine translation \citep{Chen-2018} and part-of-speech tagging \citep{Plank-2016}, but also for handling sequence-based tasks from other domains like program code generation \citep{Stehnii-2017} and filling missing values in multivariate time series \citep{Che-2016}.
 
+\subsubsection{Long short-term memory units}
+\label{sec:lstm}
+As it follows from fig. \ref{fig:rnn} the vanilla RNN processes information sequentially through the time in both directions, forward and backward. This means that the signal can be easily corrupted when multiplied on small numbers (near 0) several times. This is known as \textit{vanishing gradients} problem, when happends during backpropagation. This prevents a vanilla RNN from memorizing long-term dependencies.
+
+Long short-term memory (LSTM) units are designed with idea to get rid of this problem. In LSTM the repeating model has different from vanilla RNN structure (fig. \ref{fig:lstm}). Instead of having a single neural network layer, there are four, interacting in a very special way. The key \textit{distinctive feature} of LSTM is the top horizontal line which runs down the entire chain with minor linear interactions. So the information flows with this part with almost no changes \citep{Olah-2015}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=10cm]{Images/lstm.png}
+    \caption{The repeating module in an LSTM contains four interacting layers. Below are explanations of symbols used on the diagram. Source: \citep{Olah-2015}}
+    \label{fig:lstm}
+\end{figure} 
+
+The vanilla LSTM and its modifications are frequently used for building sequence-processing systems and show advantage in performance compared to other RNN units \citep{Hochreiter-1997}.
+In this work, after experimenting with different RNN architectures, an LSTM-based one showed the best results for our task \ref{appx:rnn}. 
+
 \section{Vector words representations}
 
-\textit{Word embedding} is a collective name for a set of language modeling and feature learning techniques in NLP where words or phrases from vocabulary are mapped to real-valued vectors in a predefined low-dimensional space. This concept is widely used nowadays in applications of NLP as working with word vectors of vocabulary size (thousands or millions of dimensions) is computationally hard. Whereas each high dimensional vector is sparse containing only a few "valuable" non-zero values, whi\todo{ngr: whi? you may also mention Zellig Harris who first proposed the principle of distributional methods} led to the idea that words can be represented much more densely. Mathematically this process involves a mathematical embedding from space with one dimension per word to a continuous vector space with a much lower dimension (mostly from 100 to 300 dimensions) \citep{Brownlee-2017}.
+\textit{Word embedding} is a collective name for a set of language modeling and feature learning techniques in NLP where words or phrases from vocabulary are mapped to real-valued vectors in a predefined low-dimensional space. This concept is widely used nowadays in applications of NLP as working with word vectors of vocabulary size (thousands or millions of dimensions) is computationally hard. Whereas each high dimensional vector is sparse containing only a few "valuable" non-zero values, which\todo{ngr: whi? you may also mention Zellig Harris who first proposed the principle of distributional methods} led to the idea that words can be represented much more densely. Mathematically this process involves a mathematical embedding from space with one dimension per word to a continuous vector space with a much lower dimension (mostly from 100 to 300 dimensions) \citep{Brownlee-2017}.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[height=8cm]{Images/word2vec-property.png}
+    \caption{Country and Capital Vectors Projected by PCA (Principal Component Analysis). The figure illustrates the ability of the word2vec model to organize concepts and learn the relationships between them implicitly. No supervised information about country-capital correspondence was provided to model during learning. Source: \citep{Mikolov-NIPS2013}}
+    \label{fig:word2vec-property}
+\end{figure} 
+
 
 \subsection{Word2vec} 
 \label{sec:word2vec}
@@ -182,13 +204,6 @@ Word2vec is a well-known deep-learning-based approach for receiving word embeddi
 
 A nice property of word2vec words representation is that due to the way word embeddings are learned, final vectors capture context information of words, which results in the existence of semantic word relationships, an example of which is shown on fig. \ref{fig:word2vec-property}. 
 
-\begin{figure}[h]
-    \centering
-    \includegraphics[height=8cm]{Images/word2vec-property.png}
-    \caption{Country and Capital Vectors Projected by PCA (Principal Component Analysis). The figure illustrates the ability of the model to organize concepts and learn the relationships between them implicitly. No supervised information about country-capital correspondence was provided to model during learning. Source: \citep{Mikolov-NIPS2013}}
-    \label{fig:word2vec-property}
-\end{figure} 
-%
 For this reason, such vectors are frequently used as features for many canonical NLP prediction tasks, such as part-of-speech tagging, named entity recognition \citep{Collobert:DBLP}, or classification. In our work for the same purpose, we utilized fastText word embeddings - an advanced modification of word2vec model.
 
 \subsection{FastText word representations}

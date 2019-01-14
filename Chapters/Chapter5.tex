@@ -23,12 +23,7 @@ In this research we want to provide answers to the following questions:
 \section{Feature sets}
 \subsection{Standard NLP features}
 \label{sec:standard-features}
-We will refer to the previously used NLP features described in \citep{Grabar-PITR2014} as \textit{"standard features"} (opposed to two kinds of \textit{"embeddings"} described in the next subsection). They include 24 linguistic and extra-linguistic features related to general and specialized languages. The features are computed automatically and can be grouped into ten classes: 
-
-
-\todo[inline]{In the list below, you should not use ``we'' to be
-  honest since these you received the data with the NLP features. When
-  reading the (false) impression that you compute the NLP features.}
+We will refer to the previously used NLP features described in \citep{Grabar-PITR2014} as \textit{"standard features"} (opposed to two kinds of \textit{"embeddings"} described in the next subsection). The standard features include 24 linguistic and extra-linguistic features related to general and specialized languages. The features are computed automatically and can be grouped into ten classes: 
 
 \begin{itemize}
 \item {\it Syntactic categories.}  Syntactic categories and lemmas are
@@ -39,8 +34,8 @@ We will refer to the previously used NLP features described in \citep{Grabar-PIT
   more than one category, the most frequent one is kept as feature.
   Among the main categories we find for instance nouns, adjectives,
   proper names, verbs and abbreviations.
-\item {\it Presence of words in reference lexica.} We exploit two
-  reference lexica of the French language:
+\item {\it Presence of words in reference lexica.} Two
+  reference lexica of the French language were exploited:
   TLFi\footnote{\url{http://www.atilf.fr/}} and {\it lexique.org}\footnote{\url{http://www.lexique.org/}}. TLFi is
   a dictionary of the French language covering XIX and XX
   centuries. It contains almost 100,000 entries. {\it lexique.org} is
@@ -48,43 +43,36 @@ We will refer to the previously used NLP features described in \citep{Grabar-PIT
   135,000 entries, among which inflectional forms of verbs, adjectives
   and nouns. It contains almost 35,000 lemmas.
 \item {\it Frequency of words through a non specialized search
-    engine.} For each word, we query the Google search engine in order
-  to know its frequency attested on the web.
-\item {\it Frequency of words in the medical terminology.} We also
-  compute the frequency of words in the medical terminology Snomed
-  International.
+    engine.} For each word, a query to Google search engine was sent in order to find out the frequency of the word attested on the web.
+\item {\it Frequency of words in the medical terminology.} The frequency of words in the medical terminology Snomed International was computed.
 \item {\it Number and types of semantic categories associated to
-    words.} We exploit the information on the semantic categories of
-  Snomed International.
+    words.} The information on the semantic categories of
+  Snomed International was exploited.
 \item {\it Length of words in number of their characters and
-    syllables.} For each word, we compute the number of its characters
-  and syllables.
-\item {\it Number of bases and affixes.} Each lemma is analyzed by the
+    syllables.} For each word, the number of its characters
+  and syllables was computed.
+\item {\it Number of bases and affixes.} Each lemma was analyzed by the
   morphological analyzer D\'erif \citep{Namer-AMIA2004}, adapted to the
   treatment of medical words. It performs the decomposition of lemmas
   into bases and affixes known in its database and it provides also
-  semantic explanation of the analyzed lexemes. We exploit the
+  semantic explanation of the analyzed lexemes. The
   morphological decomposition information (number of affixes and
-  bases).
-\item {\it Initial and final substrings of the words.}  We compute the
-  initial and final substrings of different length, from three to five
-  characters.
+  bases) was exploited.
+\item {\it Initial and final substrings of the words.} Initial and final substrings of different length, from three to five characters, were computed.
 \item {\it Number and percentage of consonants, vowels and other
-    characters.} We compute the number and the percentage of
+    characters.} The number and the percentage of
   consonants, vowels and other characters (i.e., hyphen, apostrophe,
-  comas).
-\item {\it Classical readability scores.} We apply two classical
-  readability measures: Flesch \citep{Flesch1948} and its variant
-  Flesch-Kincaid \citep{Kincaid-1975}. Such measures are typically used
-  for evaluating the difficulty level of a text. They exploit surface
+  comas) was computed.
+\item {\it Classical readability scores.} Two classical
+  readability measures were applied: Flesch \citep{Flesch1948} and its variant Flesch-Kincaid \citep{Kincaid-1975}. Such measures are typically used for evaluating the difficulty level of a text. They exploit surface
   characteristics of words (number of characters and/or syllables) and
   normalize these values with specifically designed coefficients.
 \end{itemize}
-%%
+
 
 \subsection{FastText word embeddings usage}
 
-FastText word embeddings \cite{Bojanowski-ACL2017} is a good candidate as features for words difficulty detection task because they are able to use words' morphological information and generalize over it. The fact that word embeddings capture context and morphological information leads to the hypothesis that incorporating this information as features will improve classification accuracy for our specific problem. FastText embedding vectors are the sum of character n-gram representations, so that they could be generated even for unknown words. As we found out, being trained on Wikipedia and Common Crawl\footnote{\url{http://commoncrawl.org/}} texts the portion of known words from our dataset for current FastText embeddings is quite big. According to our analysis, 44.26\% (13,118 out of 29,641) medical words in the dataset and 56.00\% (16,598 out of 29,641) lowercased medical words in the dataset were used for training of the currently published FastText\footnote{\url{https://fasttext.cc}} model for French.
+FastText word embeddings (described in section \ref{sec:fasttext}) is a good candidate as features for words difficulty detection task because they are able to use words' morphological information and generalize over it. The fact that word embeddings capture context and morphological information leads to the hypothesis that incorporating this information as features will improve classification accuracy for our specific problem. FastText embedding vectors are the sum of character n-gram representations, so that they could be generated even for unknown words. As we found out, being trained on Wikipedia and Common Crawl\footnote{\url{http://commoncrawl.org/}} texts the portion of known words from our dataset for current FastText embeddings is quite big. According to our analysis, 44.26\% (13,118 out of 29,641) medical words in the dataset and 56.00\% (16,598 out of 29,641) lowercased medical words in the dataset were used for training of the currently published FastText\footnote{\url{https://fasttext.cc}} model for French.
 
 \subsection{French RNN Medical Understandability Text Embeddings (FrnnMUTE)}
 \label{sec:frnnmute-learning}
@@ -102,30 +90,9 @@ We utilized this idea for representing words from our dataset. To receive word r
 
 As a direct classifier, we trained a character-level RNN using PyTorch framework\footnote{\url{https://pytorch.org/}} and one GPU Tesla K80. For training we lowercased all words, converted them to a singular form and substituted all Unicode symbols with ASCII analogs.  We tried several RNN architectures and hyperparameter sets; the detailed information is available in Appendix \ref{appx:rnn}. 
 
+The best F1-weighted on three classes we got for an RNN with to unidirectional Long short-term memory (LSTM) units (described in \ref{sec:lstm}), each with 50 hidden units. The dropout of the model is 0.7. The input size is 57 as the number of unique characters in lowercased and converted to ASCII input words. The output size is 3 as the number of classes in our data.
 
-The best F1-weighted on three classes we got for the following setting:
-
-\begin{lstlisting}[language=Python]
-{
-'test_size': 0.1
-'model': RNN(
-  (lstm): LSTM(input_size=57, hidden_size=50, num_layers=2,
-               dropout=0.7, bidirectional=False)
-  (fc): Linear(in_features=50, out_features=3, bias=True))
-}
-\end{lstlisting}
-
-\todo[inline]{Don't expect that everybody understand the code
-  above. So you should not put code in the text (at least here), but
-  explain the parameter values (test\_size, input\_size, etc.) and the
-  configuration (what is LSTM ? FC ?). You never mention LSTM before.}
-
-
-This model reached the best performance on the eighth epoch \todo{you
-  must explain what is a epoch and maybe the impact on the results and
-  the system} with $F1= 78.94$ and $accuracy =
-81.21\%$\todo{Is the evaluation performed with development set or with
-cross-validation?}. Using this model we received 50-dimensional words' representations which we called FrnnMUTE (French RNN Medical Understandability Text Embeddings). 
+This model reached the best performance on the eighth epoch with $F1= 78.94$ and $accuracy = 81.21\%$ on development set. Using this model we received 50-dimensional words' representations which we called FrnnMUTE (French RNN Medical Understandability Text Embeddings). 
 
 
 \section{Cross-validation scenarios}
