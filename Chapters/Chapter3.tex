@@ -1,13 +1,7 @@
 \chapter{Background Information}
 \label{ch:background-information}
 
-\todo[inline]{you should add a paragraph which introduces the
-  chapter. Currently it is a little bit abrupt. This paragraph must
-  provide the reasons you address your problem in that way and that
-  you will describe the basic notion regarding the methodology
-  described later.}
-
-In this chapter we will cover in brief the basic notion regarding the methodology we propose for the categorization of words in terms of understandibility, which is described in chapter \ref{ch:methodology}.
+In this chapter we will cover in brief the basic notion regarding the methodology we propose for the detection of words dificulty. The methodology itself is described in chapter \ref{ch:methodology}.
 
 \section{Classification problem}
 Classification is a supervised machine learning problem. Given a set
@@ -21,18 +15,12 @@ A lot of real-world problems can be considered as a classification problem, for 
     \item distinguishing spam and non-spam emails by the words they contain,
     \item identifying fraudulent transactions among normal ones using their metadata.
 \end{itemize}
-To handle those tasks a lot of classification algorithms currently exist, among which the most commonly used groups are: 
-\begin{itemize}
- \item linear classifiers,
- \item support vector machines,
- \item nearest neighbors,
- \item decision trees,
- \item artificial neural networks.
-\end{itemize} 
+To handle those tasks a lot of classification algorithms currently exist, among which the most commonly used groups are linear classifiers, support vector machines, nearest neighbors classifiers, decision trees, artificial neural networks.
 
 We will concentrate on the last two further in this chapter.
 
 \subsection{Classifier performance evaluation}
+\label{sec:clf-eval}
 
 When training any machine learning model, the full set of available data is commonly split into several parts:
 \begin{enumerate}
@@ -69,7 +57,7 @@ the following \citep{Sebastiani2002}:
     \item False negative rate $= c/(c + d) = FN/actual\: positive$ .
 \end{itemize}
 
-One of the measures above is not enough to evaluate a binary classifier properly when data is class imbalanced\todo{So, what is the solution? I.e. you should go further. In particular, in case of unbalanced data, it is usual to evaluate the results in terms of macro-measures, see \citep{Sebastiani2002}}. For instance, on fig. \ref{fig:classifiers-evaluation} the accuracy is high and equal for both situations, but precision and recall differ significantly. 
+One of the measures above is not enough to evaluate a binary classifier properly when data is class imbalanced. For instance, on fig. \ref{fig:classifiers-evaluation} the accuracy is high and equal for both situations, but precision and recall differ significantly. 
 
 \begin{figure}[h]
     \centering
@@ -84,9 +72,26 @@ Moreover, it is always a question what to prioritize, precision or recall, and h
     F_{1}=2\cdot {\frac {\mathrm {precision} \cdot \mathrm {recall} }{\mathrm {precision} +\mathrm {recall} }}
 \end{equation} 
 
-In our experiments described in chapter \ref{ch:experiments} we work with multiclass classification problem on unbalanced datasets (Table \ref{tab:annot-results}). The quality of the applied classification algorithms is evaluated using four standard measures: accuracy $A$, precision $P$, recall $R$ and F1-measure $F$. To effectively measure the ability of a model to distinguish between three target classes of words in an unbalanced dataset we use the weighted average of three one-vs-rest binary classifiers. 
+In our experiments described in chapter \ref{ch:experiments} we work with multiclass classification problem on unbalanced datasets (Table \ref{tab:annot-results}). The quality of the applied classification algorithms is evaluated using four standard measures: accuracy $A$, precision $P$, recall $R$ and F1-measure $F$. To effectively measure the ability of a model to distinguish between three target classes of words in an unbalanced dataset we use \textit{macroaveraging} of three one-vs-rest binary classifiers. Macroaveraging is a method to measure multiclass classifier in case of unbalanced dataset \citep{Sebastiani2002}. Precision and recall are first evaluated `locally' for each class and then `globally' by averaging over the results of the different categories:
 
-\todo[inline]{you should define the weighted average. As said previously, in case of unbalanced and multiclass data, macro-measures give good information on the quality of the results. Besides, in the chapter~\ref{ch:experiments}, you mention that you used cross-validation. It is important to define it here.}
+\begin{equation}
+    P^M = \dfrac{\sum_{i=1}^{|C|} P_i}{|C|},\: R^M = \dfrac{\sum_{i=1}^{|C|} R_i}{|C|},
+\end{equation}
+
+where:
+\begin{conditions}
+ M      & for macroaveraging, \\
+ C &  $\{c_1, ..., c_{|C|}\}$ - set of classes,\\ 
+ |.| &  capacity (number of samples),  \\   
+ |C| & total number of samples in the dataset.
+\end{conditions}
+
+\subsection{Cross-validation}
+\label{sec:cross-val}
+
+\textit{Cross-validation} (also called \textit{out-of-sample testing} or \textit{rotation estimation}) is a model validation technique for assessing how the results of a statistical analysis will generalize to an independent data set \citep{Kohavi-1995}. To perform a cross-validation the full dataset $D$ is randomly split into $k$ mutually exclusive subsets (the \textbf{folds}) $D_1, D_2, ..., D_3$ of approximately equal size. Then the model is trained and tested $k$ times. Each time $t \in \{1,2,...,k\}$ it is trained on all fords except for $t^{th}$ one: $D\D_t$, - and tested on $D_t$. The chosen performance measure $\pi$ is calculated at each time $t$ on test set and then averaged resulting to cross-validation performance estimate: $\pi_{CV} = 1/n \sum_{t=1}^{k}\pi_i$.
+
+Mostly cross-validation is performed within the instances of dataset (rows in case of table data). Whereas in this work we propose to cross-validate also within different target columns (annotations) and within instances and target columns simultaneously (chapter \ref{ch:methodology}).
 
 \section{Decision trees}
 Decision trees can be used for both regression and classification tasks. Learning a decision tree is the construction of a tree-like model out of class-labeled training tuples. An example of a decision tree is shown on fig. \ref{fig:decision-tree}. Such model is, in fact, a sequence of conditional control statements based on values of feature vectors characterizing input observations. 
@@ -100,7 +105,7 @@ Decision trees can be used for both regression and classification tasks. Learnin
 % \includegraphics[height=5cm]{Decision tree} 
 
 A decision tree is mostly learned using the recursive binary splitting technique. In this process on each step, an algorithm is aimed to find the best feature and splitting condition to finally come up with the shortest path to the final decision.
-Learning an optimal binary decision tree in such a way is an NP-complete problem \citep{Hyafil-1976}. For this reason on practice greedy heuristic algorithms are used, where locally optimal decisions are made at each node. In this work we use an implementation of popular ID3 (Iterative Dichotomiser 3) algorithm \citep{Quinlan-1986} in all our experiments \ref{ch:experiments}. Using decision trees in applications of evidence-based medicine is common as this model is conceptually simple, provides high accuracy and mimics the way a doctor thinks \citep{Sackett-1996, Podgorelec-2002}. \todo[inline]{it also gives clear explanation of the class choice, since it  is important for medicine to have a traceability of the results. Note that for NLP, it gives also similar interesting information on the relevant features or feature values.}
+Learning an optimal binary decision tree in such a way is an NP-complete problem \citep{Hyafil-1976}. For this reason on practice greedy heuristic algorithms are used, where locally optimal decisions are made at each node. In this work we use an implementation of popular ID3 (Iterative Dichotomiser 3) algorithm \citep{Quinlan-1986} in all our experiments \ref{ch:experiments}. Using decision trees in applications of evidence-based medicine is common as this model is conceptually simple, provides high accuracy and mimics the way a doctor thinks \citep{Sackett-1996, Podgorelec-2002}. Moreover, decision trees give clear explanation of the class choice, which is valuable for medicine where it is important to have the traceability of the results. For NLP tasks deision trees similarly provide valuable information on the relevant features and/or feature values.
 
 To sum up, the advantages of decision trees are:
 \begin{itemize}
@@ -174,7 +179,7 @@ In this work, after experimenting with different RNN architectures, an LSTM-base
 
 \section{Vector words representations}
 
-\textit{Word embedding} is a collective name for a set of language modeling and feature learning techniques in NLP where words or phrases from vocabulary are mapped to real-valued vectors in a predefined low-dimensional space. This concept is widely used nowadays in applications of NLP as working with word vectors of vocabulary size (thousands or millions of dimensions) is computationally hard. Whereas each high dimensional vector is sparse containing only a few "valuable" non-zero values, which\todo{ngr: whi? you may also mention Zellig Harris who first proposed the principle of distributional methods} led to the idea that words can be represented much more densely. Mathematically this process involves a mathematical embedding from space with one dimension per word to a continuous vector space with a much lower dimension (mostly from 100 to 300 dimensions) \citep{Brownlee-2017}.
+\textit{Word embedding} is a collective name for a set of language modeling and feature learning techniques in NLP where words or phrases from vocabulary are mapped to real-valued vectors in a predefined low-dimensional space. This concept is widely used nowadays in applications of NLP as working with word vectors of vocabulary size (thousands or millions of dimensions) is computationally hard. Whereas each high dimensional vector is sparse containing only a few "valuable" non-zero values, which led to the idea that words can be represented much more densely \citep{Harris-1954}. Mathematically this process involves a mathematical embedding from space with one dimension per word to a continuous vector space with a much lower dimension (mostly from 100 to 300 dimensions) \citep{Brownlee-2017}.
 
 \begin{figure}[h]
     \centering
@@ -213,10 +218,11 @@ In NLP applications it is common to use pre-trained word representations estimat
 
 FastText is a skip-gram model trained on \textit{n-grams} level
 introduced in \cite{Bojanowski-ACL2017}. In this approach, each word
-is represented as a sum of\todo{I don't know what is the sum of
-  n-grams. Why not just say ``n-grams'' (without sum)?} n-grams its
-components\todo{what are theyr components? characters?}. This makes it easy to represent any OOV word. Pre-trained word vectors for 157 languages using fastText were received and made public \footnote{\url{https://fasttext.cc/docs/en/crawl-vectors.html}} by Facebook Research in 2017 \citep{Mikolov-2017}. The results of applying those vectors for the French language on our dataset are described in \ref{sec:cv-experiments}.
+is represented as a sum of character n-gram representations of this word's
+components. This makes it easy to represent any OOV word. Pre-trained word vectors for 157 languages using fastText were received and made public \footnote{\url{https://fasttext.cc/docs/en/crawl-vectors.html}} by Facebook Research in 2017 \citep{Mikolov-2017}. The results of applying those vectors for the French language on our dataset are described in \ref{sec:cv-experiments}.
 
-% \subsection{Representations from RNN}
+FastText embedding vectors are the sum of character n-gram representations, so that they could be generated even for unknown words. 
 
-\todo[inline]{you should add a (small) conclusion}
+
+\bigskip
+In this chapter we provided the background information which briefly describes all the components of our proposed methods. In the next chapter we will describe the dataset used in experiments.

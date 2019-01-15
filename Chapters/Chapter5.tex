@@ -27,8 +27,7 @@ We will refer to the previously used NLP features described in \citep{Grabar-PIT
 
 \begin{itemize}
 \item {\it Syntactic categories.}  Syntactic categories and lemmas are
-  computed by TreeTagger \citep{Schmid-1994} and then checked
-  \todo{th: corrected} by Flemm
+  computed by TreeTagger \citep{Schmid-1994} and then checked by FLEMM
   \citep{Namer-TAL2000}.  The syntactic categories are assigned to
   words within the context of their terms.  If a given word receives
   more than one category, the most frequent one is kept as feature.
@@ -72,7 +71,10 @@ We will refer to the previously used NLP features described in \citep{Grabar-PIT
 
 \subsection{FastText word embeddings usage}
 
-FastText word embeddings (described in section \ref{sec:fasttext}) is a good candidate as features for words difficulty detection task because they are able to use words' morphological information and generalize over it. The fact that word embeddings capture context and morphological information leads to the hypothesis that incorporating this information as features will improve classification accuracy for our specific problem. FastText embedding vectors are the sum of character n-gram representations, so that they could be generated even for unknown words. As we found out, being trained on Wikipedia and Common Crawl\footnote{\url{http://commoncrawl.org/}} texts the portion of known words from our dataset for current FastText embeddings is quite big. According to our analysis, 44.26\% (13,118 out of 29,641) medical words in the dataset and 56.00\% (16,598 out of 29,641) lowercased medical words in the dataset were used for training of the currently published FastText\footnote{\url{https://fasttext.cc}} model for French.
+FastText word embeddings (described in section \ref{sec:fasttext}) is a good candidate as features for words difficulty detection task because they are able to use words' morphological information and generalize over it. The fact that word embeddings capture context and morphological information leads to the hypothesis that incorporating this information as features will improve classification accuracy for our specific problem. 
+
+We found out that FastText word embeddings trained on Wikipedia and Common Crawl\footnote{\url{http://commoncrawl.org/}} texts have a quite big portion of \textit{known} (learned) words from our dataset.
+According to our analysis, 44.26\% (13,118 out of 29,641) medical words in the dataset and 56.00\% (16,598 out of 29,641) lowercased medical words in the dataset were used for training of the currently published FastText\footnote{\url{https://fasttext.cc}} model for French.
 
 \subsection{French RNN Medical Understandability Text Embeddings (FrnnMUTE)}
 \label{sec:frnnmute-learning}
@@ -90,7 +92,7 @@ We utilized this idea for representing words from our dataset. To receive word r
 
 As a direct classifier, we trained a character-level RNN using PyTorch framework\footnote{\url{https://pytorch.org/}} and one GPU Tesla K80. For training we lowercased all words, converted them to a singular form and substituted all Unicode symbols with ASCII analogs.  We tried several RNN architectures and hyperparameter sets; the detailed information is available in Appendix \ref{appx:rnn}. 
 
-The best F1-weighted on three classes we got for an RNN with to unidirectional Long short-term memory (LSTM) units (described in \ref{sec:lstm}), each with 50 hidden units. The dropout of the model is 0.7. The input size is 57 as the number of unique characters in lowercased and converted to ASCII input words. The output size is 3 as the number of classes in our data.
+The best F score macroaveraged (sec. \ref{sec:clf-eval}) on three classes we got for an RNN with two unidirectional long short-term memory (LSTM) units (described in \ref{sec:lstm}), each with 50 hidden units. The dropout of the model is 0.7. The input size is 57 as the number of unique characters in lowercased and converted to ASCII input words. The output size is 3 as the number of classes in our data.
 
 This model reached the best performance on the eighth epoch with $F1= 78.94$ and $accuracy = 81.21\%$ on development set. Using this model we received 50-dimensional words' representations which we called FrnnMUTE (French RNN Medical Understandability Text Embeddings). 
 
@@ -101,30 +103,19 @@ For a thorough study of generalization abilities of the developed in this work c
 \begin{figure}[h]
     \centering
     \includegraphics[width=14cm]{Images/Experiments.png}
-    \caption{Visual description of experiments.}
+    \caption{Visual description of the cross-validation experiments. By rows are experiment types. By columns there are users (annotators) depicted as icons of human beings and sets of vocabulary used during training and testing. Different colors in train and test colors means that different users were used. Different shapes of geometrical figures depicting vocabulary subsets in train and test means that different subsets of vocabulary were used during training and testing phases.}
     \label{fig:experiments-description}
 \end{figure} 
 
 \begin{enumerate}
-    \item \textbf{User-in vocabulary-out cross-validation.} This type of experiment follows the scenario from the paper \citep{Grabar-PITR2014} we compare the results with throughout this work.  The cross-validation is done on each dataset (i.e., each user's annotation) separately. The goal of these experiments is to measure the ability of the method (classification model) to generalize class recognition on the \textit{known user} and his known manner to annotate words (that is, his understanding of the meaning of medical words) for \textit{unknown words}. 
-
-\todo[inline]{In a pratical perspective: You may introduce the fact that user-in correspond to
-  learning the profile of a user. So the model is a representation of
-  the understanding/knowledge of the annotator.}
+    \item \textbf{User-in vocabulary-out cross-validation.} This type of experiment follows the scenario from the paper \citep{Grabar-PITR2014} we compare the results with throughout this work.  The cross-validation is done on each dataset (i.e., each user's annotation) separately. The goal of these experiments is to measure the ability of the method (classification model) to generalize class recognition on the \textit{known user} and his known manner to annotate words (that is, his understanding of the meaning of medical words) for \textit{unknown words}.  From the practical prospective, \textit{user-in} means learning the profile of a user. So a model trained by such scenario represents the words understanding or knowledge of the annotator.
       
-    \item \textbf{User-out vocabulary-in cross-validation.} In this experiment, we learn from all the annotations of one user and then test the model on annotations of another user. Thereby, in such a setting, we measure the ability of the classifier to generalize on all known words, but for unknown users. This scenario is realistic to a real-world situation: the reference annotations can be obtained only from a couple of users, presumably representing the overall population, but not from all the possible users. Yet, it is necessary to predict the familiarity of medical words for all the potential users even if they did not participate in the annotations.
-
-\todo[inline]{similarly here, you can go further: The model represents the profile of a
-  user/annotator and you try to identify if a new user has the same
-  profile as a another. In that respect, for a user, the model that
-  matches may be used to identify not understandable words for the new
-user.}
+    \item \textbf{User-out vocabulary-in cross-validation.} In this experiment, we learn from all the annotations of one user and then test the model on annotations of another user. Thereby, in such a setting, we measure the ability of the classifier to generalize on all known words, but for unknown users. This scenario is realistic to a real-world situation: the reference annotations can be obtained only from a couple of users, presumably representing the overall population, but not from all the possible users. Yet, it is necessary to predict the familiarity of medical words for all the potential users even if they did not participate in the annotations. In this scenario, the model learns the profile of a
+  user and we want to identify whether a new user has the same
+  profile as a another. If the model predicts well for a new user, then it can be used for identification of not understandable words for the new user. 
       
-    \item \textbf{User-out vocabulary-out cross-validation.} In this experiment, we take (k-1) folds of data from one user for training and use k-th fold for testing from the remaining user. In this case, we measure the ability of the method to generalize both on \textit{unknown users} and \textit{ unknown vocabulary}.
-
-\todo[inline]{I think (but I'm not quite sure) that this last experiment must give you an idea of how many
-  words you need to determine whether the profile of a user is the
-  same as another.}
+    \item \textbf{User-out vocabulary-out cross-validation.} In this experiment, we take (k-1) folds of data from one user for training and use k-th fold for testing from the remaining user. In this case, we measure the ability of the method to generalize both on \textit{unknown users} and \textit{ unknown vocabulary}. This experiment should be helpful in identifying the number of words needed for determining whether the profile of one user is the same as of another in case model shows good performance.
 \end{enumerate}
 
-\todo[inline]{You should add a conclusion or a discussion}
+\bigskip
+In this chapter, we introduce the methods which are tested in the experiments in the next chapter. Concretely, we explain our idea of using pre-trained FastText word embeddings for detection of words difficulty. Also, we describe the process of receiving the novel FrnnMUTE embeddings. Finally, we introduce the three cross-validation scenarios which we will consider during experiments and which go beyond the standard cross-validation described in section \ref{sec:cross-val}. 

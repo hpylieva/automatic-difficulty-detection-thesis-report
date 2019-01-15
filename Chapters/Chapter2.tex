@@ -29,6 +29,7 @@ Related to this issue is the question on the generalizability of data and models
 \section{Automated Readability Assessment}
 
 \subsection{General language}
+\label{sec:general-lang}
 For general language, research actions are often performed as part of the NLP challenges. For the case pf CWI for example, there was a shared task on CWI on SemEval-2016 NLP challenge\footnote{\url{http://alt.qcri.org/semeval2016/task11/}}. The goal was to provide a framework for the evaluation of CWI methods, which involved:
 \begin{enumerate}
     \item understanding the distinctive characteristics of words which are difficult for non-native speakers;
@@ -57,7 +58,7 @@ Our task is slightly different from the one described in SemEval-2016 Shared tas
 
 After the success of SemEval-2016, the second CWI Shared task\footnote{\url{https://sites.google.com/view/cwisharedtask2018/}} was organized at Building Educational Applications workshop 2018\footnote{\url{http://www.cs.rochester.edu/~tetreaul/naacl-bea13.html}}. This time the data was provided on four languages: English, German, Spanish and French. Whereas, for French, only the test set was available and no French training data. English corpora were extended and involved three genres: news, Wikinews and Wikipedia data. For comparison, on SemEval-2016 the corpora were formed from only Simple Wikipedia data. In 2018 the aim of the CWI Shared
 task was to identify challenging for non-native speakers words based on the annotations collected from both native and non-native speakers. 
-The analysis \citep{Yimam-BEA2018} of 12 submitted systems and 11 system description papers from 30 teams shows that traditional feature engineering-based approaches (mostly involving words' length and frequency features) still perform better than neural network and word embedding-based approaches. This time much more participants used deep learning approach in their solutions, which resulted in significant improvement of performance in CWI task on monolingual English track: the top rank systems reached from 0.811 to 87.4 F-score for different English datasets. At the same time cross-lingual German, Spanish and French tracks resulted in slightly lower F-score: 74.5, 76.9 and 75.9 correspondingly. Nevertheless, cross-lingual results were considered highly promising. This point was the most important finding of this shared task. 
+The analysis \citep{Yimam-BEA2018} of 12 submitted systems and 11 system description papers from 30 teams shows that traditional feature engineering-based approaches (mostly involving words' length and frequency features) still perform better than neural network and word embedding-based approaches. This time much more participants used deep learning approach in their solutions, which resulted in significant improvement of performance in CWI task on monolingual English track: the top rank systems reached from 81.1 to 87.4 F-score for different English datasets. At the same time cross-lingual German, Spanish and French tracks resulted in slightly lower F-score: 74.5, 76.9 and 75.9 correspondingly. Nevertheless, cross-lingual results were considered highly promising. This point was the most important finding of this shared task. 
 
 Among the deep learning solutions used for resolving the CWI 2018 Shared Task  there were:
 \begin{itemize}
