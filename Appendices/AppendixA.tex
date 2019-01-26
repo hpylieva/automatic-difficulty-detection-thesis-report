@@ -6,7 +6,7 @@ Table \ref{tab:rnn-experiments} represents the experiments we ran to choose a cl
     \item Computation engine: GPU Tesla K80.
     \item Class labels: annotator $O1$.
     \item Input data preprocessing: words are converted to lower case, Unicode converted to ASCII.
-    \item Input size: 57 (the number of distinct ASCII characters in the train dataset).
+    \item Input size: 57 (the number of distinct ASCII characters in the training dataset).
     \item Number of hidden dimensions: 50.
     \item Output size: 3 (as we classify each word into tree classes as it is in annotations).
     \item Train samples choice: randomly; the number of samples is due to specified in the experiment.
@@ -33,9 +33,9 @@ F1 Score & 0.7806 & 0.7907 & 0.7872 & 0.7905 & 0.7856 & 0.7806 & 0.7894 & 0.7929
   \label{tab:rnn-experiments}
 \end{table}
 
-To choose a model we tested the performance of a decision tree based classifier in user-in vocabulary-out cross-validation setting on FrnnMUTE the model provides. Following this way, we considered the best the model from experiment $7$ as it provided the highest average $F1$ score among seven words' annotations. 
+To choose a model we tested the performance of a decision tree based classifier in user-in vocabulary-out cross-validation setting on FrnnMUTE the model provides. Following this, we considered the model from experiment $7$ the best, as it provided the highest average $F1$ score among seven words' annotations. 
 
-From Table \ref{tab:compare-rnns} we can see that nevertheless, the BiLSTM from experiment $8$ has higher accuracy and F1 score than the LSTM from experiment $7$, FrnnMUTE from the latter generalize better in classification task solved with a decision tree. This effect is presumably due to overfitting of BiLSTM to the data it was trained on. 
+From Table \ref{tab:compare-rnns} we can see that nevertheless, the BiLSTM from experiment $8$ has higher accuracy and F1 score than the LSTM from experiment $7$, FrnnMUTE from the latter generalize better in the classification task solved with a decision tree. This effect is presumably due to overfitting of BiLSTM to the data it was trained on. 
 
 
 \begin{table}[h]

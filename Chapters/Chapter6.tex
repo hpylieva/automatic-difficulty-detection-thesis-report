@@ -158,7 +158,7 @@ $A8$&$A8$&\he{81.9}&\he{84.9}&\he{83.4}&\he{73.6}&\he{77.0}&\he{75.1}&\he{84.2}&
 The results obtained for this part are presented in Table~\ref{tab:user-out-voc-in-generalizability}. The color visually duplicates the magnitude of F1 score specified in each cell. This is done for an easier comprehension of the table. We can make several observations on these results:
 
 \begin{enumerate}[listparindent=1.5em]
-    \item The used features show an impact on the results. Thus, standard features usually show better F1 than FastText word embeddings. One explanation is that standard features include 24 individual features covering different aspects of the linguistic and non-linguistic description of words, while the pretrained FastText word embeddings rely only on the distribution of words and their similarity. Yet, the combination of two features (standard and FastText embeddings) usually improves overall results, sometimes going to up to 4.8 improvement of F-measure.  We hypothesize that there exists a robust nonlinear dependency between some subsets of standard features and subword-level components of FastText word embeddings. Testing this hypothesis is the topic of our further research.
+    \item The used features show an impact on the results. Thus, standard features usually show better F1 than FastText word embeddings. One explanation is that standard features include 24 individual features covering different aspects of the linguistic and non-linguistic description of words, while the pre-trained FastText word embeddings rely only on the distribution of words and their similarity. Yet, the combination of two features (standard and FastText embeddings) usually improves overall results, sometimes going to up to 4.8 improvement of F-measure.  We hypothesize that there exists a robust nonlinear dependency between some subsets of standard features and subword-level components of FastText word embeddings. Testing this hypothesis is the topic of our further research.
     
     \item Recall values are always higher than Precision values. This means that the algorithm performs slightly better in returning most of the relevant results, than in providing correct class labels. 
     
@@ -181,9 +181,12 @@ The results obtained for this part are presented in Table~\ref{tab:user-out-voc-
 With FrnnMUTE we experimented on using them both solely and in combination with standard features and FastText word embeddings as feature sets for classifying medical words using a decision tree. The detailed results of testing FrnnMUTE in user-in vocabulary-out and user-out vocabulary-in cross-validation scenarios are displayed in Table \ref{tab:frnnmute-details} (the logic of colors is the same as in Table \ref{tab:user-out-voc-in-generalizability} and is described in the previous section). To simplify the process of analyzing and comparing the results of this and the previous part, we aggregated the resulting F1 scores for combinations of a feature set and cross-validation scenario over all available users (Table~\ref{tab:frnnmute}).  From the available results tables we can draw the following conclusions:
 \begin{enumerate}
     \item We observed that our FrnnMUTE solely perform better than FastText word embeddings solely in all cross-validation scenarios. FrnnMUTE provide the maximum among user pairs F1 score 79.5 versus 75.1 which provide FastText word embeddings in user-in vocabulary-out cross-validation; 82.4 versus 75.3 and 79.6 versus 74.9 for user-out vocabulary-in and user-out vocabulary-out scenarios correspondingly (Table \ref{tab:frnnmute-max}).
+    
     \item FrnnMUTE's results have the smallest dispersion (3.8-3.9)  among all considered "solo" feature sets types (4.8-5.3) when aggregating by all available users. This means that FrnnMUTE are more robust in generalizing information from user to user and between different subsets of vocabulary.
-    \item For user-in vocabulary-out and user-out vocabulary-out experiments the combination of standard features and FrnnMUTE in almost all cases show the best performance among all seven features sets. The improvement in F1 score over standard features with  FastText embeddings can be observed on fig. \ref{fig:f1-diff-frnnmute-ft}. We can observe that the difference in F1 reaches 2.9 for some users pairs and the maximum improvement achieved by combining standard features with FrnnMUTE over using standard features only hits 5.2 in F-measure.  This testifies that FrnnMUTE help standard linguistic and non-linguistic features to capture words' understandability better than FastText embeddings.  
-    \item The fact that the combination of all three types of feature sets performs insignificantly better of even worse than standard features with only FrnnMUTE can be explained by overfitting of the classification model in the first case as the resulting feature vector has the biggest dimensionality.
+    
+    \item For user-in vocabulary-out and user-out vocabulary-out experiments the combination of standard features and FrnnMUTE in almost all cases show the best performance among all seven features sets. The improvement in F1 score over standard features with  FastText embeddings can be observed on fig. \ref{fig:f1-diff-frnnmute-ft}. We can observe that the difference in F1 reaches 2.9 for some users pairs and the maximum improvement achieved by combining standard features with FrnnMUTE over using standard features only hits 5.2 in F-measure.  This testifies that FrnnMUTE help standard linguistic and non-linguistic features to capture word understandability better than FastText embeddings.  
+    
+    \item The fact that the combination of all three types of feature sets performs insignificantly better or even worse than standard features with only FrnnMUTE can be explained by overfitting of the classification model in the first case as the resulting feature vector has the biggest dimensionality.
 \end{enumerate}
 
 
@@ -199,7 +202,7 @@ Standard features + FT emb & 78.9 +/- 5.1 & 79.5 +/- 4.6 & 77.1 +/- 4.6 \\[10pt]
 Standard features + FrnnMUTE & 80.0 +/- 5.1 & 80.3 +/- 4.3 & 78.6 +/- 4.4 \\[10pt]
 Standard features + FT emb + FrnnMUTE & 79.9 +/- 5.0 & 80.4 +/- 4.3 & 78.1 +/- 4.3 \\ \hline
 \end{tabular}
-  \caption{Mean and standard deviation of F1 scores. Study of our FrnnMUTE's performance for words understandibility detection. The aggregation for $\mu$ and $\sigma$ is performed through all user-pairs by cross-validation experiments and feature sets combinations. For words categorization with Only standard features/ Only FastText word embeddings/ Only FrnnMUTE a decision tree of depth 4 was trained. On all the rest of feature sets a decision tree of depth 9 was trained. The pair O1-O1 for user-in vocabulary-out cross validation is excluded from the aggregation for consistency of results for all users as FrnnMUTE was trained on annotations of O1.}
+  \caption{Mean and standard deviation of F1 scores. Study of our FrnnMUTE's performance for word understandibility detection. The aggregation for $\mu$ and $\sigma$ is performed through all user-pairs by cross-validation experiments and feature sets combinations. For words categorization with Only standard features/ Only FastText word embeddings/ Only FrnnMUTE a decision tree of depth 4 was trained. On all the rest of feature sets a decision tree of depth 9 was trained. The pair O1-O1 for user-in vocabulary-out cross validation is excluded from the aggregation for consistency of results for all users as FrnnMUTE was trained on annotations of O1.}
   \label{tab:frnnmute}
 \end{table}
 
@@ -283,7 +286,7 @@ $A8$&$A2$&\he{70.4}&\he{78.1}&\he{73.7}&\he{73.1}&\he{77.3}&\he{72.9}&\he{75.5}&
 $A8$&$A7$&\he{72.6}&\he{77.2}&\he{73.7}&\he{73.5}&\he{76.5}&\he{73.0}&\he{76.2}&\he{78.7}&\he{75.3}\\
 $A8$&$A8$&\he{81.9}&\he{84.9}&\he{83.4}&\he{78.0}&\he{81.2}&\he{79.5}&\he{84.3}&\he{87.5}&\he{85.8}\\
 \end{tabular}
-  \caption{F1 score. Detailed study of FrnnMUTE’s performance for words understandibility detection.}
+  \caption{F1 score. Detailed study of FrnnMUTE’s performance for word understandibility detection.}
   \label{tab:frnnmute-details}
 \end{table*}
 
