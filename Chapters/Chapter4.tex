@@ -1,26 +1,26 @@
 \chapter{Dataset description}
 \label{ch:dataset-description}
 
-For the experiments with the supervised words' categorization task in this work we used the publicly available set of words with annotations\footnote{\url{http://natalia.grabar.free.fr/resources.php\#rated}} collected according to the procedure described in \citep{Grabar-PITR2014}. Additionally, for the research of generalization abilities of our models described in \ref{sec:generalizability-study}, we were provided with four more sets of annotations.
-The process of words' collection and annotation is briefly described below.
+For the experiments with the supervised word categorization task, we used the publicly available set of words with annotations\footnote{\url{http://natalia.grabar.free.fr/resources.php\#rated}} collected according to the procedure described in the source work \citep{Grabar-LREC2016t}. Additionally, for the research of generalization abilities of our models described in \ref{sec:generalizability-study}, we were provided with four more sets of annotations.
+The process of word collection and annotation is briefly described below.
 
 \section{Linguistic data description}
 \label{sec:linguistic-data-description}
 
-The set of required biomedical terms was obtained from the French part of Snomed International \citep{Cote-93} - a medical terminology, available from the ASIP SANTE website\footnote{\url{http://esante.gouv.fr/services/referentiels/referentiels-d-interoperabilite/snomed-35vf}}. The purpose of the terminology stored here is to provide an extensive up-to-date overview of the medical field. Snomed contains 151,104 medical terms organized into eleven semantic axes such as disorders and abnormalities, procedures, chemical products, living organisms, anatomy, social status, etc. For words' understandability study five axes related to the main medical notions were chosen: disorders, abnormalities, procedures, functions, and anatomy. These categories are assumed to contain terms which are familiar to a layman, in contrast to contents of such specific groups as chemical products (\textit{hydrogen sulfide}) and living organisms (\textit{Sapromyces, Acholeplasma laidlawii}).
+The set of required biomedical terms was obtained from the French part of Snomed International \citep{Cote-93} - a medical terminology, available from the ASIP SANTE website\footnote{\url{http://esante.gouv.fr/services/referentiels/referentiels-d-interoperabilite/snomed-35vf}}. The purpose of the terminology stored here is to provide an extensive up-to-date overview of the medical field. Snomed contains 151,104 medical terms organized into eleven semantic axes such as disorders and abnormalities, procedures, chemical products, living organisms, anatomy, and social status. For word understandability study, five axes relating to the main medical notions were chosen: disorders, abnormalities, procedures, functions, and anatomy. These categories are assumed to contain terms which are familiar to a layman, in contrast to contents of such specific groups as chemical products (\textit{hydrogen sulfide}) and living organisms (\textit{Sapromyces, Acholeplasma laidlawii}).
 
-The 104,649 selected terms were then processed. First, they were tokenized into words (or tokens) using TreeTagger \citep{Schmid-1994}. Then the result was lemmatized with FLEMM - a lammatizer for French texts \citep{Namer-TAL2000}. After that we received 29,641 unique words, for instance, the term `\textit{trisulfure d'hydrog\`{e}ne'} provided three words (\textit{trisulfure, de, hydrog\`{e}ne}).
+The 104,649 selected terms were then processed. First, they were tokenized into words (or tokens) using TreeTagger \citep{Schmid-1994}. Then the result was lemmatized with FLEMM - a lemmatizer for French texts \citep{Namer-TAL2000}. After that we received 29,641 unique words, for instance, the term `\textit{trisulfure d'hydrog\`{e}ne'} provided three words (\textit{trisulfure, de, hydrog\`{e}ne}).
 
 The final dataset contains three morphological groups of words:
 \begin{itemize}
     \item  compound words which contain several bases: abdominoplastie (abdominoplasty), dermabrasion (dermabrasion);
-    \item  constructed words which contain one base and at least one affix: cardiaque (cardiac), acineux (acinic), lipo$\mathrm{\imath}$?de (lipoid);
+    \item  constructed words which contain one base and at least one affix: cardiaque (cardiac), acineux (acinic), lipo\"\i de (lipoid);
     \item  simple words which contain one base, no affixes and possibly infections (when the lemmatization fails): acn\'{e} (acne), fragment (fragment).
 \end{itemize}
 
 \section{Annotation process}
 \label{sec:annotation-process}
-The set of 29,641 unique words was annotated by seven French speakers, 25-40-year-old, without medical training, without specific medical problems, but with the linguistic background. The annotators were expected to represent the average knowledge of medical words among the population as a whole. The annotators were presented with a list of terms and asked to assign each word to one of the three categories:
+The set of 29,641 unique words was annotated by seven French speakers, 25-40-year-old, without medical training, without specific medical problems, but with a linguistic background. The annotators were expected to represent the average knowledge of medical words among the population as a whole. The annotators were presented with a list of terms and asked to assign each word to one of the three categories:
 
 \begin{itemize}
     \item  I can understand the word;
@@ -28,7 +28,7 @@ The set of 29,641 unique words was annotated by seven French speakers, 25-40-yea
     \item  I cannot understand the word.
 \end{itemize}
 %%
-The assumption is that the words, which are not understandable by the annotators, are also difficult to understand by patients. The annotators were asked not to use dictionaries during the annotation process. The annotation results are represented in Table \ref{tab:annot-results} .
+The assumption is that the words, which are not understandable by the annotators, are also difficult to understand for the patients. The annotators were asked not to use dictionaries during the annotation process. The annotation results are represented in Table \ref{tab:annot-results}.
 
 \begin{table}[h]
 \begin{tabular}{c|MMM|c}
@@ -47,4 +47,4 @@ The assumption is that the words, which are not understandable by the annotators
 \end{table}
 
 \bigskip
-In this chapter we introduced our data source which consists of 29,641 unique French preprocessed words annotated by seven non-specialists in medical area French speakers. The annotation characterizes the understandability of the word for annotator. As a result, each word was assigned one of three categories. In the next chapter, we will describe the process of feature generation for the words from our dataset and resolving a multiclass classification task based on user annotations.
+In this chapter, we introduced our data source which consists of 29,641 unique French preprocessed words annotated by seven French speakers who are non-specia-lists in the medical sphere. The annotation characterizes the understandability of the word for annotator. As a result, each word was assigned one of three categories. In the next chapter, we will describe the process of feature generation for the words from our dataset and resolving a multiclass classification task based on user annotations.

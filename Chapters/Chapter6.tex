@@ -1,13 +1,11 @@
 \chapter{Experiments}
 \label{ch:experiments}
 
-% \todo{Add trees depth for all tables. White about users == annotators}
-
-We conducted a series of experiments to study the impact of adding vector words' representations as features for a classification model on the quality of the words' categorization. As in this work we compare results with ones in \citep{Grabar-PITR2014}, we first, reproduce results from the paper on the same datasets. Then we check how FastText word embeddings influence the quality of classification in different cross-validation scenarios. We notice that in one scenario FastText word embeddings significantly and confidently improve the performance of the classification model, so the next step is to study whether this model generalizes well on a greater variety of users. Finally, we study how FrnnMUTE used as features impact on classification quality in all the same cross-validation scenarios as considered previously and on all available user annotations.
+We conducted a series of experiments to study the impact of adding vector word representations as features for a classification model on the quality of the word categorization. As in this work we compare results with ones in \cite{Grabar-PITR2014}, we first, reproduce results from the paper on the same datasets. Then we check how FastText word embeddings influence the quality of classification in different cross-validation scenarios. We notice that in one scenario FastText word embeddings significantly and confidently improve the performance of the classification model, so the next step is to study whether this model generalizes well on a greater variety of users. Finally, we study how FrnnMUTE used as features impact on classification quality in all the same cross-validation scenarios as considered previously and on all available user annotations.
 
 \section{Reproduction of previous results}
 
-In \citep{Grabar-PITR2014} the classification methods were obtained using WEKA\footnote{\url{https://www.cs.waikato.ac.nz/ml/weka/}} - a collection of machine learning algorithms for data mining tasks implemented on Java. In our research as a tool to conduct experiments, we used Python as there are a lot of stable third-party Python libraries that make it convenient for research. In order to ensure the consistency of experiments in this work and in \citep{Grabar-PITR2014}, firstly, we reproduced the results in WEKA using the pre-computed set of standard features described in the previous section \ref{sec:standard-features} and \textit{J48} classification algorithm - a WEKA implementation of C4.5 decision tree based algorithm described in \cite{Quinlan1993}. Our results perfectly match with ones presented in the paper. 
+In \cite{Grabar-PITR2014} the classification methods were obtained using WEKA\footnote{\url{https://www.cs.waikato.ac.nz/ml/weka/}} - a collection of machine learning algorithms for data mining tasks implemented on Java. In our research as a tool to conduct experiments, we used Python as there are a lot of stable third-party Python libraries that make it convenient for research. In order to ensure the consistency of experiments in this work and in \cite{Grabar-PITR2014}, firstly, we reproduced the results in WEKA using the pre-computed set of standard features described in the previous section \ref{sec:standard-features} and \textit{J48} classification algorithm - a WEKA implementation of C4.5 decision tree based algorithm described in \cite{Quinlan1993}. Our results perfectly match with ones presented in the paper. 
 
 Secondly, we developed a solution in Python based on DT classifier from well-known scikit-learn library\footnote{\url{http://scikit-learn.org}}. At this step we got 0.85-1.41 lower $F$ scores for scikit-learn classifier compared to WEKA results (Table \ref{tab:results-reproduction}).
 
@@ -23,16 +21,14 @@ $O3$ & 84.5 & 84.5 & 83.2 \\ \hline
     \label{tab:results-reproduction}
 \end{table*}
 
-Since the input features were identical for both of WEKA and scikit-learn frameworks, we concluded that the little degradation of quality in case of using scikit-learn is caused by the difference in implementations of decision tree classifiers in these frameworks. In all subsequent experiments, we will use a scikit-learn classification DT model for convenient experiments' results comparison. We will introduce slight changes in depth of a DT for different dimensions of feature sets.
+Since the input features were identical for both of WEKA and scikit-learn frameworks, we concluded that the little degradation of quality in case of using scikit-learn is caused by the difference in implementations of decision tree classifiers in these frameworks. In all subsequent experiments, we will use a scikit-learn classification DT model for the convenient comparison of experimental results. We will introduce slight changes in the depth of a DT for different dimensions of feature sets.
 
 
 \section{Experiments with cross-validation scenarios}
 \label{sec:cv-experiments}
 \subsection{User-in vocabulary-out cross-validation}
 
-% These experiments also follow the scenario from \cite{Grabar-PITR2014}. The cross-validation is done on each dataset (i.e., each user's annotation) separately. The goal of these experiments is to measure the ability of the method to generalize class recognition on the \textit{known user} and his known manner to annotate words (that is, his understanding of the meaning of medical words) for \textit{unknown words}. 
-
-We carried out the experiments using (i) the standard features only, (ii) the FastText word embeddings only and (iii) their combination. Experiments with isolated FastText word embeddings as features and the data from three annotators resulted in poor F1 scores (Table \ref{tab:user-in-voc-out}), that can be treated that contextual information which is dominant in the word embeddings is not enough to define the word understandability. Adding the FastText word embeddings to the standard feature set resulted in up to 1.0 higher F1 score due to higher Precision (up to 1.8), meaning that contextual information slightly impacts on the understandability of a word by a given person.
+We carried out the experiments using (i) the standard features only, (ii) the FastText word embeddings only and (iii) their combination. Experiments with isolated FastText word embeddings as features and the data from three annotators resulted in poor F1 scores (Table \ref{tab:user-in-voc-out}), that can be explained by the fact that contextual information which is dominant in the word embeddings is not enough to define word understandability. Adding the FastText word embeddings to the standard feature set resulted in up to a 1.0 higher F1 score due to higher Precision (up to 1.8), meaning that contextual information slightly impacts on the understandability of a word by a given person.
 
 \begin{table*}[h]
 \begin{tabular}{cc|cccc|cccc|cccc}
@@ -49,7 +45,7 @@ $O3$ & $O3$ & 85.5 & 81.2 & 85.5 & 83.2 & 74.9 & 70.4 & 74.9 & 72.3 & \textbf{85
 
 \subsection{User-out vocabulary-in cross-validation}
 
-In these experiments we got a substantial improvement of combined features in comparison to the standard features (Table \ref{tab:user-out-voc-in}). When knowledge of words understandability of one user is used to predict it for another user, adding the FastText word embeddings provides up to 2.9 better F1 score. Notice that used separately, standard features and embeddings show similar performance as in user-in vocabulary-out cross-validation (Table \ref{tab:user-in-voc-out}). Our hypothesis is that there exists a robust nonlinear dependency between some subsets of standard features and subword-level components of FastText word embeddings. Testing this hypothesis is the topic of our further research.
+In these experiments, we got a substantial improvement of combined features in comparison to the standard features (Table \ref{tab:user-out-voc-in}). When knowledge of word understandability of one user is used to predict it for another user, adding the FastText word embeddings provides up to 2.9 better F1 score. Notice that used separately, standard features and embeddings show similar performance as in user-in vocabulary-out cross-validation (Table \ref{tab:user-in-voc-out}). Our hypothesis is that there exists a robust nonlinear dependency between some subsets of standard features and subword-level components of FastText word embeddings. Testing this hypothesis is the topic of our further research.
 
 \begin{table*}[h]
 \begin{tabular}{cc|cccc|cccc|cccc}
@@ -70,7 +66,7 @@ In these experiments we got a substantial improvement of combined features in co
 \subsection{User-out vocabulary-out cross-validation}
 \label{sec:user-out-voc-out}
 
-The cross-validation setting is now the most strict and knowledge of words understandability of one user is used to predict whether another user will understand other medical words. In these experiments, FastText word embeddings provide approximately 0.5\% higher F1 score in case of learning on users O1 and O3 (Table \ref{tab:user-out-voc-out}). When learning on user O2, embeddings decrease F by 0.5, which means that annotations and health literacy of user O2 are different from users O1 and O3. It seems that adding embeddings makes overfitting of machine learning model to the dataset. As a result, tests on other "kind of word understandability" and combined features are less successful compared to using standard features only for learning. This may be due to the lack of systematicity in annotations of O2. We will also encounter this issue when more annotators are involved in experiments in sections \ref{sec:generalizability-study} and \ref{sec:frnnmute-study}.
+The cross-validation setting is now the most strict and knowledge of words understandability of one user is used to predict whether another user will understand other medical words. In these experiments, FastText word embeddings provide approximately 0.5\% higher F1 score in case of learning on users O1 and O3 (Table \ref{tab:user-out-voc-out}). When learning on user O2, embeddings decrease F by 0.5, which means that annotations and health literacy of user O2 are different from users O1 and O3. It seems that adding embeddings overfits the machine learning model to the dataset. As a result, tests on the other "kind of word understandability" and combined features are less successful compared to using standard features only for learning. This may be due to the lack of systematicity in annotations of O2. We will also encounter this issue when more annotators are involved in experiments in sections \ref{sec:generalizability-study} and \ref{sec:frnnmute-study}.
 
 \begin{table*}[h]
 \begin{tabular}{cc|cccc|cccc|cccc}
@@ -89,9 +85,9 @@ The cross-validation setting is now the most strict and knowledge of words under
 
 \section{Generalizability study}
 \label{sec:generalizability-study}
-In the previous experiments, we concentrated on three annotators' data to be consistent with the research in paper \citep{Grabar-PITR2014}. To study better generalizability of models for words' understandability detection, we included four more annotators in an experiment.
+In the previous experiments, we concentrated on making three annotators' data consistent with the research in paper \cite{Grabar-PITR2014}. To study better generalizability of models for word understandability detection, we included four more annotators in an experiment.
 
-In this part, we concentrated on the user-out vocabulary-in cross-validation scenario as the most realistic one. Here understanding of the quality of generalization is crucial for usage of the model in real world client-doctor relationship.
+In this part, we concentrate on the user-out vocabulary-in cross-validation scenario as the most realistic one. Here, understanding of the quality of generalization is crucial for usage of the model in a real-world client-doctor relationship.
 
 \begin{table*}
   \centering
@@ -159,7 +155,8 @@ $A8$&$A8$&\he{81.9}&\he{84.9}&\he{83.4}&\he{73.6}&\he{77.0}&\he{75.1}&\he{84.2}&
   \label{tab:user-out-voc-in-generalizability}
 \end{table*}
 
-The results obtained for this part are presented in Table~\ref{tab:user-out-voc-in-generalizability}. The color visually duplicates the magnitude of F1 score specified in each cell. This is done for easier comprehension of the table. We can do several observations on them:
+The results obtained for this part are presented in Table~\ref{tab:user-out-voc-in-generalizability}. The color visually duplicates the magnitude of F1 score specified in each cell. This is done for an easier comprehension of the table. We can make several observations on these results:
+
 \begin{enumerate}[listparindent=1.5em]
     \item The used features show an impact on the results. Thus, standard features usually show better F1 than FastText word embeddings. One explanation is that standard features include 24 individual features covering different aspects of the linguistic and non-linguistic description of words, while the pretrained FastText word embeddings rely only on the distribution of words and their similarity. Yet, the combination of two features (standard and FastText embeddings) usually improves overall results, sometimes going to up to 4.8 improvement of F-measure.  We hypothesize that there exists a robust nonlinear dependency between some subsets of standard features and subword-level components of FastText word embeddings. Testing this hypothesis is the topic of our further research.
     
@@ -167,14 +164,16 @@ The results obtained for this part are presented in Table~\ref{tab:user-out-voc-
     
     \item In each set of experiments, the best results are not obtained when the model of a given annotator is applied to own data. For instance, the {\it O1} model provides better results when tested on data from annotators {\it O2, O3} and {\it A8}.  Similarly, the {\it A7} model shows better results when applied to data from annotators {\it O1, O2, O3} and {\it A8}. This is an important issue because it shows that the models acquired from one annotator can be successfully generalized over other annotators. The fact that the training and test model on the same annotator provides comparatively low results most probably signifies about overfitting, whereas this hypothesis should be properly tested.
     
-    \item Besides, it seems that the considered annotators form two clusters according to the classification of difficult medical words: one cluster with four annotators ({\it O1, O2, O3, A8}) and one cluster with three annotators ({\it A1, A2, A7}). We can observe a decrease up to -3 in F-measure for a combination of features (standard and FastText embeddings) compared to standard features only when cross-validating between users from different clusters (fig. \ref{fig:f1-diff-frnnmute-ft}). As we already explained in section \ref{sec:user-out-voc-out}, this issue may be related to the health literacy of annotators. This may indicate that the annotation models can be shared by people with similar skills and knowledge. Yet, to confirm this hypothesis, it is necessary to define the level of health literacy of annotators. This task is rather difficult because there are no existing tests created for computing the health literacy level for French-speaking healthy people. Another hypothesis is that some models may be better generalizable than other models. This hypothesis must also be verified with additional experiments.
+    \item Besides, it seems that the considered annotators form two clusters according to the classification of difficult medical words: one cluster with four annotators ({\it O1, O2, O3, A8}) and one cluster with three annotators ({\it A1, A2, A7}). We can observe a decrease up to -3 in F-measure for a combination of features (standard and FastText embeddings) compared to standard features only when cross-validating between users from different clusters (fig. \ref{fig:f1-diff-frnnmute-ft}). As we already explained in section \ref{sec:user-out-voc-out}, this issue may be related to the health literacy of annotators. This may indicate that the annotation models can be shared by people with similar skills and knowledge. Yet, to confirm this hypothesis, it is necessary to define the level of health literacy of annotators. This task is rather difficult because there are no existing tests created for computing the health literacy level for French-speaking healthy people. Another hypothesis is that some models may be more generalizable than other models. This hypothesis must also be verified with additional experiments.
 \end{enumerate}
+
 \begin{figure}[h]
     \centering
     \includegraphics[width=15cm]{Images/f1-diff-frnnmute-ft.png}
     \caption{The difference of F1 score received for user pairs with a classification model built on combination of features (standard and based on deep learning) and on only standard features. }
     \label{fig:f1-diff-frnnmute-ft}
 \end{figure} 
+
 
 \section{FrnnMUTE impact study}
 \label{sec:frnnmute-study}
