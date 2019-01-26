@@ -1,49 +1,51 @@
 \chapter{Introduction}
 
 \section{Motivation}
-Specialized areas, such as medical area, convey and use technical words, or terms, which are typically related to knowledge developed within these areas. In the medical area, this specific knowledge often corresponds to fundamental medical notions related to disorders, procedures, treatments and human anatomy. For instance, technical terms like \textit{blepharospasm} (abnormal contraction or twitch of the eyelid), \textit{alexithymia} (inability to identify and describe emotions in the self), \textit{appendicectomy} (surgical removal of the vermiform appendix from intestine), or \textit{lombalgia} (low back pain) are frequently used by experts in the medical area texts.
+Specialized areas, such as the medical area, convey and use technical words or terms which are typically related to knowledge developed within these areas. In the medical area, this specific knowledge often corresponds to fundamental medical notions related to disorders, procedures, treatments and human anatomy. For instance, technical terms like \textit{blepharospasm} (abnormal contraction or twitch of the eyelid), \textit{alexithymia} (inability to identify and describe emotions in the self), \textit{appendicectomy} (surgical removal of the vermiform appendix from intestine), or \textit{lombalgia} (low back pain) are frequently used by experts in medical texts.
 
-As in any specialized areas, two main kinds of users exist in the medical area:
+As in any specialized area, two main kinds of users exist in the medical area:
 
 \begin{itemize}
-    \item experts of the domain: medical doctors, both researchers of practitioners. They contribute to the creation and development of biomedical knowledge and its exploitation for the healthcare process of patients;
+    \item experts of the domain: medical doctors, both researchers and practitioners. They contribute to the creation and development of biomedical knowledge and its presentation for the healthcare process of patients;
     
     \item consumers of the healthcare process: patients and their relatives. Usually, they do not have expert knowledge, while it is important that they understand the purpose and issues of their healthcare process. 
 \end{itemize}
 %%
-One more intermediate group of medical area users can be specified - users who are not experts in the area but have some knowledge of the medical domain. In  \citep{Pearson98} this group of users is named "initiates". Users of this group are either in the learning process (students), or do not need more detailed knowledge in a medical domain (technicians). Initiates and medical doctors form a group of \textit{medical stuff} - users who do not have difficulties in understanding technical medical terms. On the contrary, patients and their relatives may find it difficult to understand and use such terms. This group of users shows poor \textit{health literacy}. 
+One more intermediate group of medical area users can be specified: users who are not experts in the area but have some knowledge of the medical domain. In  \citep{Pearson98} this group of users is named "initiates". Users of this group are either in the learning process (students) or do not need more detailed knowledge in the medical domain (technicians). Initiates and medical doctors form a group of \textit{medical stuff} - users who do not have difficulties in understanding technical medical terms. On the contrary, patients and their relatives may find it difficult to understand and use such terms. This group of users shows poor \textit{health literacy}. 
 
 The existing literature provides several studies dedicated to the understanding of medical notions and terms by non-expert users, and how the level of health literacy of patients impacts on a successful healthcare process \citep{McCray-JAMIA2005, Eysenbach-JMIR2007}. It is not uncommon that patients and their relatives must face very technical health documents and information. Examples of this kind are frequent, and usually, the non-expert users are at a loss in such situations:
 
 \begin{itemize}
-    \item  understanding of information on drug intake \citep{VanderStichele-WILEY1999, Patel-IJMI2002}, such as instructions related to the description and specification of steps necessary for the preparation and intake of drugs,
+    \item  understanding information on drug intake \citep{VanderStichele-WILEY1999, Patel-IJMI2002}, such as instructions related to the description and specification of steps necessary for the preparation and intake of drugs,
     
-    \item  understanding of clinical documents \citep{Zeng-MEDINFO2007}, which contain important information on the healthcare process of patients,
+    \item  understanding clinical documents \citep{Zeng-MEDINFO2007} which contain important information on the healthcare process of patients,
     
-    \item  understanding of clinical brochures or informed consents \citep{Williams-JAMA1995}, which are specifically created for patients and which are typically read by patients during their clinical pathway,
+    \item  understanding clinical brochures or informed consents \citep{Williams-JAMA1995} which are specifically created for patients and which are typically read by patients during their clinical pathway,
     
-    \item  more generally, understanding of the information provided for patients by different websites \citep{Oregon-2008, Brigo-EB2015} in different languages (English, Spanish, French) and different medical specialties,
+    \item  more generally, understanding the information provided for patients by different websites \citep{Oregon-2008, Brigo-EB2015} in different languages (English, Spanish, French) and different medical specialties,
     
     \item for the same reasons, communication between patients and medical staff \citep{Jucks-HC2007, Tran-EC2009} remains complicated.
 \end{itemize}
 %%
 These various observations provide the main motivation for our work. In this work, we address the needs of non-specialized users in the medical domain. As we noticed, the main need is related to the understanding of medical and health information. 
 
-The recent increase of availability of medical data and rapid spreading of big data analytics tools have facilitated broad application of deep learning techniques in healthcare domain \citep{Jiang-BMJ2017}. The popularity of such methods is due to their ability to mine features `on the go' from massive datasets of any type (either table, text, image or audio) and result with valuable insights. Although classical analytics and machine learning approaches require less data for learning patterns, they need a set of features representing the dataset which need to be engineered before the learning process. Feature engineering in its turn often involves deep domain understanding and moreover becomes a time consuming process, whereas results of learning on such features nowdays are mostly weaker in tasks of computer vision and natural language processing \citep{Krizhevsky-NIPS2012, Zhang-NIPS2015}.   
+The recent increase of availability of medical data and the rapid spread of big data analytics tools have facilitated the broad application of deep learning techniques in the healthcare domain \citep{Jiang-BMJ2017}. The popularity of such methods is due to their ability to mine features `on the go' from massive datasets of any type (either table, text, image or audio) and produce valuable insights. Although classical analytics and machine learning approaches require less data for learning patterns, they need a set of features representing the dataset which need to be engineered before the learning process. Feature engineering in its turn often involves deep domain understanding and moreover becomes a time-consuming process, whereas the results of learning on such features nowadays are mostly weaker in tasks of computer vision and natural language processing \citep{Krizhevsky-NIPS2012, Zhang-NIPS2015}.   
 
 \section{The proposed method}
-Taking into consideration all above, we propose the following:
+Taking into consideration all of the above, we propose the following:
 \begin{itemize}
-    \item applying deep learning techniques for better identification of readability and understandability of medical words by non-expert users. In particular, we will solve a words' categorization task and compare the performance of classification model on different feature sets: standard linguistic and non-linguistic features described in chapter \ref{ch:methodology}, ones obtained using different deep learning approaches and combinations of the previous two.
+    \item applying deep learning techniques for better identification of readability and understandability of medical words by non-expert users. In particular, we will solve a words' categorization task and compare the performance of a classification model on different feature sets: standard linguistic and non-linguistic features described in chapter \ref{ch:methodology}, ones obtained using different deep learning approaches and combinations of the previous two.
     \item investigating how different feature sets perform with three different cross-validation settings, described in chapter \ref{ch:experiments}. 
 \end{itemize}
 The medical data used in this work are in French. Seven human annotators participated in the creation of the reference data (labels specifying understandability of words).
 
 \section{Goals of the master thesis}
 \begin{enumerate}
-    \item To provide an overview of previous works on words' understandability detection.
-    \item To apply deep learning techniques for generation of words' features used then by a words' categorization\footnote{We will use the words `\textit{categorization}' and `\textit{classification}' interchangeably in this work, implying that in the scope of our task these words are synonims, whereas the first one is common in the medical domain, and the second one - in machine learning.} on understandable and not by non-specialists.
-    \item To compare the quality of words' categorization from the prospective of understandability on different sets of features and explain the causes of differences in performance.
+    \item To provide an overview of previous works on word understandability detection.
+    
+    \item To apply deep learning techniques for a generation of word features used then by a word categorization\footnote{We will use the words `\textit{categorization}' and `\textit{classification}' interchangeably in this work, implying that in the scope of our task these words are synonyms, whereas the first one is common in the medical domain, and the second one - in machine learning.} on understandable and not by non-specialists.
+    
+    \item To compare the quality of word categorization from the perspective of understandability on different sets of features and explain the causes of differences in performance.
 \end{enumerate}
 
 \section{Thesis structure}

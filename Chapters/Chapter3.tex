@@ -191,7 +191,7 @@ In this work, after experimenting with different RNN architectures, an LSTM-base
 
 \subsection{Word2vec} 
 \label{sec:word2vec}
-Word2vec is a well-known deep-learning-based approach for receiving word embeddings which has seen tremendous success being applied in numerous NLP tasks due to its computationally-efficiency and high quality of result \cite{Mikolov-NIPS2013}. Word2vec representations can be trained using either skip-gram model \citep{Mikolov-NIPS2013} shown on fig. \ref{fig:word2vec-skip-gram}  or Continuous Bag-of-Words model (CBOW) \citep{Mikolov-ICLR2013} when on fig. \ref{fig:word2vec-cbow}.
+Word2vec is a well-known deep-learning-based approach for receiving word embeddings which has seen tremendous success being applied in numerous NLP tasks due to its computationally-efficiency and high quality of result \cite{Mikolov-NIPS2013}. Word2vec representations can be trained using either skip-gram model \citep{Mikolov-NIPS2013} shown on fig. \ref{fig:word2vec-skip-gram}  or Continuous Bag-of-Words model (CBOW) \citep{Mikolov-ICLR2013} shown on fig. \ref{fig:word2vec-cbow}.
 
 \begin{figure}[h]
     \centering
@@ -219,7 +219,7 @@ In NLP applications it is common to use pre-trained word representations estimat
 FastText is a skip-gram model trained on \textit{n-grams} level
 introduced in \cite{Bojanowski-ACL2017}. In this approach, each word
 is represented as a sum of character n-gram representations of this word's
-components. This makes it easy to represent any OOV word. Pre-trained word vectors for 157 languages using fastText were received and made public \footnote{\url{https://fasttext.cc/docs/en/crawl-vectors.html}} by Facebook Research in 2017 \citep{Mikolov-2017}. The results of applying those vectors for the French language on our dataset are described in \ref{sec:cv-experiments}.
+components. This makes it easy to represent any OOV word. Pre-trained word vectors for 157 languages using fastText were received and made public \footnote{\url{https://fasttext.cc/docs/en/crawl-vectors.html}} by Facebook AI Research in 2017 \citep{Mikolov-2017}. The results of applying those vectors for the French language on our dataset are described in \ref{sec:cv-experiments}.
 
 FastText embedding vectors are the sum of character n-gram representations, so that they could be generated even for unknown words. 
 
